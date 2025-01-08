@@ -34,3 +34,9 @@ variable "digi_pppoe_password" {
   sensitive   = true
   description = "The PPPoE password for the Digi connection."
 }
+
+variable "wifi_password" {
+  type        = string
+  sensitive   = true
+  description = "The password for the Wi-Fi network."
+}
