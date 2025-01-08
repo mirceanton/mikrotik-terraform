@@ -18,7 +18,7 @@ resource "routeros_interface_bridge_port" "living_room" {
   bridge    = routeros_interface_bridge.bridge.name
   interface = routeros_interface_ethernet.living_room.name
   comment   = routeros_interface_ethernet.living_room.comment
-  pvid      = "1" #routeros_interface_vlan.servers.vlan_id
+  pvid      = routeros_interface_vlan.servers.vlan_id
 }
 resource "routeros_interface_bridge_port" "sploinkhole" {
   bridge    = routeros_interface_bridge.bridge.name
