@@ -9,6 +9,11 @@ resource "routeros_ip_dns" "dns-server" {
 
   cache_size    = 2048
   cache_max_ttl = "1d"
+
+  mdns_repeat_ifaces = [
+    routeros_interface_vlan.iot.name,
+    routeros_interface_vlan.untrusted.name
+  ]
 }
 
 # =================================================================================================
