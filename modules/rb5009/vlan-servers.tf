@@ -73,11 +73,10 @@ resource "routeros_ip_dhcp_server" "servers" {
 # ================================================================================================
 resource "routeros_ip_dhcp_server_lease" "servers" {
   for_each = {
-    "CRS317"           = { address = "10.0.0.2", mac_address = "D4:01:C3:02:5D:52" }
-    "CRS326"           = { address = "10.0.0.3", mac_address = "D4:01:C3:F8:46:EE" }
-    "cAP-AX"           = { address = "10.0.0.5", mac_address = "D4:01:C3:01:26:EB" }
-    "Cisco SG350 - TV" = { address = "10.0.0.4", mac_address = "00:EE:AB:28:1C:81" }
-    "BliKVM"           = { address = "10.0.0.254", mac_address = "12:00:96:6F:5D:51" }
+    "CRS317" = { address = "10.0.0.2", mac_address = "D4:01:C3:02:5D:52" }
+    "CRS326" = { address = "10.0.0.3", mac_address = "D4:01:C3:F8:46:EE" }
+    "cAP-AX" = { address = "10.0.0.5", mac_address = "D4:01:C3:01:26:EB" }
+    "BliKVM" = { address = "10.0.0.254", mac_address = "12:00:96:6F:5D:51" }
   }
   server = routeros_ip_dhcp_server.servers.name
 
