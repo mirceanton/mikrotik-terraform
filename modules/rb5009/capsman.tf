@@ -14,10 +14,20 @@ resource "routeros_wifi_capsman" "settings" {
 # WiFi Security
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/wifi_security
 # =================================================================================================
-resource "routeros_wifi_security" "wifi_password" {
-  name                 = "wifi-password"
+resource "routeros_wifi_security" "untrusted_wifi_password" {
+  name                 = "untrusted-wifi-password"
   authentication_types = ["wpa2-psk", "wpa3-psk"]
-  passphrase           = var.wifi_password
+  passphrase           = var.untrusted_wifi_password
+}
+resource "routeros_wifi_security" "guest_wifi_password" {
+  name                 = "guest-wifi-password"
+  authentication_types = ["wpa2-psk", "wpa3-psk"]
+  passphrase           = var.guest_wifi_password
+}
+resource "routeros_wifi_security" "iot_wifi_password" {
+  name                 = "iot-wifi-password"
+  authentication_types = ["wpa2-psk", "wpa3-psk"]
+  passphrase           = var.iot_wifi_password
 }
 
 
@@ -29,6 +39,17 @@ resource "routeros_wifi_datapath" "untrusted_tagging" {
   name    = "untrusted-tagging"
   comment = "WiFi -> Untrusted VLAN"
   vlan_id = routeros_interface_vlan.untrusted.vlan_id
+}
+resource "routeros_wifi_datapath" "guest_tagging" {
+  name             = "guest-tagging"
+  comment          = "WiFi -> Guest VLAN"
+  vlan_id          = routeros_interface_vlan.guest.vlan_id
+  client_isolation = true
+}
+resource "routeros_wifi_datapath" "iot_tagging" {
+  name    = "iot-tagging"
+  comment = "WiFi -> IoT VLAN"
+  vlan_id = routeros_interface_vlan.iot.vlan_id
 }
 
 
@@ -50,7 +71,39 @@ resource "routeros_wifi_channel" "fast" {
 # WiFi Configurations
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/wifi_configuration
 # =================================================================================================
-resource "routeros_wifi_configuration" "slow" {
+resource "routeros_wifi_configuration" "guest" {
+  country = "Romania"
+  name    = "badoink-guest"
+  ssid    = "badoink-guest"
+  comment = ""
+
+  channel = {
+    config = routeros_wifi_channel.slow.name
+  }
+  datapath = {
+    config = routeros_wifi_datapath.guest_tagging.name
+  }
+  security = {
+    config = routeros_wifi_security.guest_wifi_password.name
+  }
+}
+resource "routeros_wifi_configuration" "iot" {
+  country = "Romania"
+  name    = "badoink-iot"
+  ssid    = "badoink-iot"
+  comment = ""
+
+  channel = {
+    config = routeros_wifi_channel.slow.name
+  }
+  datapath = {
+    config = routeros_wifi_datapath.iot_tagging.name
+  }
+  security = {
+    config = routeros_wifi_security.iot_wifi_password.name
+  }
+}
+resource "routeros_wifi_configuration" "untrusted_slow" {
   country = "Romania"
   name    = "badoink-2ghz"
   ssid    = "badoink-2ghz"
@@ -63,10 +116,10 @@ resource "routeros_wifi_configuration" "slow" {
     config = routeros_wifi_datapath.untrusted_tagging.name
   }
   security = {
-    config = routeros_wifi_security.wifi_password.name
+    config = routeros_wifi_security.untrusted_wifi_password.name
   }
 }
-resource "routeros_wifi_configuration" "fast" {
+resource "routeros_wifi_configuration" "untrusted_fast" {
   country = "Romania"
   name    = "badoink-5ghz"
   ssid    = "badoink-5ghz"
@@ -80,7 +133,7 @@ resource "routeros_wifi_configuration" "fast" {
     config = routeros_wifi_datapath.untrusted_tagging.name
   }
   security = {
-    config = routeros_wifi_security.wifi_password.name
+    config = routeros_wifi_security.untrusted_wifi_password.name
   }
 }
 
@@ -91,13 +144,18 @@ resource "routeros_wifi_configuration" "fast" {
 # =================================================================================================
 resource "routeros_wifi_provisioning" "slow" {
   action               = "create-dynamic-enabled"
-  comment              = routeros_wifi_configuration.slow.name
-  master_configuration = routeros_wifi_configuration.slow.name
+  comment              = routeros_wifi_configuration.untrusted_slow.name
   supported_bands      = [routeros_wifi_channel.slow.band]
+  master_configuration = routeros_wifi_configuration.untrusted_slow.name
+  slave_configurations = [
+    routeros_wifi_configuration.guest.name,
+    routeros_wifi_configuration.iot.name
+  ]
 }
 resource "routeros_wifi_provisioning" "fast" {
   action               = "create-dynamic-enabled"
-  comment              = routeros_wifi_configuration.fast.name
-  master_configuration = routeros_wifi_configuration.fast.name
+  comment              = routeros_wifi_configuration.untrusted_fast.name
   supported_bands      = [routeros_wifi_channel.fast.band]
+  master_configuration = routeros_wifi_configuration.untrusted_fast.name
+  slave_configurations = []
 }

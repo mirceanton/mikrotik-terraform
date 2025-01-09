@@ -1,3 +1,6 @@
+## ================================================================================================
+## Mikrotik Variables
+## ================================================================================================
 variable "mikrotik_host_url" {
   type        = string
   sensitive   = false
@@ -23,6 +26,9 @@ variable "mikrotik_insecure" {
 }
 
 
+## ================================================================================================
+## PPPoE Connection Variables
+## ================================================================================================
 variable "digi_pppoe_username" {
   type        = string
   sensitive   = true
@@ -35,8 +41,22 @@ variable "digi_pppoe_password" {
   description = "The PPPoE password for the Digi connection."
 }
 
-variable "wifi_password" {
+
+## ================================================================================================
+## WiFi Variables
+## ================================================================================================
+variable "untrusted_wifi_password" {
   type        = string
   sensitive   = true
-  description = "The password for the Wi-Fi network."
+  description = "The password for the Untrusted Wi-Fi network."
+}
+variable "guest_wifi_password" {
+  type        = string
+  sensitive   = true
+  description = "The password for the Guest Wi-Fi network."
+}
+variable "iot_wifi_password" {
+  type        = string
+  sensitive   = true
+  description = "The password for the IoT Wi-Fi network."
 }
