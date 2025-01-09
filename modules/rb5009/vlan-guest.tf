@@ -33,7 +33,6 @@ resource "routeros_interface_bridge_vlan" "guest" {
 
   tagged = [
     routeros_interface_bridge.bridge.name,
-    routeros_interface_ethernet.living_room.name,
     routeros_interface_ethernet.access_point.name
   ]
 
