@@ -74,11 +74,6 @@ resource "routeros_ip_dhcp_server" "untrusted" {
 # ================================================================================================
 resource "routeros_ip_dhcp_server_lease" "untrusted" {
   for_each = {
-    "SmartTV"    = { address = "192.168.42.99", mac_address = "38:26:56:E2:93:99" }
-    "MirkPhone"  = { address = "192.168.42.98", mac_address = "04:29:2E:ED:1B:4D" }
-    "BomkPhone"  = { address = "192.168.42.97", mac_address = "5C:70:17:F3:5F:F8" }
-    "WorkPhone"  = { address = "192.168.42.95", mac_address = "50:13:1D:68:30:CE" }
-    "WorkLaptop" = { address = "192.168.42.96", mac_address = "70:D8:23:F3:07:32" }
   }
   server = routeros_ip_dhcp_server.untrusted.name
 
