@@ -9,13 +9,13 @@ on:
 jobs:
   # TODO: terraform lint here
   actionlint:
-    uses: mirceanton/reusable-workflows/.github/workflows/reusable-actionlint.yaml@e4d5023d61f4f79f382a457eaff9700730421553 # v3.4.45
+    uses: mirceanton/reusable-workflows/.github/workflows/reusable-actionlint.yaml@0d9c406821566c38302d9af7c59ccfc4d6416c68 # v3.4.46
     secrets: inherit
 
   markdownlint:
-    uses: mirceanton/reusable-workflows/.github/workflows/reusable-markdownlint.yaml@e4d5023d61f4f79f382a457eaff9700730421553 # v3.4.45
+    uses: mirceanton/reusable-workflows/.github/workflows/reusable-markdownlint.yaml@0d9c406821566c38302d9af7c59ccfc4d6416c68 # v3.4.46
     secrets: inherit
 
   commitlint:
-    uses: mirceanton/reusable-workflows/.github/workflows/reusable-commitlint.yaml@e4d5023d61f4f79f382a457eaff9700730421553 # v3.4.45
+    uses: mirceanton/reusable-workflows/.github/workflows/reusable-commitlint.yaml@0d9c406821566c38302d9af7c59ccfc4d6416c68 # v3.4.46
     secrets: inherit
