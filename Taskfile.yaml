@@ -1,0 +1,16 @@
+---
+version: "3"
+
+env:
+  SOPS_AGE_KEY_FILE: ./age.key
+
+tasks:
+  sops:encrypt:
+    cmds:
+      - sops --encrypt terraform.tfstate > terraform.sops.tfstate
+      - sops --encrypt credentials.auto.tfvars > credentials.auto.sops.tfvars
+
+  sops:decrypt:
+    cmds:
+      - sops --decrypt terraform.sops.tfstate > terraform.tfstate
+      - sops --decrypt credentials.auto.sops.tfvars > credentials.auto.tfvars
