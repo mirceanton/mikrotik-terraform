@@ -1,0 +1,13 @@
+---
+creation_rules:
+  # Terraform State
+  - path_regex: \.tfstate$
+    encrypted_regex: "^(.*)$" # Encrypt the entire file
+    key_groups:
+      - age: [age1q9mu6438u9rmvk9jflsd6da5lfe30np23v4xqjmq7vs0wnkqzfvs44xqjl]
+
+  # Terraform Credentials
+  - path_regex: \.tfvars$
+    encrypted_regex: "^(.*)$" # Encrypt the entire file
+    key_groups:
+      - age: [age1q9mu6438u9rmvk9jflsd6da5lfe30np23v4xqjmq7vs0wnkqzfvs44xqjl]
