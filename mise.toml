@@ -1,0 +1,20 @@
+[tools]
+# Runtimes
+node = "22.13.0"
+
+"aqua:hashicorp/terraform" = "1.10.4"
+"aqua:terraform-linters/tflint" = "0.55.0"
+
+# Secret Encryption Stuff
+"aqua:getsops/sops" = "3.9.3"
+"aqua:FiloSottile/age" = "1.2.1"
+
+# Misc Tools
+"aqua:go-task/task" = "3.38.0"
+"aqua:google/yamlfmt" = "1.35.1"
+"aqua:rhysd/actionlint" = "1.7.7"
+"aqua:nektos"0.2./act" = 71"
+
+# Shell stuff
+"ubi:starship/starship" = "1.22.1"
+"ubi:zellij-org/zellij" = "0.41.2"
