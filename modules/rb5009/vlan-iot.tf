@@ -74,8 +74,7 @@ resource "routeros_ip_dhcp_server" "iot" {
 # ================================================================================================
 resource "routeros_ip_dhcp_server_lease" "iot" {
   for_each = {
-    "SmartTV" = { address = "172.16.69.201", mac_address = "38:26:56:E2:93:99" }
-    "Hass"    = { address = "172.16.69.9", mac_address = "00:1E:06:42:C7:73" }
+    "SmartTV" = { address = "172.16.69.250", mac_address = "38:26:56:E2:93:99" }
   }
   server = routeros_ip_dhcp_server.iot.name
 

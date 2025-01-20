@@ -74,6 +74,9 @@ resource "routeros_ip_dhcp_server" "untrusted" {
 # ================================================================================================
 resource "routeros_ip_dhcp_server_lease" "untrusted" {
   for_each = {
+    "HomeAssistant" = { address = "192.168.42.253", mac_address = "00:1E:06:42:C7:73" }
+    "Mirk Phone"    = { address = "192.168.42.69", mac_address = "D4:01:C3:F8:47:04" }
+    "Bomk Phone"    = { address = "192.168.42.68", mac_address = "5C:70:17:F3:5F:F8" }
   }
   server = routeros_ip_dhcp_server.untrusted.name
 
