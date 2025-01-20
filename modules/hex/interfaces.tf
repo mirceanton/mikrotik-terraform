@@ -26,13 +26,13 @@ resource "routeros_interface_ethernet" "ether3" {
 resource "routeros_interface_ethernet" "uplink" {
   factory_name = "ether4"
   name         = "ether4"
-  comment = "Router Uplink"
-  l2mtu = 1514
+  comment      = "Router Uplink"
+  l2mtu        = 1514
 }
 
 resource "routeros_interface_ethernet" "smarttv" {
   factory_name = "ether5"
   name         = "ether5"
-  comment = "Living Room TV"
-  l2mtu = 1514
+  comment      = "Living Room TV"
+  l2mtu        = 1514
 }
