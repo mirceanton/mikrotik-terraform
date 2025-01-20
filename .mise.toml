@@ -10,11 +10,6 @@ node = "22.13.0"
 "aqua:FiloSottile/age" = "1.2.1"
 
 # Misc Tools
-"aqua:go-task/task" = "3.38.0"
-"aqua:google/yamlfmt" = "1.35.1"
+"aqua:google/yamlfmt" = "0.15.0"
 "aqua:rhysd/actionlint" = "1.7.7"
-"aqua:nektos"0.2./act" = 71"
-
-# Shell stuff
-"ubi:starship/starship" = "1.22.1"
-"ubi:zellij-org/zellij" = "0.41.2"
+"aqua:nektos/act" = "0.2.71"
