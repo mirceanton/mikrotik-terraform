@@ -42,5 +42,5 @@ resource "routeros_interface_bridge_port" "ether5" {
   bridge    = routeros_interface_bridge.bridge.name
   interface = routeros_interface_ethernet.smarttv.name
   comment   = routeros_interface_ethernet.smarttv.comment
-  pvid      = routeros_interface_vlans["IoT"].vlan_id
+  pvid      = routeros_interface_vlan.iot.vlan_id
 }
