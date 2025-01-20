@@ -7,6 +7,7 @@
         "pkief.material-icon-theme",
         "hashicorp.terraform",
         "foxundermoon.shell-format",
-        "DavidAnson.vscode-markdownlint"
+        "DavidAnson.vscode-markdownlint",
+        "tamasfe.even-better-toml"
     ]
 }
