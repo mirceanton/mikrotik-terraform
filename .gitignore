@@ -3,6 +3,7 @@
 
 # .tfstate files
 *.tfstate
+!*.sops.tfstate
 *.tfstate.*
 
 # Crash log files
@@ -14,6 +15,7 @@ crash.*.log
 # control as they are data points which are potentially sensitive and subject
 # to change depending on the environment.
 *.tfvars
+!*.sops.tfvars
 *.tfvars.json
 
 # Ignore override files as they are usually used to override resources locally and so
@@ -38,3 +40,6 @@ terraform.rc
 
 # Ignore terraform lock file
 .terraform.lock.hcl
+
+# Ignore age key file
+age.key
