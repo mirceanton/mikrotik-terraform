@@ -2,6 +2,7 @@ FROM mcr.microsoft.com/devcontainers/base:bookworm
 
 # Set environment variables
 ENV EDITOR=vim
+USER vscode
 
 # Install mise CLI
 RUN sudo apt update -y && sudo apt install -y gpg sudo wget curl && \
@@ -12,8 +13,7 @@ RUN sudo apt update -y && sudo apt install -y gpg sudo wget curl && \
     sudo apt install -y mise
 
 # Activate mise
-RUN echo 'eval "$(~/.local/bin/mise activate bash)"' >> ~/.bashrc
-RUN echo 'eval "$(~/.local/bin/mise activate zsh)"' >> ~/.zshrc
+RUN echo 'eval "$(/usr/bin/mise activate bash)"' >> ~/.bashrc
+RUN echo 'eval "$(/usr/bin/mise activate zsh)"' >> ~/.zshrc
 
-USER vscode
 ENTRYPOINT [ "/bin/bash", "-l", "-c" ]
