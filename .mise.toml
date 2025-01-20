@@ -1,7 +1,4 @@
 [tools]
-# Runtimes
-node = "22.13.0"
-
 "aqua:hashicorp/terraform" = "1.10.4"
 "aqua:terraform-linters/tflint" = "0.55.0"
 
