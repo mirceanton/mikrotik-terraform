@@ -10,3 +10,4 @@
 "aqua:google/yamlfmt" = "0.15.0"
 "aqua:rhysd/actionlint" = "1.7.7"
 "aqua:nektos/act" = "0.2.71"
+"aqua:go-task/task" = "3.38.0"
