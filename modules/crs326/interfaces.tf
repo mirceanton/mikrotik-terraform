@@ -33,7 +33,7 @@ resource "routeros_interface_ethernet" "kube03" {
 resource "routeros_interface_ethernet" "kube04" {
   factory_name = "ether5"
   name         = "ether5"
-  comment      = "Kube Node 04 (management node in 2u short chassis)"
+  comment      = "Kube Node 04 (2U short)"
   l2mtu        = 1514
 }
 
