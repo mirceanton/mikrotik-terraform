@@ -18,11 +18,12 @@ resource "routeros_interface_bridge_vlan" "bridge_vlan_servers" {
   tagged = [
     routeros_interface_bridge.bridge.name,
     routeros_interface_ethernet.uplink.name,
+    routeros_interface_bonding.crs317.name,
   ]
 
   untagged = [
     routeros_interface_ethernet.nas-management.name,
-    routeros_interface_ethernet.virt-1.name,
+    routeros_interface_bonding.virt.name,
     routeros_interface_ethernet.tesmart.name,
     routeros_interface_ethernet.ipkvm.name,
   ]
@@ -48,7 +49,8 @@ resource "routeros_interface_bridge_vlan" "bridge_vlan_kubernetes" {
   tagged = [
     routeros_interface_bridge.bridge.name,
     routeros_interface_ethernet.uplink.name,
-    routeros_interface_ethernet.virt-2.name,
+    routeros_interface_bonding.virt.name,
+    routeros_interface_bonding.crs317.name,
 
   ]
 
@@ -80,7 +82,8 @@ resource "routeros_interface_bridge_vlan" "bridge_vlan_guest" {
   tagged = [
     routeros_interface_bridge.bridge.name,
     routeros_interface_ethernet.uplink.name,
-    routeros_interface_ethernet.virt-2.name,
+    routeros_interface_bonding.virt.name,
+    routeros_interface_bonding.crs317.name,
   ]
 
   untagged = []
@@ -106,7 +109,8 @@ resource "routeros_interface_bridge_vlan" "bridge_vlan_iot" {
   tagged = [
     routeros_interface_bridge.bridge.name,
     routeros_interface_ethernet.uplink.name,
-    routeros_interface_ethernet.virt-2.name,
+    routeros_interface_bonding.virt.name,
+    routeros_interface_bonding.crs317.name,
   ]
 
   untagged = []
@@ -132,7 +136,8 @@ resource "routeros_interface_bridge_vlan" "bridge_vlan_untrusted" {
   tagged = [
     routeros_interface_bridge.bridge.name,
     routeros_interface_ethernet.uplink.name,
-    routeros_interface_ethernet.virt-2.name,
+    routeros_interface_bonding.virt.name,
+    routeros_interface_bonding.crs317.name,
   ]
 
   untagged = []
@@ -158,7 +163,8 @@ resource "routeros_interface_bridge_vlan" "bridge_vlan_trusted" {
   tagged = [
     routeros_interface_bridge.bridge.name,
     routeros_interface_ethernet.uplink.name,
-    routeros_interface_ethernet.virt-2.name,
+    routeros_interface_bonding.virt.name,
+    routeros_interface_bonding.crs317.name,
   ]
 
   untagged = [
