@@ -5,5 +5,5 @@
 resource "routeros_system_ntp_client" "client" {
   enabled = true
   mode    = "unicast"
-  servers = ["192.168.88.1"]
+  servers = ["10.0.0.1"]
 }
