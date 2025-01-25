@@ -1,6 +1,6 @@
 [tools]
 # Runtimes
-node = "22.13.0"
+node = "22.13.1"
 python = "3.13.1"
 uv = "0.5.21"
 
