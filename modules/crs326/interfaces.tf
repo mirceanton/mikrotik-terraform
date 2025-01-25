@@ -142,7 +142,7 @@ resource "routeros_interface_ethernet" "ether20" {
   l2mtu        = 1514
 }
 
-resource "routeros_interface_ethernet" "living_room_uplink" {
+resource "routeros_interface_ethernet" "uplink" {
   factory_name = "ether21"
   name         = "ether21"
   comment      = "Uplink to the living room switch"
