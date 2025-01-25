@@ -2,73 +2,74 @@
 # Ethernet Interfaces
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/interface_ethernet
 # =================================================================================================
-resource "routeros_interface_ethernet" "nas-ob-1" {
+resource "routeros_interface_ethernet" "nas-management" {
   factory_name = "ether1"
   name         = "ether1"
-  comment      = "NAS Onboard Interface 1 (black cable)"
-  l2mtu        = 1514
-}
-
-resource "routeros_interface_ethernet" "nas-ob-2" {
-  factory_name = "ether2"
-  name         = "ether2"
-  comment      = "NAS Onboard Interface 2 (orange cable)"
+  comment      = "NAS Onboard NIC"
   l2mtu        = 1514
 }
 
 resource "routeros_interface_ethernet" "kube01" {
-  factory_name = "ether3"
-  name         = "ether3"
+  factory_name = "ether2"
+  name         = "ether2"
   comment      = "Kube Node 01 (node in 3u chassis)"
   l2mtu        = 1514
 }
 
 resource "routeros_interface_ethernet" "kube02" {
-  factory_name = "ether4"
-  name         = "ether4"
-  comment      = "Kube Node 02 (bottom node in 2u deep chassis)"
+  factory_name = "ether3"
+  name         = "ether3"
+  comment      = "Kube Node 02 (bottom node 2U)"
   l2mtu        = 1514
 }
 
 resource "routeros_interface_ethernet" "kube03" {
-  factory_name = "ether5"
-  name         = "ether5"
-  comment      = "Kube Node 03 (top node in 2u deep chassis)"
+  factory_name = "ether4"
+  name         = "ether4"
+  comment      = "Kube Node 03 (top node 2U)"
   l2mtu        = 1514
 }
 
 resource "routeros_interface_ethernet" "kube04" {
-  factory_name = "ether6"
-  name         = "ether6"
+  factory_name = "ether5"
+  name         = "ether5"
   comment      = "Kube Node 04 (management node in 2u short chassis)"
   l2mtu        = 1514
 }
 
-resource "routeros_interface_ethernet" "ether7" {
+resource "routeros_interface_ethernet" "virt-1" {
+  factory_name = "ether6"
+  name         = "ether6"
+  comment      = "Virtualization Server Onboard NIC L"
+  l2mtu        = 1514
+}
+
+
+resource "routeros_interface_ethernet" "tesmart" {
   factory_name = "ether7"
   name         = "ether7"
-  comment      = ""
+  comment      = "TeSmart KVM"
   l2mtu        = 1514
 }
 
-resource "routeros_interface_ethernet" "ether8" {
+resource "routeros_interface_ethernet" "ipkvm" {
   factory_name = "ether8"
   name         = "ether8"
-  comment      = ""
+  comment      = "BliKVM"
   l2mtu        = 1514
 }
 
-resource "routeros_interface_ethernet" "ether9" {
+resource "routeros_interface_ethernet" "nas-data-1" {
   factory_name = "ether9"
   name         = "ether9"
-  comment      = ""
+  comment      = "NAS Data 1"
   l2mtu        = 1514
 }
 
-resource "routeros_interface_ethernet" "ether10" {
+resource "routeros_interface_ethernet" "virt-2" {
   factory_name = "ether10"
   name         = "ether10"
-  comment      = ""
+  comment      = "Virtualization Server Onboard NIC R"
   l2mtu        = 1514
 }
 
@@ -142,31 +143,31 @@ resource "routeros_interface_ethernet" "ether20" {
   l2mtu        = 1514
 }
 
-resource "routeros_interface_ethernet" "uplink" {
+resource "routeros_interface_ethernet" "ether21" {
   factory_name = "ether21"
   name         = "ether21"
-  comment      = "Uplink to the living room switch"
+  comment      = ""
   l2mtu        = 1514
 }
 
-resource "routeros_interface_ethernet" "homeassistant" {
+resource "routeros_interface_ethernet" "ether22" {
   factory_name = "ether22"
   name         = "ether22"
-  comment      = "HomeAssistant"
+  comment      = ""
   l2mtu        = 1514
 }
 
-resource "routeros_interface_ethernet" "tesmart" {
+resource "routeros_interface_ethernet" "uplink" {
   factory_name = "ether23"
   name         = "ether23"
-  comment      = "TeSmart KVM"
+  comment      = "Uplink"
   l2mtu        = 1514
 }
 
-resource "routeros_interface_ethernet" "blikvm" {
+resource "routeros_interface_ethernet" "mirkputer" {
   factory_name = "ether24"
   name         = "ether24"
-  comment      = "BlikVM IP KVM"
+  comment      = "mirkputer"
   l2mtu        = 1514
 }
 
