@@ -1,0 +1,37 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: DevContainer Docker Build
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: Dry Run
+        default: true
+        required: false
+        type: boolean
+      custom-tag:
+        type: string
+        description: Additional custom tags for the image.
+        required: false
+
+  pull_request:
+    branches: ["main"]
+    paths:
+      - ".github/workflows/devcontainer-build.yaml"
+      - ".devcontainer/Dockerfile"
+      - ".devcontainer/aqua"
+
+jobs:
+  release:
+    uses: mirceanton/reusable-workflows/.github/workflows/reusable-docker-build-push.yaml@9ce913356128f964413b5fe99efe4858e18d7831 # v3.4.51
+    secrets: inherit
+    with:
+      image: "ghcr.io/mirceanton/devcontainers/mikrotik-terraform"
+      platforms: linux/amd64
+      tags: |
+        type=sha
+        type=ref,event=pr #? Release pr-XYZ image
+      context: ./.devcontainer
+      dockerfile: ./.devcontainer/Dockerfile
+      dry-run: "${{ inputs.dry-run == true }}"
