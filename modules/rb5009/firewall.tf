@@ -59,6 +59,35 @@ resource "routeros_interface_list_member" "local-dns" {
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ip_firewall_filter
 # =================================================================================================
 
+# TODO?
+# ### Create "fasttracked" connection (performance optimization)
+# add action=fasttrack-connection chain=forward comment="defconf: fasttrack" connection-state=established,related hw-offload=yes
+# add action=accept chain=forward comment="defconf: accept established,related, untracked" connection-state=established,related,untracked
+# add action=drop chain=forward comment="defconf: drop invalid" connection-state=invalid
+
+
+# ### Allow VLANs to access the internet
+# add action=accept chain=forward comment="allow VLAN to the internet" \
+#     in-interface-list=internet-access out-interface=ether1
+# add action=accept chain=input comment="allow VLAN to mikrotik dns" \
+#     in-interface-list=local-dns dst-port=53 protocol=tcp
+# add action=accept chain=input comment="allow VLAN to mikrotik dns" \
+#     in-interface-list=local-dns dst-port=53 protocol=udp
+
+
+# ### Allow desired connections between VLANs
+# add action=accept chain=forward comment="allow trusted to any other vlans" \
+#     in-interface=trusted out-interface-list=all-local
+# add action=accept chain=forward comment="allow untrusted to iot"  \
+#     in-interface=untrusted out-interface=iot
+# add action=accept chain=forward comment="allow untrusted to k8s ingress"  \
+#     in-interface=untrusted dst-address-list=kubernetes-ingress dst-port=443 protocol=tcp
+
+
+# ### Drop everything else
+# add action=drop chain=forward comment="drop everything else"
+# add action=drop chain=input comment="drop everything else"
+
 resource "routeros_ip_firewall_filter" "accept_established_related_untracked" {
   action           = "accept"
   chain            = "input"
