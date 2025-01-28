@@ -8,6 +8,5 @@
         "hashicorp.terraform",
         "foxundermoon.shell-format",
         "DavidAnson.vscode-markdownlint",
-        "tamasfe.even-better-toml"
     ]
 }
