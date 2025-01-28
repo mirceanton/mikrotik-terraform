@@ -5,6 +5,5 @@
 	},
 	"remoteUser": "vscode",
 	"containerUser": "vscode",
-	"updateRemoteUserUID": true,
-	"postCreateCommand": "mise trust .mise.toml && mise install"
+	"updateRemoteUserUID": true
 }
