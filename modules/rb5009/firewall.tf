@@ -9,6 +9,51 @@ resource "routeros_ip_firewall_nat" "wan" {
   action             = "masquerade"
 }
 
+# Interface Lists
+resource "routeros_interface_list" "all-local" {
+  name = "all-local"
+}
+resource "routeros_interface_list_member" "all-local" {
+  for_each = toset([
+    routeros_interface_vlan.guest,
+    routeros_interface_vlan.iot,
+    routeros_interface_vlan.kubernetes,
+    routeros_interface_vlan.servers,
+    routeros_interface_vlan.trusted,
+    routeros_interface_vlan.untrusted,
+  ])
+  interface = each.value
+  list      = routeros_interface_list.all-local.name
+}
+
+resource "routeros_interface_list" "local-dns" {
+  name = "local-dns"
+}
+resource "routeros_interface_list_member" "local-dns" {
+  for_each = toset([
+    routeros_interface_vlan.kubernetes,
+    routeros_interface_vlan.servers,
+    routeros_interface_vlan.trusted,
+    routeros_interface_vlan.untrusted,
+  ])
+  interface = each.value
+  list      = routeros_interface_list.local-dns.name
+}
+resource "routeros_interface_list" "internet-access" {
+  name = "internet-access"
+}
+resource "routeros_interface_list_member" "local-dns" {
+  for_each = toset([
+    routeros_interface_vlan.guest,
+    routeros_interface_vlan.kubernetes,
+    routeros_interface_vlan.servers,
+    routeros_interface_vlan.trusted,
+    routeros_interface_vlan.untrusted,
+  ])
+  interface = each.value
+  list      = routeros_interface_list.internet-access.name
+}
+
 # =================================================================================================
 # Firewall Rules
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ip_firewall_filter
