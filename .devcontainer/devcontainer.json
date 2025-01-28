@@ -1,8 +1,9 @@
 {
 	"name": "mikrotik-terraform",
-	"build": {
-		"dockerfile": "Dockerfile"
-	},
+	"image": "ghcr.io/mirceanton/devcontainers/mikrotik-terraform:sha-1c21e51",
+	// "build": {
+	// 	"dockerfile": "Dockerfile"
+	// },
 	"remoteUser": "vscode",
 	"containerUser": "vscode",
 	"updateRemoteUserUID": true
