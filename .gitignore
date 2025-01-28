@@ -44,3 +44,5 @@ age.key
 
 # Add sops-encrypted files
 !*.sops
+
+.task/checksum
