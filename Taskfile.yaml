@@ -1,0 +1,56 @@
+---
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+set: [pipefail]
+shopt: [globstar]
+
+env:
+  SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
+
+tasks:
+  default:
+    silent: true
+    cmd: task -l
+
+  sops:encrypt:
+    desc: Encrypt the terraform state and vars files.
+    alias: ["sops:enc", "sops:e"]
+    run: once
+    sources:
+      - terraform.tfstate
+      - credentials.auto.tfvars
+    generates:
+      - terraform.tfstate.sops
+      - credentials.auto.tfvars.sops
+    cmds:
+      - sops --encrypt terraform.tfstate > terraform.tfstate.sops
+      - sops --encrypt credentials.auto.tfvars > credentials.auto.tfvars.sops
+
+  sops:decrypt:
+    desc: Decrypt the terraform state and vars files.
+    alias: ["sops:dec", "sops:d"]
+    run: once
+    sources:
+      - terraform.tfstate.sops
+      - credentials.auto.tfvars.sops
+    generates:
+      - terraform.tfstate
+      - credentials.auto.tfvars
+    cmds:
+      - sops --decrypt terraform.tfstate.sops > terraform.tfstate
+      - sops --decrypt credentials.auto.tfvars.sops > credentials.auto.tfvars
+
+  plan:
+    desc: Run terraform plan.
+    cmds:
+      - task: sops:decrypt
+      - terraform plan
+      - task: sops:encrypt
+
+  apply:
+    desc: Run terraform apply.
+    cmds:
+      - task: sops:decrypt
+      - terraform apply {{.CLI_ARGS}}
+      - task: sops:encrypt
