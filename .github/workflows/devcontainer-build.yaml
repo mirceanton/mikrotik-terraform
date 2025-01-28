@@ -30,7 +30,7 @@ jobs:
       image: "ghcr.io/mirceanton/devcontainers/mikrotik-terraform"
       platforms: linux/amd64
       tags: |
-        type=sha
+        type=ref,event=branch
         type=ref,event=pr #? Release pr-XYZ image
       context: ./.devcontainer
       dockerfile: ./.devcontainer/Dockerfile
