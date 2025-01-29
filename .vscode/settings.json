@@ -1,30 +1,4 @@
 {
-	"editor.fontFamily": "CaskaydiaCoveMono Nerd Font",
-	"editor.fontSize": 14,
-	"editor.fontLigatures": true,
-	"editor.cursorBlinking": "phase",
-	"editor.bracketPairColorization.enabled": true,
-	"editor.bracketPairColorization.independentColorPoolPerBracketType": true,
-	"editor.guides.bracketPairs": true,
-	"editor.guides.bracketPairsHorizontal": true,
-	"editor.guides.highlightActiveBracketPair": true,
-	"editor.hover.delay": 500,
-	"editor.renderWhitespace": "boundary",
-	"editor.rulers": [
-		100,
-		150,
-		200
-	],
-	"editor.stickyScroll.enabled": false,
-	"explorer.autoReveal": false,
-	"files.associations": {
-		"**/*.json5": "jsonc"
-	},
-	"files.trimTrailingWhitespace": true,
-	"editor.formatOnSave": true,
-	"files.autoSave": "afterDelay",
-	"files.autoSaveDelay": 1000,
-	"workbench.iconTheme": "material-icon-theme",
 	"material-icon-theme.files.associations": {
 		// Reference: https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/images/fileIcons.png
 		"*.sops": "Lock"
@@ -32,24 +6,4 @@
 	"material-icon-theme.folders.associations": {
 		// Reference: https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/images/folderIcons.png
 	},
-	"[json]": {
-		"editor.defaultFormatter": "vscode.json-language-features",
-		"editor.insertSpaces": true,
-		"editor.tabSize": 2,
-		"editor.quickSuggestions": {
-			"strings": true
-		},
-		"editor.suggest.insertMode": "replace"
-	},
-	"[yaml]": {
-		"editor.defaultFormatter": "redhat.vscode-yaml",
-		"editor.insertSpaces": true,
-		"editor.tabSize": 2,
-		"editor.autoIndent": "keep",
-		"editor.quickSuggestions": {
-			"other": true,
-			"comments": false,
-			"strings": true
-		}
-	}
 }
