@@ -7,7 +7,7 @@ resource "routeros_ip_dns" "dns-server" {
 
   servers = ["1.1.1.1", "8.8.8.8"]
 
-  cache_size    = 2048
+  cache_size    = 8192
   cache_max_ttl = "1d"
 
   mdns_repeat_ifaces = [
