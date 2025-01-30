@@ -5,9 +5,10 @@ registries:
     ref: v4.301.0 # renovate: depName=aquaproj/aqua-registry
 
 packages:
-  - name: cli/cli@v2.65.0
-  - name: junegunn/fzf@v0.58.0
   - name: hashicorp/terraform@v1.10.5
+  - name: dineshba/tf-summarize@v0.3.14
+
   - name: getsops/sops@v3.9.4
   - name: FiloSottile/age@v1.2.1
+
   - name: go-task/task@v3.41.0
