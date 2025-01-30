@@ -3,7 +3,7 @@
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/system_ntp_server
 # =================================================================================================
 resource "routeros_system_ntp_server" "server" {
-  enabled             = false
+  enabled = false
 }
 
 # =================================================================================================

@@ -18,7 +18,7 @@ resource "routeros_ip_service" "enabled" {
   numbers  = each.key
   port     = each.value
   disabled = false
-  address = "${routeros_ip_address.trusted.network}/24"
+  address  = "${routeros_ip_address.trusted.network}/24"
 }
 
 
@@ -75,5 +75,5 @@ resource "routeros_ip_service" "ssl" {
   tls_version = "only-1.2"
   disabled    = false
   certificate = routeros_system_certificate.webfig.name
-  address = "${routeros_ip_address.trusted.network}/24"
+  address     = "${routeros_ip_address.trusted.network}/24"
 }
