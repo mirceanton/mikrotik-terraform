@@ -3,7 +3,7 @@
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/tool_mac_server_winbox
 # =================================================================================================
 resource "routeros_tool_mac_server_winbox" "mac_server_winbox" {
-  allowed_interface_list = "all"
+  allowed_interface_list = "LAN"
 }
 
 
@@ -12,7 +12,7 @@ resource "routeros_tool_mac_server_winbox" "mac_server_winbox" {
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/tool_mac_server
 # =================================================================================================
 resource "routeros_tool_mac_server" "mac_server" {
-  allowed_interface_list = "all"
+  allowed_interface_list = "LAN"
 }
 
 
