@@ -8,6 +8,14 @@ resource "routeros_interface_vlan" "trusted" {
   vlan_id   = 1969
 }
 
+# =================================================================================================
+# Interface List Member
+# https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/interface_list_member
+# =================================================================================================
+resource "routeros_interface_list_member" "trusted_lan" {
+  interface = routeros_interface_vlan.trusted.name
+  list      = routeros_interface_list.lan.name
+}
 
 
 # =================================================================================================

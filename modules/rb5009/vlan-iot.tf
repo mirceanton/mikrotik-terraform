@@ -8,6 +8,15 @@ resource "routeros_interface_vlan" "iot" {
   vlan_id   = 1769
 }
 
+# =================================================================================================
+# Interface List Member
+# https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/interface_list_member
+# =================================================================================================
+resource "routeros_interface_list_member" "iot_lan" {
+  interface = routeros_interface_vlan.iot.name
+  list      = routeros_interface_list.lan.name
+}
+
 
 # =================================================================================================
 # IP Address

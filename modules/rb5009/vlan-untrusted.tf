@@ -8,6 +8,16 @@ resource "routeros_interface_vlan" "untrusted" {
   vlan_id   = 1942
 }
 
+# =================================================================================================
+# Interface List Member
+# https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/interface_list_member
+# =================================================================================================
+resource "routeros_interface_list_member" "untrusted_lan" {
+  interface = routeros_interface_vlan.untrusted.name
+  list      = routeros_interface_list.lan.name
+}
+
+
 
 # =================================================================================================
 # IP Address
