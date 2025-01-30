@@ -47,7 +47,12 @@ resource "routeros_interface_bridge_vlan" "iot" {
 resource "routeros_ip_pool" "iot_dhcp" {
   name    = "iot-dhcp-pool"
   comment = "IoT DHCP Pool"
-  ranges  = ["172.16.69.10-172.16.69.250"]
+  ranges  = ["172.16.69.10-172.16.69.200"]
+}
+resource "routeros_ip_firewall_addr_list" "iot_internet" {
+  list    = "iot_internet"
+  comment = "IoT IPs allowed to the internet."
+  address = "172.16.69.201-172.16.69.250"
 }
 resource "routeros_ip_dhcp_server_network" "iot" {
   comment    = "IoT DHCP Network"
