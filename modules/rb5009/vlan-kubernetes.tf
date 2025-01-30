@@ -49,6 +49,11 @@ resource "routeros_ip_pool" "kubernetes_dhcp" {
   comment = "kubernetes DHCP Pool"
   ranges  = ["10.0.10.195-10.0.10.199"]
 }
+resource "routeros_ip_firewall_addr_list" "k8s_services" {
+  list    = "k8s_services"
+  comment = "IPs allocated to K8S Services."
+  address = "10.0.10.90-10.0.10.99"
+}
 resource "routeros_ip_dhcp_server_network" "kubernetes" {
   comment    = "kubernetes DHCP Network"
   domain     = "k8s.h.mirceanton.com"
