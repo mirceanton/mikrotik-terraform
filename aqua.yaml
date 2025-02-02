@@ -2,7 +2,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/aquaproj/aqua/main/json-schema/aqua-yaml.json
 registries:
   - type: standard
-    ref: v4.301.0 # renovate: depName=aquaproj/aqua-registry
+    ref: v4.305.0 # renovate: depName=aquaproj/aqua-registry
 
 packages:
   - name: hashicorp/terraform@v1.10.5
