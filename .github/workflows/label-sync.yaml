@@ -31,7 +31,7 @@ on:
 
 jobs:
   label-sync:
-    uses: mirceanton/reusable-workflows/.github/workflows/reusable-label-sync.yaml@71c748260211464d1d58c43d7fb019f7adac19b3 # v3.5.1
+    uses: mirceanton/reusable-workflows/.github/workflows/reusable-label-sync.yaml@e3a95ef75601e0b811d0e3f1b9afc04a175acb22 # v3.6.0
     secrets: inherit
     with:
       dry-run: ${{ inputs.dry-run || github.event_name == 'pull_request' }}
