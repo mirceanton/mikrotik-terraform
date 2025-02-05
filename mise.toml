@@ -1,0 +1,19 @@
+[tools]
+# Terraform Stuff
+"aqua:hashicorp/terraform" = "latest"
+"aqua:dineshba/tf-summarize" = "latest"
+
+# Miscellaneous Tools
+"aqua:go-task/task" = "latest"
+"aqua:FiloSottile/age" = "latest"
+"aqua:getsops/sops" = "latest"
+
+# Runtimes
+uv = "latest"
+node = "latest"
+
+# Linters
+"npm:markdownlint-cli2" = "latest"
+"pipx:yamllint" = "latest"
+"aqua:koalaman/shellcheck" = "latest"
+"aqua:rhysd/actionlint" = "latest"
