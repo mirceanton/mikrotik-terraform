@@ -86,6 +86,9 @@ resource "routeros_ip_dhcp_server_lease" "servers" {
     "CRS326" = { address = "10.0.0.3", mac_address = "D4:01:C3:F8:47:04" }
     "hex"    = { address = "10.0.0.4", mac_address = "F4:1E:57:31:05:44" }
     "cAP-AX" = { address = "10.0.0.5", mac_address = "D4:01:C3:01:26:EB" }
+    "PVE01"  = { address = "10.0.0.21", mac_address = "74:56:3C:9E:BF:1A" }
+    "PVE02"  = { address = "10.0.0.22", mac_address = "74:56:3C:99:5B:CE" }
+    "PVE03"  = { address = "10.0.0.23", mac_address = "74:56:3C:B2:E5:A8" }
     "BliKVM" = { address = "10.0.0.254", mac_address = "12:00:96:6F:5D:51" }
   }
   server = routeros_ip_dhcp_server.servers.name

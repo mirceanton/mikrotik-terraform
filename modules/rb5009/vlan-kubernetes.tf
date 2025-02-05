@@ -85,9 +85,6 @@ resource "routeros_ip_dhcp_server" "kubernetes" {
 # ================================================================================================
 resource "routeros_ip_dhcp_server_lease" "kubernetes" {
   for_each = {
-    "Kube-01" = { address = "10.0.10.21", mac_address = "74:56:3C:9E:BF:1A" },
-    "Kube-02" = { address = "10.0.10.22", mac_address = "74:56:3C:99:5B:CE" },
-    "Kube-03" = { address = "10.0.10.23", mac_address = "74:56:3C:B2:E5:A8" }
   }
   server = routeros_ip_dhcp_server.kubernetes.name
 
