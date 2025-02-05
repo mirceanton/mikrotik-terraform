@@ -23,6 +23,10 @@ resource "routeros_interface_bridge_vlan" "bridge_vlan_servers" {
     routeros_interface_bonding.virt.name,
     routeros_interface_ethernet.tesmart.name,
     routeros_interface_ethernet.ipkvm.name,
+    routeros_interface_ethernet.kube01.name,
+    routeros_interface_ethernet.kube02.name,
+    routeros_interface_ethernet.kube03.name,
+    routeros_interface_ethernet.kube04.name,
   ]
 }
 
@@ -49,10 +53,6 @@ resource "routeros_interface_bridge_vlan" "bridge_vlan_kubernetes" {
   ]
 
   untagged = [
-    routeros_interface_ethernet.kube01.name,
-    routeros_interface_ethernet.kube02.name,
-    routeros_interface_ethernet.kube03.name,
-    routeros_interface_ethernet.kube04.name,
   ]
 }
 
