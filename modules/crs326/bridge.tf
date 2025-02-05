@@ -25,28 +25,28 @@ resource "routeros_interface_bridge_port" "kube01" {
   bridge    = routeros_interface_bridge.bridge.name
   interface = routeros_interface_ethernet.kube01.name
   comment   = routeros_interface_ethernet.kube01.comment
-  pvid      = routeros_interface_vlan.kubernetes.vlan_id
+  pvid      = routeros_interface_vlan.servers.vlan_id
 }
 
 resource "routeros_interface_bridge_port" "kube02" {
   bridge    = routeros_interface_bridge.bridge.name
   interface = routeros_interface_ethernet.kube02.name
   comment   = routeros_interface_ethernet.kube02.comment
-  pvid      = routeros_interface_vlan.kubernetes.vlan_id
+  pvid      = routeros_interface_vlan.servers.vlan_id
 }
 
 resource "routeros_interface_bridge_port" "kube03" {
   bridge    = routeros_interface_bridge.bridge.name
   interface = routeros_interface_ethernet.kube03.name
   comment   = routeros_interface_ethernet.kube03.comment
-  pvid      = routeros_interface_vlan.kubernetes.vlan_id
+  pvid      = routeros_interface_vlan.servers.vlan_id
 }
 
 resource "routeros_interface_bridge_port" "kube04" {
   bridge    = routeros_interface_bridge.bridge.name
   interface = routeros_interface_ethernet.kube04.name
   comment   = routeros_interface_ethernet.kube04.comment
-  pvid      = routeros_interface_vlan.kubernetes.vlan_id
+  pvid      = routeros_interface_vlan.servers.vlan_id
 }
 
 resource "routeros_interface_bridge_port" "virt" {
