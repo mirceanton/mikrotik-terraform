@@ -8,5 +8,6 @@
         "hashicorp.terraform",
         "foxundermoon.shell-format",
         "DavidAnson.vscode-markdownlint",
+        "lerxst.hide-items-custom",
     ]
 }

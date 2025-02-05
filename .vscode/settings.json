@@ -6,4 +6,19 @@
 	"material-icon-theme.folders.associations": {
 		// Reference: https://raw.githubusercontent.com/PKief/vscode-material-icon-theme/main/images/folderIcons.png
 	},
+	"files.exclude": {
+		"**/.git": true,
+		"**/.svn": true,
+		"**/.hg": true,
+		"**/CVS": true,
+		"**/.DS_Store": true,
+		"**/Thumbs.db": true,
+		"**/.terraform.lock.hcl": true,
+		".terraform.lock.hcl": true,
+		".terraform": true,
+		".task": true,
+		"*.tfstate": true,
+		"*.tfstate.backup": true,
+	},
+	"explorerExclude.backup": {},
 }
