@@ -6,12 +6,9 @@
         "config:best-practices",
         ":disableRateLimiting",
         ":semanticCommits",
-        "github>aquaproj/aqua-renovate-config#2.6.0",
-        "github>mirceanton/renovate-config//auto-merge/devcontainers.json5",
         "github>mirceanton/renovate-config//auto-merge/github-actions.json5",
-        "github>mirceanton/renovate-config//labels/datasources-github-actions.json5",
-        "github>mirceanton/renovate-config//labels/datasources-terraform.json5",
-        "github>mirceanton/renovate-config//labels/datasources-docker.json5",
+        "github>mirceanton/renovate-config//custom-managers/all.json5",
+        "github>mirceanton/renovate-config//labels/all.json5",
         "github>mirceanton/renovate-config//semantic-commits/all.json5"
     ]
 }
