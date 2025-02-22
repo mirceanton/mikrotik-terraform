@@ -50,7 +50,7 @@ resource "routeros_interface_bridge_vlan" "bridge_vlan_kubernetes" {
     routeros_interface_bonding.virt.name,
     routeros_interface_bonding.crs317.name,
     routeros_interface_ethernet.nas-data-1.name,
-    routeros_interface_ethernet.kube01.name,
+    routeros_interface_ethernet.kube04.name,
   ]
 
   untagged = [
@@ -125,7 +125,7 @@ resource "routeros_interface_bridge_vlan" "bridge_vlan_untrusted" {
     routeros_interface_ethernet.nas-data-1.name,
     routeros_interface_bonding.virt.name,
     routeros_interface_bonding.crs317.name,
-    routeros_interface_ethernet.kube01.name,
+    routeros_interface_ethernet.kube04.name,
   ]
 
   untagged = [
@@ -153,7 +153,7 @@ resource "routeros_interface_bridge_vlan" "bridge_vlan_trusted" {
     routeros_interface_ethernet.nas-data-1.name,
     routeros_interface_bonding.virt.name,
     routeros_interface_bonding.crs317.name,
-    routeros_interface_ethernet.kube01.name,
+    routeros_interface_ethernet.kube04.name,
   ]
 
   untagged = [
