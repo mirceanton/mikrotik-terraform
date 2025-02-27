@@ -16,6 +16,7 @@ tasks:
   sops:encrypt:
     desc: Encrypt the terraform state and vars files.
     aliases: ["sops:enc", "sops:e"]
+    dir: code
     run: once
     sources:
       - terraform.tfstate
@@ -30,6 +31,7 @@ tasks:
   sops:decrypt:
     desc: Decrypt the terraform state and vars files.
     aliases: ["sops:dec", "sops:d"]
+    dir: code
     run: once
     sources:
       - terraform.tfstate.sops
@@ -43,6 +45,7 @@ tasks:
 
   plan:
     desc: Run terraform plan.
+    dir: code
     cmds:
       - task: sops:decrypt
       - defer: task sops:encrypt
@@ -52,6 +55,7 @@ tasks:
 
   apply:
     desc: Run terraform apply.
+    dir: code
     cmds:
       - task: sops:decrypt
       - terraform apply {{.CLI_ARGS}}
