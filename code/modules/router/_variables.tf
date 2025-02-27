@@ -134,3 +134,51 @@ variable "pppoe_password" {
   default     = ""
   description = "Password for PPPoE authentication"
 }
+
+
+# =================================================================================================
+# DNS Server
+# =================================================================================================
+variable "dns_allow_remote_requests" {
+  description = "Whether to allow remote DNS requests"
+  type        = bool
+  default     = true
+}
+
+variable "upstream_dns" {
+  description = "List of upstream DNS servers"
+  type        = list(string)
+  default     = ["1.1.1.1", "8.8.8.8"]
+}
+
+variable "dns_cache_size" {
+  description = "Size of the DNS cache in KiB"
+  type        = number
+  default     = 8192
+}
+
+variable "dns_cache_max_ttl" {
+  description = "Maximum time-to-live for cached DNS entries"
+  type        = string
+  default     = "1d"
+}
+
+variable "mdns_repeat_ifaces" {
+  description = "Interfaces to repeat mDNS packets to"
+  type        = list(string)
+}
+
+variable "adlist_url" {
+  description = "URL for DNS blocklists"
+  type        = string
+  default     = ""
+}
+
+variable "static_dns" {
+  description = "Map of static DNS records to create"
+  type = map(object({
+    address = string
+    type    = string
+    comment = string
+  }))
+}
