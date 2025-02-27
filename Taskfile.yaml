@@ -5,9 +5,6 @@ version: "3"
 set: [pipefail]
 shopt: [globstar]
 
-env:
-  SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
-
 tasks:
   default:
     silent: true
