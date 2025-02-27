@@ -1,16 +1,4 @@
 # =================================================================================================
-# DHCP Client
-# https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ip_dhcp_client
-# =================================================================================================
-resource "routeros_ip_dhcp_client" "client" {
-  count        = var.dhcp_client_enabled ? 1 : 0
-  interface    = var.dhcp_client_interface
-  comment      = var.dhcp_client_comment
-  use_peer_dns = var.dhcp_use_peer_dns
-  use_peer_ntp = false
-}
-
-# =================================================================================================
 # PPPoE Client
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/interface_pppoe_client
 # =================================================================================================
@@ -22,4 +10,14 @@ resource "routeros_interface_pppoe_client" "client" {
   use_peer_dns      = var.pppoe_use_peer_dns
   user              = var.pppoe_username
   password          = var.pppoe_password
+}
+
+
+# =================================================================================================
+# Interface List Member
+# https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/interface_list_member
+# =================================================================================================
+resource "routeros_interface_list_member" "pppoe_wan" {
+  interface = routeros_interface_pppoe_client.client.name
+  list      = "WAN" # !FIXME routeros_interface_list.wan.name
 }
