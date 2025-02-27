@@ -10,7 +10,7 @@ terraform {
 # Provider configuration
 # =================================================================================================
 provider "routeros" {
-  hosturl  = var.mikrotik_host_url
+  hosturl  = "https://${var.mikrotik_ip}"
   username = var.mikrotik_username
   password = var.mikrotik_password
   insecure = var.mikrotik_insecure

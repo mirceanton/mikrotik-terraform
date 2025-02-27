@@ -1,5 +1,5 @@
 module "rb5009" {
-  source                  = "./modules/rb5009"
+  source                  = "./devices/rb5009"
   mikrotik_host_url       = "https://10.0.0.1"
   mikrotik_username       = var.mikrotik_username
   mikrotik_password       = var.mikrotik_password
@@ -11,16 +11,8 @@ module "rb5009" {
   iot_wifi_password       = var.iot_wifi_password
 }
 
-module "crs317" {
-  source            = "./modules/crs317"
-  mikrotik_host_url = "https://10.0.0.2"
-  mikrotik_username = var.mikrotik_username
-  mikrotik_password = var.mikrotik_password
-  mikrotik_insecure = true
-}
-
 module "crs326" {
-  source            = "./modules/crs326"
+  source            = "./devices/crs326"
   mikrotik_host_url = "https://10.0.0.3"
   mikrotik_username = var.mikrotik_username
   mikrotik_password = var.mikrotik_password
@@ -28,7 +20,7 @@ module "crs326" {
 }
 
 module "hex" {
-  source            = "./modules/hex"
+  source            = "./devices/hex"
   mikrotik_host_url = "https://10.0.0.4"
   mikrotik_username = var.mikrotik_username
   mikrotik_password = var.mikrotik_password
