@@ -4,16 +4,32 @@
 "aqua:dineshba/tf-summarize" = "latest"
 
 # Miscellaneous Tools
-"aqua:go-task/task" = "latest"
 "aqua:FiloSottile/age" = "latest"
 "aqua:getsops/sops" = "latest"
 
-# Runtimes
-uv = "latest"
-node = "latest"
 
-# Linters
-"npm:markdownlint-cli2" = "latest"
-"pipx:yamllint" = "latest"
-"aqua:koalaman/shellcheck" = "latest"
-"aqua:rhysd/actionlint" = "latest"
+# =================================================================================================
+# TASKS
+# =================================================================================================
+[tasks.decrypt]
+description = "Decrypt the terraform state and vars files."
+sources = ["terraform.tfstate", "credentials.auto.tfvars"]
+outputs = ["terraform.tfstate.sops", "credentials.auto.tfvars.sops"]
+run = [
+    "sops --decrypt code/terraform.tfstate.sops > code/terraform.tfstate",
+    "sops --decrypt code/credentials.auto.tfvars.sops > code/credentials.auto.tfvars"
+]
+
+[tasks.encrypt]
+description = "Encrypt the terraform state and vars files."
+outputs = ["terraform.tfstate", "credentials.auto.tfvars"]
+sources = ["terraform.tfstate.sops", "credentials.auto.tfvars.sops"]
+run = [
+    "sops --encrypt code/terraform.tfstate > code/terraform.tfstate.sops",
+    "sops --encrypt code/credentials.auto.tfvars > code/credentials.auto.tfvars.sops"
+]
+
+[tasks.plan]
+description = "Run and summarize terraform plan"
+dir = "code/"
+run = "terraform plan -out=tfplan && tf-summarize tfplan && rm tfplan"
