@@ -13,6 +13,13 @@ module "rb5009_mig" {
   hostname    = "Router"
   timezone    = local.timezone
   ntp_servers = [local.cloudflare_ntp]
+
+  pppoe_client_enabled = true
+  pppoe_client_interface = "ether1" # !FIXME
+  pppoe_client_comment = "Digi PPPoE"
+  pppoe_client_name = "pppoe-digi"
+  pppoe_username = var.digi_pppoe_username
+  pppoe_password = var.digi_pppoe_password
 }
 
 module "crs326_mig" {
@@ -25,6 +32,9 @@ module "crs326_mig" {
   hostname    = "Rach Slow"
   timezone    = local.timezone
   ntp_servers = [local.cloudflare_ntp]
+
+  dhcp_client_enabled = true
+  dhcp_client_interface = "Servers" # !FIXME
 }
 
 module "hex_mig" {
@@ -37,6 +47,9 @@ module "hex_mig" {
   hostname    = "Living Room Switch"
   timezone    = local.timezone
   ntp_servers = [local.cloudflare_ntp]
+
+  dhcp_client_enabled = true
+  dhcp_client_interface = "Servers" # !FIXME
 }
 
 module "rb5009" {
