@@ -84,7 +84,7 @@ resource "routeros_ip_dhcp_server_lease" "servers" {
   for_each = {
     "CRS317" = { address = "10.0.0.2", mac_address = "D4:01:C3:02:5D:52" }
     "CRS326" = { address = "10.0.0.3", mac_address = "D4:01:C3:F8:47:04" }
-    "hex"    = { address = "10.0.0.4", mac_address = "F4:1E:57:31:05:44" }
+    "hex"    = { address = "10.0.0.4", mac_address = "F4:1E:57:31:05:41" }
     "cAP-AX" = { address = "10.0.0.5", mac_address = "D4:01:C3:01:26:EB" }
     "PVE01"  = { address = "10.0.0.21", mac_address = "74:56:3C:9E:BF:1A" }
     "PVE02"  = { address = "10.0.0.22", mac_address = "74:56:3C:99:5B:CE" }
