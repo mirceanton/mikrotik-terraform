@@ -18,11 +18,3 @@ module "crs326" {
   mikrotik_password = var.mikrotik_password
   mikrotik_insecure = true
 }
-
-module "hex" {
-  source            = "./devices/hex"
-  mikrotik_host_url = "https://10.0.0.4"
-  mikrotik_username = var.mikrotik_username
-  mikrotik_password = var.mikrotik_password
-  mikrotik_insecure = true
-}
