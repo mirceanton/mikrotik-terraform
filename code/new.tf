@@ -116,7 +116,7 @@ module "rb5009_mig" {
   }
 }
 
-module "crs326_mig" {
+module "crs326" {
   source            = "./modules/switch"
   mikrotik_ip       = "10.0.0.3"
   mikrotik_username = var.mikrotik_username
@@ -166,7 +166,7 @@ module "crs326_mig" {
   }
 }
 
-module "hex_mig" {
+module "hex" {
   source            = "./modules/switch"
   mikrotik_ip       = "10.0.0.4"
   mikrotik_username = var.mikrotik_username
