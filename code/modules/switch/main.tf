@@ -14,4 +14,17 @@ module "base" {
   certificate_locality     = var.certificate_locality
   certificate_organization = var.certificate_organization
   certificate_unit         = var.certificate_unit
+  vlans                    = var.vlans
+  ethernet_interfaces      = var.ethernet_interfaces
+}
+
+# =================================================================================================
+# DHCP Client
+# https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ip_dhcp_client
+# =================================================================================================
+resource "routeros_ip_dhcp_client" "client" {
+  interface    = var.dhcp_client_interface
+  comment      = var.dhcp_client_comment
+  use_peer_dns = var.dhcp_client_use_peer_dns
+  use_peer_ntp = false
 }

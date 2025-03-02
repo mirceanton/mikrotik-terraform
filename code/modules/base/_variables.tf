@@ -86,3 +86,61 @@ variable "certificate_unit" {
   default     = "HOME"
   description = "Organizational unit for the device certificate."
 }
+
+
+# =================================================================================================
+# Bridge settings
+# =================================================================================================
+variable "bridge_name" {
+  type        = string
+  default     = "bridge"
+  description = "Name of the main bridge interface"
+}
+
+variable "bridge_comment" {
+  type        = string
+  default     = ""
+  description = "Comment for the bridge interface"
+}
+
+
+# =================================================================================================
+# VLAN Configuration
+# =================================================================================================
+variable "vlans" {
+  type = map(object({
+    name        = string
+    vlan_id     = number
+    network     = string
+    cidr_suffix = string
+    gateway     = string
+    dhcp_pool   = list(string)
+    dns_servers = list(string)
+    domain      = string
+    static_leases = map(object({
+      name = string
+      mac  = string
+    }))
+  }))
+  default     = {}
+  description = "Map of VLANs to configure"
+}
+
+
+# =================================================================================================
+# Interface Configuration
+# =================================================================================================
+variable "ethernet_interfaces" {
+  type = map(object({
+    comment                  = optional(string)
+    mtu                      = optional(number)
+    disabled                 = optional(bool)
+    sfp_shutdown_temperature = optional(number)
+    bridge_port              = optional(bool, true)
+    # VLAN configurations
+    tagged   = optional(list(string)) # list of VLAN names
+    untagged = optional(string)       # VLAN name for untagged traffic
+  }))
+  default     = {}
+  description = "Map of ethernet interfaces to configure"
+}

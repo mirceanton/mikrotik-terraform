@@ -15,7 +15,10 @@ resource "routeros_interface_bridge" "bridge" {
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/interface_bridge_port
 # =================================================================================================
 resource "routeros_interface_bridge_port" "ethernet_ports" {
-  for_each = var.ethernet_interfaces
+  for_each = {
+    for k, v in var.ethernet_interfaces : k => v
+    if v.bridge_port != false
+  }
 
   bridge    = routeros_interface_bridge.bridge.name
   interface = each.key

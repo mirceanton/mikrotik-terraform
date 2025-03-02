@@ -14,4 +14,6 @@ module "base" {
   certificate_locality     = var.certificate_locality
   certificate_organization = var.certificate_organization
   certificate_unit         = var.certificate_unit
+  vlans                    = var.vlans
+  ethernet_interfaces      = var.ethernet_interfaces
 }

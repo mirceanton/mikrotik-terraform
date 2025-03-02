@@ -1,3 +1,15 @@
+resource "routeros_ip_firewall_addr_list" "k8s_services" {
+  list    = "k8s_services"
+  comment = "IPs allocated to K8S Services."
+  address = "10.0.10.90-10.0.10.99"
+}
+resource "routeros_ip_firewall_addr_list" "iot_internet" {
+  list    = "iot_internet"
+  comment = "IoT IPs allowed to the internet."
+  address = "172.16.69.201-172.16.69.250"
+}
+
+
 # =================================================================================================
 # NAT Rules
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ip_firewall_nat
@@ -6,7 +18,7 @@ resource "routeros_ip_firewall_nat" "wan" {
   comment            = "WAN masquerade"
   chain              = "srcnat"
   action             = "masquerade"
-  out_interface_list = routeros_interface_list.wan.name
+  out_interface_list = "WAN" # !routeros_interface_list.wan.name
 }
 
 # =================================================================================================
@@ -65,14 +77,14 @@ resource "routeros_ip_firewall_filter" "accept_trusted_input" {
   comment      = "Accept all Trusted input"
   action       = "accept"
   chain        = "input"
-  in_interface = routeros_interface_vlan.trusted.name
+  in_interface = "Trusted" # !routeros_interface_vlan.trusted.name
   place_before = routeros_ip_firewall_filter.accept_trusted_forward.id
 }
 resource "routeros_ip_firewall_filter" "accept_trusted_forward" {
   comment      = "Accept all Trusted forward"
   action       = "accept"
   chain        = "forward"
-  in_interface = routeros_interface_vlan.trusted.name
+  in_interface = "Trusted" # !routeros_interface_vlan.trusted.name
   place_before = routeros_ip_firewall_filter.allow_guest_to_internet.id
 }
 
@@ -81,15 +93,15 @@ resource "routeros_ip_firewall_filter" "allow_guest_to_internet" {
   comment            = "Allow Guest to Internet"
   action             = "accept"
   chain              = "forward"
-  in_interface       = routeros_interface_vlan.guest.name
-  out_interface_list = routeros_interface_list.wan.name
+  in_interface       = "Guest" # !routeros_interface_vlan.guest.name
+  out_interface_list = "WAN"   # !routeros_interface_list.wan.name
   place_before       = routeros_ip_firewall_filter.drop_guest_forward.id
 }
 resource "routeros_ip_firewall_filter" "drop_guest_forward" {
   comment      = "Drop all Guest forward"
   action       = "drop"
   chain        = "forward"
-  in_interface = routeros_interface_vlan.guest.name
+  in_interface = "Guest" # !routeros_interface_vlan.guest.name
   place_before = routeros_ip_firewall_filter.drop_guest_input.id
   # log          = true
   # log_prefix   = "DROPPED GUEST FORWARD:"
@@ -98,7 +110,7 @@ resource "routeros_ip_firewall_filter" "drop_guest_input" {
   comment      = "Drop all Guest input"
   action       = "drop"
   chain        = "input"
-  in_interface = routeros_interface_vlan.guest.name
+  in_interface = "Guest" # !routeros_interface_vlan.guest.name
   place_before = routeros_ip_firewall_filter.allow_iot_to_internet.id
   # log          = true
   # log_prefix   = "DROPPED GUEST INPUT:"
@@ -109,8 +121,8 @@ resource "routeros_ip_firewall_filter" "allow_iot_to_internet" {
   comment            = "Allow SOME IoT to Internet"
   action             = "accept"
   chain              = "forward"
-  in_interface       = routeros_interface_vlan.iot.name
-  out_interface_list = routeros_interface_list.wan.name
+  in_interface       = "IoT" # !routeros_interface_vlan.iot.name
+  out_interface_list = "WAN" # !routeros_interface_list.wan.name
   src_address_list   = routeros_ip_firewall_addr_list.iot_internet.list
   place_before       = routeros_ip_firewall_filter.drop_iot_forward.id
 }
@@ -118,7 +130,7 @@ resource "routeros_ip_firewall_filter" "drop_iot_forward" {
   comment      = "Drop all IoT forward"
   action       = "drop"
   chain        = "forward"
-  in_interface = routeros_interface_vlan.iot.name
+  in_interface = "IoT" # !routeros_interface_vlan.iot.name
   place_before = routeros_ip_firewall_filter.allow_iot_dns_tcp.id
   # log          = true
   # log_prefix   = "DROPPED IoT FORWARD:"
@@ -128,7 +140,7 @@ resource "routeros_ip_firewall_filter" "allow_iot_dns_tcp" {
   action       = "accept"
   chain        = "input"
   protocol     = "tcp"
-  in_interface = routeros_interface_vlan.iot.name
+  in_interface = "IoT" # !routeros_interface_vlan.iot.name
   place_before = routeros_ip_firewall_filter.allow_iot_dns_udp.id
 }
 resource "routeros_ip_firewall_filter" "allow_iot_dns_udp" {
@@ -136,14 +148,14 @@ resource "routeros_ip_firewall_filter" "allow_iot_dns_udp" {
   action       = "accept"
   chain        = "input"
   protocol     = "udp"
-  in_interface = routeros_interface_vlan.iot.name
+  in_interface = "IoT" # !routeros_interface_vlan.iot.name
   place_before = routeros_ip_firewall_filter.drop_iot_input.id
 }
 resource "routeros_ip_firewall_filter" "drop_iot_input" {
   comment      = "Drop all IoT input"
   action       = "drop"
   chain        = "input"
-  in_interface = routeros_interface_vlan.iot.name
+  in_interface = "IoT" # !routeros_interface_vlan.iot.name
   place_before = routeros_ip_firewall_filter.allow_untrusted_to_internet.id
   # log          = true
   # log_prefix   = "DROPPED IoT INPUT:"
@@ -154,24 +166,24 @@ resource "routeros_ip_firewall_filter" "allow_untrusted_to_internet" {
   comment            = "Allow Untrusted to Internet"
   action             = "accept"
   chain              = "forward"
-  in_interface       = routeros_interface_vlan.untrusted.name
-  out_interface_list = routeros_interface_list.wan.name
+  in_interface       = "Untrusted" # !routeros_interface_vlan.untrusted.name
+  out_interface_list = "WAN"       # !routeros_interface_list.wan.name
   place_before       = routeros_ip_firewall_filter.allow_untrusted_to_iot.id
 }
 resource "routeros_ip_firewall_filter" "allow_untrusted_to_iot" {
   comment       = "Allow Untrusted to IoT"
   action        = "accept"
   chain         = "forward"
-  in_interface  = routeros_interface_vlan.untrusted.name
-  out_interface = routeros_interface_vlan.iot.name
+  in_interface  = "Untrusted" # !routeros_interface_vlan.untrusted.name
+  out_interface = "IoT"       # !routeros_interface_vlan.iot.name
   place_before  = routeros_ip_firewall_filter.allow_untrusted_to_k8s.id
 }
 resource "routeros_ip_firewall_filter" "allow_untrusted_to_k8s" {
   comment          = "Allow Untrusted to K8S Services"
   action           = "accept"
   chain            = "forward"
-  in_interface     = routeros_interface_vlan.untrusted.name
-  out_interface    = routeros_interface_vlan.kubernetes.name
+  in_interface     = "Untrusted"  # !routeros_interface_vlan.untrusted.name
+  out_interface    = "Kubernetes" # !routeros_interface_vlan.kubernetes.name
   dst_address_list = routeros_ip_firewall_addr_list.k8s_services.list
   place_before     = routeros_ip_firewall_filter.drop_untrusted_forward.id
 }
@@ -179,7 +191,7 @@ resource "routeros_ip_firewall_filter" "drop_untrusted_forward" {
   comment      = "Drop all Untrusted forward"
   action       = "drop"
   chain        = "forward"
-  in_interface = routeros_interface_vlan.untrusted.name
+  in_interface = "Untrusted" # !routeros_interface_vlan.untrusted.name
   place_before = routeros_ip_firewall_filter.allow_untrusted_dns_tcp.id
   # log          = true
   # log_prefix   = "DROPPED Untrusted FORWARD:"
@@ -189,7 +201,7 @@ resource "routeros_ip_firewall_filter" "allow_untrusted_dns_tcp" {
   action       = "accept"
   chain        = "input"
   protocol     = "tcp"
-  in_interface = routeros_interface_vlan.untrusted.name
+  in_interface = "Untrusted" # !routeros_interface_vlan.untrusted.name
   place_before = routeros_ip_firewall_filter.allow_untrusted_dns_udp.id
 }
 resource "routeros_ip_firewall_filter" "allow_untrusted_dns_udp" {
@@ -197,14 +209,14 @@ resource "routeros_ip_firewall_filter" "allow_untrusted_dns_udp" {
   action       = "accept"
   chain        = "input"
   protocol     = "udp"
-  in_interface = routeros_interface_vlan.untrusted.name
+  in_interface = "Untrusted" # !routeros_interface_vlan.untrusted.name
   place_before = routeros_ip_firewall_filter.drop_untrusted_input.id
 }
 resource "routeros_ip_firewall_filter" "drop_untrusted_input" {
   comment      = "Drop all Untrusted input"
   action       = "drop"
   chain        = "input"
-  in_interface = routeros_interface_vlan.untrusted.name
+  in_interface = "Untrusted" # !routeros_interface_vlan.untrusted.name
   place_before = routeros_ip_firewall_filter.allow_servers_to_internet.id
   # log          = true
   # log_prefix   = "DROPPED Untrusted INPUT:"
@@ -215,15 +227,15 @@ resource "routeros_ip_firewall_filter" "allow_servers_to_internet" {
   comment            = "Allow Servers to Internet"
   action             = "accept"
   chain              = "forward"
-  in_interface       = routeros_interface_vlan.servers.name
-  out_interface_list = routeros_interface_list.wan.name
+  in_interface       = "Servers" #! routeros_interface_vlan.servers.name
+  out_interface_list = "WAN"     # !routeros_interface_list.wan.name
   place_before       = routeros_ip_firewall_filter.drop_servers_forward.id
 }
 resource "routeros_ip_firewall_filter" "drop_servers_forward" {
   comment      = "Drop all Servers forward"
   action       = "drop"
   chain        = "forward"
-  in_interface = routeros_interface_vlan.servers.name
+  in_interface = "Servers" #! routeros_interface_vlan.servers.name
   place_before = routeros_ip_firewall_filter.allow_servers_dns_tcp.id
   # log          = true
   # log_prefix   = "DROPPED Servers FORWARD:"
@@ -233,7 +245,7 @@ resource "routeros_ip_firewall_filter" "allow_servers_dns_tcp" {
   action       = "accept"
   chain        = "input"
   protocol     = "tcp"
-  in_interface = routeros_interface_vlan.servers.name
+  in_interface = "Servers" #! routeros_interface_vlan.servers.name
   place_before = routeros_ip_firewall_filter.allow_servers_dns_udp.id
 }
 resource "routeros_ip_firewall_filter" "allow_servers_dns_udp" {
@@ -241,14 +253,14 @@ resource "routeros_ip_firewall_filter" "allow_servers_dns_udp" {
   action       = "accept"
   chain        = "input"
   protocol     = "udp"
-  in_interface = routeros_interface_vlan.servers.name
+  in_interface = "Servers" #! routeros_interface_vlan.servers.name
   place_before = routeros_ip_firewall_filter.drop_servers_input.id
 }
 resource "routeros_ip_firewall_filter" "drop_servers_input" {
   comment      = "Drop all Servers input"
   action       = "drop"
   chain        = "input"
-  in_interface = routeros_interface_vlan.servers.name
+  in_interface = "Servers" #! routeros_interface_vlan.servers.name
   place_before = routeros_ip_firewall_filter.allow_kubernetes_to_internet.id
   # log          = true
   # log_prefix   = "DROPPED Servers INPUT:"
@@ -259,15 +271,15 @@ resource "routeros_ip_firewall_filter" "allow_kubernetes_to_internet" {
   comment            = "Allow Kubernetes to Internet"
   action             = "accept"
   chain              = "forward"
-  in_interface       = routeros_interface_vlan.kubernetes.name
-  out_interface_list = routeros_interface_list.wan.name
+  in_interface       = "Kubernetes" # !routeros_interface_vlan.kubernetes.name
+  out_interface_list = "WAN"        # !routeros_interface_list.wan.name
   place_before       = routeros_ip_firewall_filter.drop_kubernetes_forward.id
 }
 resource "routeros_ip_firewall_filter" "drop_kubernetes_forward" {
   comment      = "Drop all Kubernetes forward"
   action       = "drop"
   chain        = "forward"
-  in_interface = routeros_interface_vlan.kubernetes.name
+  in_interface = "Kubernetes" # !routeros_interface_vlan.kubernetes.name
   place_before = routeros_ip_firewall_filter.allow_kubernetes_dns_tcp.id
   # log          = true
   # log_prefix   = "DROPPED Kubernetes FORWARD:"
@@ -277,7 +289,7 @@ resource "routeros_ip_firewall_filter" "allow_kubernetes_dns_tcp" {
   action       = "accept"
   chain        = "input"
   protocol     = "tcp"
-  in_interface = routeros_interface_vlan.kubernetes.name
+  in_interface = "Kubernetes" # !routeros_interface_vlan.kubernetes.name
   place_before = routeros_ip_firewall_filter.allow_kubernetes_dns_udp.id
 }
 resource "routeros_ip_firewall_filter" "allow_kubernetes_dns_udp" {
@@ -285,14 +297,14 @@ resource "routeros_ip_firewall_filter" "allow_kubernetes_dns_udp" {
   action       = "accept"
   chain        = "input"
   protocol     = "udp"
-  in_interface = routeros_interface_vlan.kubernetes.name
+  in_interface = "Kubernetes" # !routeros_interface_vlan.kubernetes.name
   place_before = routeros_ip_firewall_filter.drop_kubernetes_input.id
 }
 resource "routeros_ip_firewall_filter" "drop_kubernetes_input" {
   comment      = "Drop all Kubernetes input"
   action       = "drop"
   chain        = "input"
-  in_interface = routeros_interface_vlan.kubernetes.name
+  in_interface = "Kubernetes" # !routeros_interface_vlan.kubernetes.name
   place_before = routeros_ip_firewall_filter.drop_all_forward.id
   # log          = true
   # log_prefix   = "DROPPED Kubernetes INPUT:"
@@ -303,12 +315,12 @@ resource "routeros_ip_firewall_filter" "drop_all_forward" {
   comment      = "Drop all forward not from Trusted"
   action       = "drop"
   chain        = "forward"
-  in_interface = "!${routeros_interface_vlan.trusted.name}"
+  in_interface = "!Trusted" # !routeros_interface_vlan.trusted.name
   place_before = routeros_ip_firewall_filter.drop_all_input.id
 }
 resource "routeros_ip_firewall_filter" "drop_all_input" {
   comment      = "Drop all input not from Trusted"
   action       = "drop"
   chain        = "input"
-  in_interface = "!${routeros_interface_vlan.trusted.name}"
+  in_interface = "!Trusted" # !routeros_interface_vlan.trusted.name
 }

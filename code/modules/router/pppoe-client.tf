@@ -12,12 +12,3 @@ resource "routeros_interface_pppoe_client" "client" {
   password          = var.pppoe_password
 }
 
-
-# =================================================================================================
-# Interface List Member
-# https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/interface_list_member
-# =================================================================================================
-resource "routeros_interface_list_member" "pppoe_wan" {
-  interface = routeros_interface_pppoe_client.client.name
-  list      = "WAN" # !FIXME routeros_interface_list.wan.name
-}

@@ -89,27 +89,8 @@ variable "certificate_unit" {
 
 
 # =================================================================================================
-# DHCP Client
-# =================================================================================================
-variable "dhcp_client_interface" {
-  type        = string
-  default     = ""
-  description = "Interface to use for DHCP client"
-}
-
-variable "dhcp_client_comment" {
-  type        = string
-  default     = ""
-  description = "Comment for the DHCP client configuration"
-}
-
-variable "dhcp_client_use_peer_dns" {
-  type        = bool
-  default     = true
-  description = "Whether to use DNS servers provided by DHCP server"
-}
-
 # Bridge settings
+# =================================================================================================
 variable "bridge_name" {
   type        = string
   default     = "bridge"
@@ -123,15 +104,15 @@ variable "bridge_comment" {
 }
 
 
-
-
-
+# =================================================================================================
 # VLAN Configuration
+# =================================================================================================
 variable "vlans" {
   type = map(object({
     name        = string
     vlan_id     = number
     network     = string
+    cidr_suffix = string
     gateway     = string
     dhcp_pool   = list(string)
     dns_servers = list(string)
@@ -145,13 +126,17 @@ variable "vlans" {
   description = "Map of VLANs to configure"
 }
 
+
+# =================================================================================================
 # Interface Configuration
+# =================================================================================================
 variable "ethernet_interfaces" {
   type = map(object({
     comment                  = optional(string)
     mtu                      = optional(number)
     disabled                 = optional(bool)
     sfp_shutdown_temperature = optional(number)
+    bridge_port              = optional(bool, true)
     # VLAN configurations
     tagged   = optional(list(string)) # list of VLAN names
     untagged = optional(string)       # VLAN name for untagged traffic

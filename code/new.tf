@@ -2,12 +2,13 @@ locals {
   timezone       = "Europe/Bucharest"
   cloudflare_ntp = "time.cloudflare.com"
 
-  all_vlans = [local.vlans.Guest.name, local.vlans.IoT.name, local.vlans.Kubernetes.name, local.vlans.Servers.name, local.vlans.Trusted.name, local.vlans.Untrusted.name]
+  all_vlans = [for vlan in local.vlans : vlan.name]
   vlans = {
     "Guest" = {
       name          = "Guest"
       vlan_id       = 1742
-      network       = "172.16.42.0/24"
+      network       = "172.16.42.0"
+      cidr_suffix   = "24"
       gateway       = "172.16.42.1"
       dhcp_pool     = ["172.16.42.10-172.16.42.250"]
       dns_servers   = ["1.1.1.1", "1.0.0.1", "8.8.8.8"]
@@ -17,7 +18,8 @@ locals {
     "IoT" = {
       name        = "IoT"
       vlan_id     = 1769
-      network     = "172.16.69.0/24"
+      network     = "172.16.69.0"
+      cidr_suffix = "24"
       gateway     = "172.16.69.1"
       dhcp_pool   = ["172.16.69.10-172.16.69.200"]
       dns_servers = ["172.16.69.1"]
@@ -29,7 +31,8 @@ locals {
     "Kubernetes" = {
       name          = "Kubernetes"
       vlan_id       = 1010
-      network       = "10.0.10.0/24"
+      network       = "10.0.10.0"
+      cidr_suffix   = "24"
       gateway       = "10.0.10.1"
       dhcp_pool     = ["10.0.10.195-10.0.10.199"]
       dns_servers   = ["10.0.10.1"]
@@ -39,15 +42,16 @@ locals {
     "Servers" = {
       name        = "Servers"
       vlan_id     = 1000
-      network     = "10.0.0.0/24"
+      network     = "10.0.0.0"
+      cidr_suffix = "24"
       gateway     = "10.0.0.1"
       dhcp_pool   = ["10.0.0.195-10.0.0.199"]
       dns_servers = ["10.0.0.1"]
       domain      = "srv.h.mirceanton.com"
       static_leases = {
         "10.0.0.2"   = { name = "CRS317", mac = "D4:01:C3:02:5D:52" }
-        "10.0.0.3"   = { name = "CRS326", mac = "D4:01:C3:F8:47:04" }
-        "10.0.0.4"   = { name = "hex", mac = "F4:1E:57:31:05:44" }
+        "10.0.0.3"   = { name = "CRS326", mac = "D4:01:C3:F8:46:EE" }
+        "10.0.0.4"   = { name = "hex", mac = "F4:1E:57:31:05:41" }
         "10.0.0.5"   = { name = "cAP-AX", mac = "D4:01:C3:01:26:EB" }
         "10.0.0.21"  = { name = "PVE01", mac = "74:56:3C:9E:BF:1A" }
         "10.0.0.22"  = { name = "PVE02", mac = "74:56:3C:99:5B:CE" }
@@ -58,11 +62,12 @@ locals {
     "Trusted" = {
       name        = "Trusted"
       vlan_id     = 1969
-      network     = "192.168.69.0/24"
+      network     = "192.168.69.0"
+      cidr_suffix = "24"
       gateway     = "192.168.69.1"
       dhcp_pool   = ["192.168.69.190-192.168.69.199"]
       dns_servers = ["192.168.69.1"]
-      domain      = "srv.h.mirceanton.com"
+      domain      = "trst.h.mirceanton.com"
       static_leases = {
         "192.168.69.69" = { name = "MirkPuter-10g", mac = "24:2F:D0:7F:FA:1F" }
         "192.168.69.68" = { name = "BomkPuter", mac = "24:4B:FE:52:D0:65" }
@@ -71,15 +76,17 @@ locals {
     "Untrusted" = {
       name        = "Untrusted"
       vlan_id     = 1942
-      network     = "192.168.42.0/24"
+      network     = "192.168.42.0"
+      cidr_suffix = "24"
       gateway     = "192.168.42.1"
       dhcp_pool   = ["192.168.42.100-192.168.42.199"]
       dns_servers = ["192.168.42.1"]
-      domain      = "srv.h.mirceanton.com"
+      domain      = "utrst.h.mirceanton.com"
       static_leases = {
         "192.168.42.253" = { name = "HomeAssistant", mac = "00:1E:06:42:C7:73" }
         "192.168.42.69"  = { name = "Mirk Phone", mac = "04:29:2E:ED:1B:4D" }
         "192.168.42.68"  = { name = "Bomk Phone", mac = "5C:70:17:F3:5F:F8" }
+        "192.168.42.42"  = { name = "Bomk iPad", mac = "74:8F:3C:34:FA:E8" }
       }
     },
   }
@@ -96,7 +103,7 @@ module "rb5009_mig" {
   timezone    = local.timezone
   ntp_servers = [local.cloudflare_ntp]
 
-  pppoe_client_interface = "ether1" # !FIXME
+  pppoe_client_interface = "ether1"
   pppoe_client_comment   = "Digi PPPoE Client"
   pppoe_client_name      = "PPPoE-Digi"
   pppoe_username         = var.digi_pppoe_username
@@ -113,6 +120,23 @@ module "rb5009_mig" {
     "hass.home.mirceanton.com"    = { address = "192.168.42.253", type = "A", comment = "HomeAssistant Odroid" },
     "truenas.home.mirceanton.com" = { address = "10.0.0.245", type = "A", comment = "TrueNAS Management Interface" },
     "proxmox.home.mirceanton.com" = { address = "10.0.0.240", type = "A", comment = "Proxmox Management Interface" },
+  }
+
+  vlans = local.vlans
+  ethernet_interfaces = {
+    "ether1" = { comment = "Digi Uplink", bridge_port = false }
+    "ether2" = { comment = "Living Room", tagged = local.all_vlans }
+    "ether3" = { comment = "Sploinkhole", untagged = local.vlans.Trusted.name }
+    "ether4" = {}
+    "ether5" = {}
+    "ether6" = {}
+    "ether7" = {}
+    "ether8" = {
+      comment  = "Access Point",
+      untagged = local.vlans.Servers.name
+      tagged   = [local.vlans.Untrusted.name, local.vlans.Guest.name, local.vlans.IoT.name]
+    }
+    "sfp-sfpplus1" = {}
   }
 }
 

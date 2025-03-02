@@ -38,18 +38,18 @@ resource "routeros_wifi_security" "iot_wifi_password" {
 resource "routeros_wifi_datapath" "untrusted_tagging" {
   name    = "untrusted-tagging"
   comment = "WiFi -> Untrusted VLAN"
-  vlan_id = routeros_interface_vlan.untrusted.vlan_id
+  vlan_id = 1942 # !routeros_interface_vlan.untrusted.vlan_id
 }
 resource "routeros_wifi_datapath" "guest_tagging" {
   name             = "guest-tagging"
   comment          = "WiFi -> Guest VLAN"
-  vlan_id          = routeros_interface_vlan.guest.vlan_id
+  vlan_id          = 1742 # !routeros_interface_vlan.guest.vlan_id
   client_isolation = true
 }
 resource "routeros_wifi_datapath" "iot_tagging" {
   name    = "iot-tagging"
   comment = "WiFi -> IoT VLAN"
-  vlan_id = routeros_interface_vlan.iot.vlan_id
+  vlan_id = 1769 # !routeros_interface_vlan.iot.vlan_id
 }
 
 

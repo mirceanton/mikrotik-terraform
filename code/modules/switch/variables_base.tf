@@ -89,96 +89,58 @@ variable "certificate_unit" {
 
 
 # =================================================================================================
-# PPPoE Client
+# Bridge settings
 # =================================================================================================
-variable "pppoe_client_interface" {
+variable "bridge_name" {
+  type        = string
+  default     = "bridge"
+  description = "Name of the main bridge interface"
+}
+
+variable "bridge_comment" {
   type        = string
   default     = ""
-  description = "Physical interface to use for PPPoE client connection"
-}
-
-variable "pppoe_client_name" {
-  type        = string
-  default     = "pppoe-out"
-  description = "Name for the PPPoE client interface"
-}
-
-variable "pppoe_client_comment" {
-  type        = string
-  default     = ""
-  description = "Comment for the PPPoE client interface"
-}
-
-variable "pppoe_add_default_route" {
-  type        = bool
-  default     = true
-  description = "Whether to add a default route through the PPPoE connection"
-}
-
-variable "pppoe_use_peer_dns" {
-  type        = bool
-  default     = false
-  description = "Whether to use DNS servers provided by PPPoE server"
-}
-
-variable "pppoe_username" {
-  type        = string
-  sensitive   = true
-  default     = ""
-  description = "Username for PPPoE authentication"
-}
-
-variable "pppoe_password" {
-  type        = string
-  sensitive   = true
-  default     = ""
-  description = "Password for PPPoE authentication"
+  description = "Comment for the bridge interface"
 }
 
 
 # =================================================================================================
-# DNS Server
+# VLAN Configuration
 # =================================================================================================
-variable "dns_allow_remote_requests" {
-  description = "Whether to allow remote DNS requests"
-  type        = bool
-  default     = true
-}
-
-variable "upstream_dns" {
-  description = "List of upstream DNS servers"
-  type        = list(string)
-  default     = ["1.1.1.1", "8.8.8.8"]
-}
-
-variable "dns_cache_size" {
-  description = "Size of the DNS cache in KiB"
-  type        = number
-  default     = 8192
-}
-
-variable "dns_cache_max_ttl" {
-  description = "Maximum time-to-live for cached DNS entries"
-  type        = string
-  default     = "1d"
-}
-
-variable "mdns_repeat_ifaces" {
-  description = "Interfaces to repeat mDNS packets to"
-  type        = list(string)
-}
-
-variable "adlist_url" {
-  description = "URL for DNS blocklists"
-  type        = string
-  default     = ""
-}
-
-variable "static_dns" {
-  description = "Map of static DNS records to create"
+variable "vlans" {
   type = map(object({
-    address = string
-    type    = string
-    comment = string
+    name        = string
+    vlan_id     = number
+    network     = string
+    cidr_suffix = string
+    gateway     = string
+    dhcp_pool   = list(string)
+    dns_servers = list(string)
+    domain      = string
+    static_leases = map(object({
+      name = string
+      mac  = string
+    }))
   }))
+  default     = {}
+  description = "Map of VLANs to configure"
+}
+
+
+# =================================================================================================
+# Interface Configuration
+# =================================================================================================
+variable "ethernet_interfaces" {
+  type = map(object({
+    comment                  = optional(string)
+    mtu                      = optional(number)
+    disabled                 = optional(bool)
+    sfp_shutdown_temperature = optional(number)
+    bridge_port              = optional(bool, true)
+    # VLAN configurations
+    tagged   = optional(list(string)) # list of VLAN names
+    untagged = optional(string)       # VLAN name for untagged traffic
+  }))
+  default     = {}
+  description = "Map of ethernet interfaces to configure"
 }
