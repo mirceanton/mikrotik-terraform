@@ -28,6 +28,15 @@ resource "routeros_ip_firewall_filter" "accept_established_related_untracked_for
   action           = "accept"
   chain            = "forward"
   connection_state = "established,related,untracked"
+  place_before     = routeros_ip_firewall_filter.truenas_asymmetric_routing_fix.id
+}
+resource "routeros_ip_firewall_filter" "truenas_asymmetric_routing_fix" {
+  comment          = "TrueNAS Asymmetric Routing Fix"
+  action           = "accept"
+  chain            = "forward"
+  connection_state = "invalid"
+  in_interface     = "Trusted"
+  out_interface    = "Servers"
   place_before     = routeros_ip_firewall_filter.drop_invalid_forward.id
 }
 resource "routeros_ip_firewall_filter" "drop_invalid_forward" {
