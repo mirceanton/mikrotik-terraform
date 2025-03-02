@@ -44,6 +44,11 @@ module "rb5009" {
     }
     "sfp-sfpplus1" = {}
   }
+
+
+  untrusted_wifi_password = var.untrusted_wifi_password
+  iot_wifi_password = var.iot_wifi_password
+  guest_wifi_password = var.guest_wifi_password
 }
 
 module "crs326" {
@@ -116,17 +121,4 @@ module "hex" {
     "ether4" = { comment = "Router Uplink", tagged = local.all_vlans }
     "ether5" = { comment = "Smart TV", untagged = local.vlans.IoT.name }
   }
-}
-
-module "rb5009_old" {
-  source                  = "./devices/rb5009"
-  mikrotik_host_url       = "https://10.0.0.1"
-  mikrotik_username       = var.mikrotik_username
-  mikrotik_password       = var.mikrotik_password
-  mikrotik_insecure       = true
-  digi_pppoe_password     = var.digi_pppoe_password
-  digi_pppoe_username     = var.digi_pppoe_username
-  untrusted_wifi_password = var.untrusted_wifi_password
-  guest_wifi_password     = var.guest_wifi_password
-  iot_wifi_password       = var.iot_wifi_password
 }
