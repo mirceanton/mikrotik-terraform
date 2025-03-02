@@ -56,7 +56,7 @@ locals {
     for vlan_name, vlan in { for k, v in var.vlans : v.name => v } : vlan_name => {
       vlan_ids = [vlan.vlan_id]
       tagged = distinct(concat(
-        ["bridge"], # Always tag the bridge interface
+        [var.bridge_name], # !Always tag the bridge interface
         lookup(local.vlan_assignments, vlan_name, { tagged = [] }).tagged
       ))
       untagged = lookup(local.vlan_assignments, vlan_name, { untagged = [] }).untagged
