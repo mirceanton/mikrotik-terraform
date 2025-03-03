@@ -11,7 +11,7 @@ jobs:
     uses: mirceanton/reusable-workflows/.github/workflows/reusable-actionlint.yaml@b5cfdde4fbd3a009c30444b916ebe6f98a0a977f # v3.8.1
   markdownlint:
     uses: mirceanton/reusable-workflows/.github/workflows/reusable-markdownlint.yaml@b5cfdde4fbd3a009c30444b916ebe6f98a0a977f # v3.8.1
+    with: { config-file: ./.github/configs/.markdownlint.yaml }
   commitlint:
     uses: mirceanton/reusable-workflows/.github/workflows/reusable-commitlint.yaml@b5cfdde4fbd3a009c30444b916ebe6f98a0a977f # v3.8.1
-    with:
-      config-file: ./.github/configs/commitlint.config.mjs
+    with: { config-file: ./.github/configs/commitlint.config.mjs }
