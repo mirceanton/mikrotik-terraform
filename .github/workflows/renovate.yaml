@@ -30,4 +30,4 @@ jobs:
     with:
       dry-run: "${{ inputs.dry-run == true || github.event_name == 'pull_request' }}"
       log-level: "${{ inputs.log-level || 'debug' }}"
-      config-file: renovate.json
+      config-file: .github/renovate.json

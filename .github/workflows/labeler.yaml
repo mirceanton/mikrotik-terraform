@@ -3,7 +3,6 @@
 name: Labeler
 
 on:
-  # When a pull request is opened, reopened, or synchronized
   pull_request_target: {}
 
 jobs:
@@ -11,4 +10,4 @@ jobs:
     uses: mirceanton/reusable-workflows/.github/workflows/reusable-labeler.yaml@b5cfdde4fbd3a009c30444b916ebe6f98a0a977f # v3.8.1
     secrets: inherit
     with:
-      config-file: .github/labeler.yaml
+      config-file: .github/configs/labeler.yaml
