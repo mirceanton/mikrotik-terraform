@@ -1,5 +1,7 @@
 # Mikrotik - Terraform
 
+![Thumbnail](./thumbnail.png)
+
 This repository contains Terraform automation for my entire Mikrotik-powered home network. The purpose of this repository is to provide a structured and repeatable way to manage and automate the setup of my MikroTik devices using Infrastructure as Code (IaC) principles.
 
 ## Why Terraform for Network Infrastructure?
