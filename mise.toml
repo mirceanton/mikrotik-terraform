@@ -16,8 +16,8 @@ description = "Decrypt the terraform state and vars files."
 sources = ["terraform.tfstate", "credentials.auto.tfvars"]
 outputs = ["terraform.tfstate.sops", "credentials.auto.tfvars.sops"]
 run = [
-    "sops --decrypt code/terraform.tfstate.sops > code/terraform.tfstate",
-    "sops --decrypt code/credentials.auto.tfvars.sops > code/credentials.auto.tfvars"
+    "sops --decrypt terraform.tfstate.sops > terraform.tfstate",
+    "sops --decrypt credentials.auto.tfvars.sops > credentials.auto.tfvars"
 ]
 
 [tasks.encrypt]
@@ -25,11 +25,11 @@ description = "Encrypt the terraform state and vars files."
 outputs = ["terraform.tfstate", "credentials.auto.tfvars"]
 sources = ["terraform.tfstate.sops", "credentials.auto.tfvars.sops"]
 run = [
-    "sops --encrypt code/terraform.tfstate > code/terraform.tfstate.sops",
-    "sops --encrypt code/credentials.auto.tfvars > code/credentials.auto.tfvars.sops"
+    "sops --encrypt terraform.tfstate > terraform.tfstate.sops",
+    "sops --encrypt credentials.auto.tfvars > credentials.auto.tfvars.sops"
 ]
 
 [tasks.plan]
 description = "Run and summarize terraform plan"
-dir = "code/"
+dir = ""
 run = "terraform plan -out=tfplan && tf-summarize tfplan && rm tfplan"
