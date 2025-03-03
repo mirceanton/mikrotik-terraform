@@ -1,161 +1,107 @@
 # Mikrotik - Terraform
 
-Terraform automation for my entire Mikrotik-powered home network.
+This repository contains Terraform automation for my entire Mikrotik-powered home network. The purpose of this repository is to provide a structured and repeatable way to manage and automate the setup of my MikroTik devices using Infrastructure as Code (IaC) principles.
+
+## Why Terraform for Network Infrastructure?
+
+Fundamentally speaking, there is nothing that sets this approach apart from, say, a configuration script or just backing up and importing the configuration on the device. Yet, I still decided to use Terraform for this. Why?
+
+1. **I'm weird like that**: As someone who works in DevOps as my main gig, manual configurations (or ClickOps, as we also call it 😉), makes me cringe and I avoid it like the plague. I like defining configuration as code whenever possible since it makes it easy to reproduce and tweak this system.
+
+2. **Skill ~~Issue~~Development**: Working on this project provides a practical, hands-on opportunity to explore advanced Terraform features and patterns. Not to mention that breaking something takes my entire internet away until I fix it, and fixing it without internet may be tricker than you think. This forces me to think more carefully about the configuration before applying.
+
+3. **Because I can**: Not everything in life has to have a good reason. Sometimes reinventing the wheel just to learn or doing things for the heck of it are valid reasons.
+
+## Network Overview
+
+![Network Diagram](./network-diagram.drawio.png)
+
+This project provides automated deployment and management for the following devices in my infrastructure:
+
+- **RB5009 router** -> main router + firewall + CAPSMAN server
+- **cAP AX Access Point** -> provisioned via CAPSMAN
+- **CRS326 switch** -> Main Rack Switch
+- **Hex switch** -> Living Room Switch (no AP functionality used here)
+
+I was initially planning to also add some more details about my network, like VLAN setup and wireless networks and whatnot, but then I realised I can't really be bothered to also update those whenever I change something, so if you're curious, feel free to look at the code!
+
+## Project Structure
+
+```bash
+├── .github/   # GitHub workflow configurations and automation
+├── modules
+│   ├── base        # Base configuration for all devices
+│   └── dhcp-server # DHCP server configuration
+├── .sops.yaml      # SOPS configuration
+├── credentials.auto.tfvars.sops # SOPS encrypted tfvars file
+├── mise.toml       # tool configuration + dev tasks
+├── main.tf         # Provider configuration + Local variables
+├── router-*.tf               # RB5009 router configurations
+├── switch-*.tf               # Switch device configuration
+├── terraform.tfstate.sops    # SOPS-encrypted TF state file
+└── variables.tf              # Terraform input variables
+```
 
 ## Getting Started
 
-### Step 1. Clearing out all Default Configuration
+### Requirements
 
-Plug the uplink and your computer into the desired ports on the router and using WinBox, connect to the router via the MAC address and reset the device, making sure to tick the `No default configuration` box.
+- [Terraform](https://www.terraform.io/)
+- [mise](https://mise.jdx.dev/) for managing dependencies and running tasks
+- [SOPS](https://github.com/getsops/sops) for secrets management
+- [age](https://github.com/FiloSottile/age) for encryption
 
-### Step 2. Create the minimal required configuration
+### Initial Device Setup
 
-First, we'll create a new bridge for our WAN connection, we'll enable a DHCP client on it and add our physical port to it.
+Before applying Terraform configurations, new Mikrotik devices need minimal setup to enable Terraform management. I will not go into details here, but I did write a [blog post](https://mirceanton.com/posts/mikrotik-terraform-getting-started/) about it in which you can learn more.
 
-```bash
-/interface/bridge/add name=brWAN
-/ip/dhcp-client/add disabled=no interface=brWAN
-/interface/bridge/port/add interface=ether1 bridge=brWAN
-```
+### Secrets Management
 
-After a few moments, the device should have received an IP address from the DHCP server. Test internet connectivity:
+This project uses SOPS with age for encryption of sensitive data:
 
-```bash
-# Validate internet connectivity
-ping www.google.com
-```
+1. **Setup environment**:
 
-Next, create another bridge for our LAN connection, assign an IP to it and add our physical port(s) to the bridge.
+   ```bash
+   mise install
+   ```
 
-```bash
-/interface/bridge/add name=brHOME
-/ip/address/add address=192.168.69.1/24 interface=brHOME
-/interface/bridge/port/add interface=ether7 bridge=brHOME
-```
+2. **Decrypt secrets** (requires access to the age key):
 
-In order to get internet connectivity, we need to configure NAT:
+   ```bash
+   mise run decrypt
+   ```
 
-```bash
-/ip/firewall/nat add chain=srcnat out-interface=brWAN action=masquerade src-address=192.168.69.0/24
-```
+3. **After making changes, encrypt secrets**:
 
-For terraform to be able to connecto to our router and manage it, we need to create a self signed certificate and enable the HTTPS service:
+   ```bash
+   mise run encrypt
+   ```
 
-```bash
-/certificate/add name=local-root-cert common-name=local-cert key-size=prime256v1 key-usage=key-cert-sign,crl-sign trusted=yes
-/certificate/sign local-root-cert
-/certificate/add name=webfig common-name=10.0.0.4 country=RO locality=BUC organization=MIRCEANTON unit=HOME days-valid=3650 key-size=prime256v1 key-usage=key-cert-sign,crl-sign,digital-signature,key-agreement,tls-server trusted=yes
-/certificate/sign ca=local-root-cert webfig
-/ip/service/set www-ssl certificate=webfig disabled=no
-```
+### Applying Terraform Configuration
 
-Optionally, we can now create a service account for our terraform automation as follows:
+1. **Initialize Terraform**: `terraform init`
+2. **Decrypt secrets**: `mise run decrypt`
+3. **Plan** (and review) **changes**: `mise run plan`
+4. **Apply changes**: `terraform apply`
 
-```bash
-/user/add name=terraform group=full disabled=no comment="Service Account for Teraform Automation" password=terraform
-```
+## Limitations
 
-> obviously, set a stronger password than that. this is just an example
+While this project aims to provide comprehensive automation for Mikrotik devices, there are some limitations:
 
-### Step 3. Set a static IP on your workstation
+- Initial setup still requires manual configuration before Terraform can be applied
+- Complex configurations sometimes require a multi-step approach rather than a single apply
+- The risk of cutting yourself off of the internet may be low... but it's never zero ;)
 
-### Step 4. Import previously created objects into the Terraform state
+## Sharing & Risks
 
-The terraform code provided has `import` blocks to handle importing all of the resources configured manuallly in [step 2](#step-2-create-the-minimal-required-configuration). Validate that all of the IDs are matching before running a `terraform apply`.
+By publishing this repository, I accept the risk of exposing aspects of my home network topology. Storing the state and tfvars in git, albeit encrypted, doesn't help much in this regard either! 😅  
+While I've taken **some** steps to ensure sensitive information is managed securely, sharing this code inherently comes with certain risks.
 
-#### Importing the bridges
+All that being said, I ultimately decided to open-source this code and publish it for 2 main reasons:
 
-On Mikrotik, run the following command to print the IDs of the bridges:
+1. I believe that sharing knowledge is valuable to the community. As I have learned from others, so shall others be able to learn from me. Such is the cycle.
+2. I truly believe this was an interesting project. I hope that seeing this will inspire others to attempt similar projects and in turn also share their experiences.
 
-```bash
-:put [/interface/bridge get [print show-ids]]
-```
+## License
 
-Sample output:
-
-```bash
-*C R name="brHOME" mtu=auto actual-mtu=1500 l2mtu=1514 arp=enabled arp-timeout=auto mac-address=48:A9:8A:BD:AB:D5 protocol-mode=rstp fast-forward=yes igmp-snooping=no auto-mac=yes ageing-time=5m priority=0x8000 max-message-age=20s forward-delay=15s transmit-hold-count=6
-     vlan-filtering=no dhcp-snooping=no port-cost-mode=long
-
-*B R name="brWAN" mtu=auto actual-mtu=1500 l2mtu=1514 arp=enabled arp-timeout=auto mac-address=48:A9:8A:BD:AB:D4 protocol-mode=rstp fast-forward=yes igmp-snooping=no auto-mac=yes ageing-time=5m priority=0x8000 max-message-age=20s forward-delay=15s transmit-hold-count=6
-     vlan-filtering=no dhcp-snooping=no port-cost-mode=long
-```
-
-#### Importing the DHCP Client
-
-On Mikrotik, run the following command to print the ID of the client:
-
-```sh
-:put [/ip/dhcp-client get [print show-ids]]
-```
-
-Sample output:
-
-```bash
-Columns: INTERFACE, USE-PEER-DNS, ADD-DEFAULT-ROUTE, STATUS, ADDRESS
-*  INTERFACE  USE-PEER-DNS  ADD-DEFAULT-ROUTE  STATUS  ADDRESS
-*1 brWAN      yes           yes                bound   192.168.10.104/24
-```
-
-#### Importing the LAN IP address
-
-On Mikrotik, run the following command to print the ID of the client:
-
-```bash
-:put [/ip/address get [print show-ids]]
-```
-
-Sample output:
-
-```bash
-Columns: ADDRESS, NETWORK, INTERFACE
-*    ADDRESS            NETWORK       INTERFACE
-*1 D 192.168.10.104/24  192.168.10.0  brWAN
-*2   192.168.69.1/24    192.168.69.0  brHOME
-```
-
-#### Importing the bridge ports
-
-On Mikrotik, run the following command to print the IDs of the bridge ports:
-
-```bash
-:put [/interface/bridge/port get [print show-ids]]
-```
-
-Sample output:
-
-```bash
-Columns: INTERFACE, BRIDGE, HW, PVID, PRIORITY, HORIZON
-*    INTERFACE  BRIDGE  HW   PVID  PRIORITY  HORIZON
-*0 H ether1     brWAN   yes     1  0x80      none
-*1   ether2     brHOME  yes     1  0x80      none
-```
-
-#### Importing the NAT rule
-
-On Mikrotik, run the following command to print the IDs of the NAT rules:
-
-```bash
-:put [/ip/firewall/nat get [print show-ids]]
-```
-
-Sample output:
-
-```bash
-*1    chain=srcnat action=masquerade src-address=192.168.69.0/24 out-interface=brWAN
-```
-
-#### Importing the self signed certificate
-
-On Mikrotik, run the following command to print the IDs of the system certificates:
-
-```bash
-:put [/certificate get [print show-ids]]
-```
-
-```bash
-Columns: NAME, COMMON-NAME, SKID
-*      NAME             COMMON-NAME   SKID
-*1 KAT local-root-cert  local-cert    a0c40660c79d2753c110147136272dce6d24b513
-*2 KAT webfig           192.168.69.1  d8ff3c5980cc520454ed8d39385ff586e396b563
-```
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
