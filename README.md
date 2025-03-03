@@ -90,8 +90,9 @@ This project uses SOPS with age for encryption of sensitive data:
 While this project aims to provide comprehensive automation for Mikrotik devices, there are some limitations:
 
 - Initial setup still requires manual configuration before Terraform can be applied
-- Complex configurations sometimes require a multi-step approach rather than a single apply
-- The risk of cutting yourself off of the internet may be low... but it's never zero ;)
+- Complex configurations sometimes require a multi-step approach rather than a single `apply`
+- The risk of cutting yourself off of the internet may be low... but it's never zero. Ask me how I know! 😉
+- Prepare to get close and intimate with `terraform state mv` if you plan to rename or move objects around. Very few things are stateless, so they can't be deleted and recreated generally.
 
 ## Sharing & Risks
 
