@@ -20,9 +20,8 @@ resource "routeros_system_certificate" "local-root-ca-cert" {
 }
 
 resource "routeros_system_certificate" "webfig" {
-  name        = "webfig"
-  common_name = var.mikrotik_ip
-
+  name         = "webfig"
+  common_name  = var.certificate_common_name
   country      = var.certificate_country
   locality     = var.certificate_locality
   organization = var.certificate_organization

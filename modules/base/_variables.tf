@@ -1,31 +1,4 @@
 # =================================================================================================
-# Device/Provider connectivity
-# =================================================================================================
-variable "mikrotik_ip" {
-  type        = string
-  sensitive   = false
-  description = "The IP address of the MikroTik device."
-}
-
-variable "mikrotik_username" {
-  type        = string
-  sensitive   = true
-  description = "The username for accessing the MikroTik device."
-}
-
-variable "mikrotik_password" {
-  type        = string
-  sensitive   = true
-  description = "The password for accessing the MikroTik device."
-}
-
-variable "mikrotik_insecure" {
-  type        = bool
-  default     = true
-  description = "Whether to allow insecure connections to the MikroTik device."
-}
-
-# =================================================================================================
 # Device settings
 # =================================================================================================
 variable "hostname" {
@@ -63,6 +36,11 @@ variable "mac_server_interfaces" {
 # =================================================================================================
 # Certificate details
 # =================================================================================================
+variable "certificate_common_name" {
+  type        = string
+  description = "CN for the device certificate."
+}
+
 variable "certificate_country" {
   type        = string
   default     = "RO"
