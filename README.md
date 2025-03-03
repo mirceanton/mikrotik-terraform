@@ -83,6 +83,7 @@ This project uses SOPS with age for encryption of sensitive data:
 2. **Decrypt secrets**: `mise run decrypt`
 3. **Plan** (and review) **changes**: `mise run plan`
 4. **Apply changes**: `terraform apply`
+5. **Re-encrypt secrets** (state file, mainly): `mise run encrypt`
 
 ## Limitations
 
