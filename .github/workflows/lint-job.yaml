@@ -14,4 +14,4 @@ jobs:
   commitlint:
     uses: mirceanton/reusable-workflows/.github/workflows/reusable-commitlint.yaml@b5cfdde4fbd3a009c30444b916ebe6f98a0a977f # v3.8.1
     with:
-      config-file: ./.github/workflows/configs/commitlint.config.mjs
+      config-file: ./.github/configs/commitlint.config.mjs
