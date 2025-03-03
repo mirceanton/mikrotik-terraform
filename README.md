@@ -46,7 +46,7 @@ I was initially planning to also add some more details about my network, like VL
 
 ### Requirements
 
-- [Terraform](https://www.terraform.io/)
+- [Terraform](https://www.terraform.io/) (duh!)
 - [mise](https://mise.jdx.dev/) for managing dependencies and running tasks
 - [SOPS](https://github.com/getsops/sops) for secrets management
 - [age](https://github.com/FiloSottile/age) for encryption
