@@ -35,7 +35,7 @@ module "hex" {
 # DHCP Client
 # =================================================================================================
 resource "routeros_ip_dhcp_client" "hex" {
-  provider = routeros.hex
+  provider     = routeros.hex
   interface    = local.vlans.Servers.name
   use_peer_dns = true
   use_peer_ntp = false
