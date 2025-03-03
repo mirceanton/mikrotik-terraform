@@ -15,3 +15,5 @@ jobs:
   commitlint:
     uses: mirceanton/reusable-workflows/.github/workflows/reusable-commitlint.yaml@09f31ab6340ce5651dc6c28512a82de6b2415fb9 # v3.8.2
     with: { config-file: ./.github/configs/commitlint.config.mjs }
+  terraform:
+    uses: mirceanton/reusable-workflows/.github/workflows/reusable-terraform-fmt.yaml@09f31ab6340ce5651dc6c28512a82de6b2415fb9 # v3.8.2
