@@ -13,8 +13,6 @@
 # =================================================================================================
 [tasks.decrypt]
 description = "Decrypt the terraform state and vars files."
-sources = ["terraform.tfstate", "credentials.auto.tfvars"]
-outputs = ["terraform.tfstate.sops", "credentials.auto.tfvars.sops"]
 run = [
     "sops --decrypt terraform.tfstate.sops > terraform.tfstate",
     "sops --decrypt credentials.auto.tfvars.sops > credentials.auto.tfvars"
@@ -22,8 +20,6 @@ run = [
 
 [tasks.encrypt]
 description = "Encrypt the terraform state and vars files."
-outputs = ["terraform.tfstate", "credentials.auto.tfvars"]
-sources = ["terraform.tfstate.sops", "credentials.auto.tfvars.sops"]
 run = [
     "sops --encrypt terraform.tfstate > terraform.tfstate.sops",
     "sops --encrypt credentials.auto.tfvars > credentials.auto.tfvars.sops"
