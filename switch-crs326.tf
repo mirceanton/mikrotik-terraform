@@ -46,7 +46,7 @@ module "crs326" {
     "ether14"      = {}
     "ether15"      = {}
     "ether16"      = {}
-    "ether17"      = {}
+    "ether17"      = { comment = "Work Laptop", untagged = local.vlans.Guest.name }
     "ether18"      = {}
     "ether19"      = {}
     "ether20"      = {}
