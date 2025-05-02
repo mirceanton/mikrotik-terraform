@@ -5,9 +5,43 @@ name: Labeler
 on:
   pull_request_target: {}
 
+permissions:
+  contents: read
+
 jobs:
-  pr-labeler:
-    uses: mirceanton/reusable-workflows/.github/workflows/reusable-labeler.yaml@09f31ab6340ce5651dc6c28512a82de6b2415fb9 # v3.8.2
-    secrets: inherit
-    with:
-      config-file: .github/configs/labeler.yaml
+  size-label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@3ff1caaa28b64c9cc276ce0a02e2ff584f3900c5 # v2.0.2
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Size Label
+        uses: pascalgn/size-label-action@f8edde36b3be04b4f65dcfead05dc8691b374348 # v0.5.5
+        env:
+          GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
+
+  labeler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate Token
+        uses: actions/create-github-app-token@3ff1caaa28b64c9cc276ce0a02e2ff584f3900c5 # v2.0.2
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          token: "${{ steps.app-token.outputs.token }}"
+
+      - name: Labeler
+        uses: actions/labeler@8558fd74291d67161a8a78ce36a881fa63b766a9 # v5.0.0
+        with:
+          sync-labels: true
+          repo-token: "${{ steps.app-token.outputs.token }}"
+          configuration-path: .github/labeler.yaml

@@ -1,11 +1,12 @@
 [tools]
 # Terraform Stuff
-"aqua:hashicorp/terraform" = "latest"
-"aqua:dineshba/tf-summarize" = "latest"
+terraform = "1.10.4"
+tf-summarize = "0.3.14"
 
 # Miscellaneous Tools
-"aqua:FiloSottile/age" = "latest"
-"aqua:getsops/sops" = "latest"
+age = "1.2.1"
+sops = "3.9.3"
+actionlint = "1.7.7"
 
 
 # =================================================================================================
