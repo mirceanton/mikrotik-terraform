@@ -10,14 +10,26 @@ jobs:
   fmt:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: jdx/mise-action@v2.1.2
-      - run: terraform fmt -recursive -check
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup mise
+        uses: jdx/mise-action@v2.1.2
+      
+      - name: Run terraform fmt
+        run: terraform fmt -recursive -check
 
   validate:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: jdx/mise-action@v2.1.2
-      - run: terraform init
-      - run: terraform validate
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup mise
+        uses: jdx/mise-action@v2.1.2
+      
+      - name: Initialize workspace
+        run: terraform init
+        
+      - name: Validate configuration
+        run: terraform validate

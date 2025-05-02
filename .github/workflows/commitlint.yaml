@@ -9,8 +9,13 @@ jobs:
   commitlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: jdx/mise-action@v2.1.2
-      - run: echo "$PR_TITLE" | commitlint
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup mise
+        uses: jdx/mise-action@v2.1.2
+      
+      - name: Run commitlint
+        run: echo "$PR_TITLE" | commitlint
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
