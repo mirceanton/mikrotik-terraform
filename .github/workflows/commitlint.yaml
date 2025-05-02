@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Commitlint
+
+on:
+  pull_request_target: {}
+
+jobs:
+  commitlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+      - uses: jdx/mise-action@v2.1.2
+      - run: echo "$PR_TITLE" | commitlint
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}

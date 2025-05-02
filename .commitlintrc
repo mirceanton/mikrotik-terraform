@@ -1,7 +1,13 @@
 {
-  "extends": ["@commitlint/config-conventional"],
+  "extends": [
+    "@commitlint/config-conventional"
+  ],
   "rules": {
-    "header-max-length": [2, "always", 128],
+    "header-max-length": [
+      2,
+      "always",
+      128
+    ],
     "subject-case": [
       2,
       "always",
