@@ -1,0 +1,33 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "dependencyDashboardTitle": "Renovate Dashboard 🤖",
+    "extends": [
+        ":dependencyDashboard",
+        "config:recommended",
+        "helpers:pinGitHubActionDigests",
+        ":disableRateLimiting",
+        ":semanticCommits",
+        ":timezone(Europe/Bucharest)",
+        "github>mirceanton/renovate-config//labels/all.json5",
+        "github>mirceanton/renovate-config//semantic-commits/all.json5"
+    ],
+    "packageRules": [
+        {
+            "description": "Auto-merge GitHub Actions",
+            "matchManagers": ["github-actions"],
+            "automerge": true,
+            "automergeType": "branch",
+            "matchUpdateTypes": ["minor", "patch", "digest"],
+            "minimumReleaseAge": "7 days"
+        },
+        {
+            "description": "Auto-merge Terraform Providers",
+            "matchManagers": ["terraform"],
+            "automerge": true,
+            "automergeType": "branch",
+            "matchUpdateTypes": ["minor", "patch", "digest"],
+            "minimumReleaseAge": "7 days"
+        }
+    ]
+
+}
