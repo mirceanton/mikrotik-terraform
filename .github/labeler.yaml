@@ -1,0 +1,13 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/label-commenter-config.json
+# =================================================================================================
+# Area Labels
+# =================================================================================================
+area/github:
+  - changed-files:
+      - any-glob-to-any-file: ".github/**/*"
+
+area/terraform:
+  - changed-files:
+      - any-glob-to-any-file: "*.tf"
+
