@@ -6,6 +6,9 @@ on:
   workflow_dispatch: {}
   pull_request: {}
 
+permissions:
+  contents: read
+
 jobs:
   fmt:
     runs-on: ubuntu-latest

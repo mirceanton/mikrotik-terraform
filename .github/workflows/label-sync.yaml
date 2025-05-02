@@ -29,6 +29,9 @@ on:
   schedule:
     - cron: "0 * * * *"
 
+permissions:
+  contents: read
+
 jobs:
   label-sync:
     runs-on: ubuntu-latest

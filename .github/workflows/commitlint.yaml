@@ -5,6 +5,9 @@ name: Commitlint
 on:
   pull_request_target: {}
 
+permissions:
+  contents: read
+
 jobs:
   commitlint:
     runs-on: ubuntu-latest
