@@ -7,8 +7,7 @@ tf-summarize = "0.3.14"
 age = "1.2.1"
 sops = "3.9.3"
 actionlint = "1.7.7"
-"npm:@commitlint/cli" = "latest"
-"npm:@commitlint/config-conventional" = "latest"
+"npm:@commitlint/cli" = "19.8.0"
 
 
 # =================================================================================================
