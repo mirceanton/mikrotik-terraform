@@ -11,3 +11,25 @@ area/terraform:
   - changed-files:
       - any-glob-to-any-file: "*.tf"
 
+# =================================================================================================
+# Device Labels
+# =================================================================================================
+device/rb5009:
+  - changed-files:
+      - any-glob-to-any-file: "router-*.tf"
+
+device/cap-ax:
+  - changed-files:
+      - any-glob-to-any-file: "router-capsman.tf"
+
+device/crs326:
+  - changed-files:
+      - any-glob-to-any-file: "switch-crs326.tf"
+
+device/crs-317:
+  - changed-files:
+      - any-glob-to-any-file: "switch-crs317.tf"
+
+device/hex:
+  - changed-files:
+      - any-glob-to-any-file: "switch-hex.tf"

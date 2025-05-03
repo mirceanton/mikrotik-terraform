@@ -9,50 +9,33 @@
   color: "844FBA" # terraform purple
   description: Changes made in the infrastructure directory
 
-# =================================================================================================
-# Renovate Types
-# =================================================================================================
-- name: renovate/github-action
-  color: "000000"
-- name: renovate/container
-  color: "3970E4"
-- name: renovate/terraform-provider
-  color: "844FBA"
 
 # =================================================================================================
-# Semantic Types
+# Device Labels
 # =================================================================================================
-- name: type/digest
-  color: "ffeC19"
-- name: type/patch
-  color: "ffeC19"
-- name: type/minor
-  color: "ff9800"
-- name: type/major
-  color: "f6412d"
+- name: device/rb5009
+  color: "111111"
+  description: Changes to the config for the RB5009.
+- name: device/cap-ax
+  color: "333333"
+  description: Changes to the config for the cAP AX.
+- name: device/crs326
+  color: "555555"
+  description: Changes to the config for the CRS326.
+- name: device/crs317
+  color: "777777"
+  description: Changes to the config for the CRS317.
+- name: device/hex
+  color: "999999"
+  description: Changes to the config for the HEX.
 
-# =================================================================================================
-# Size Types
-# =================================================================================================
-- name: size/XS
-  color: "0000ff"
-- name: size/S
-  color: "000ff0"
-- name: size/M
-  color: "00ff00"
-- name: size/L
-  color: "0ff000"
-- name: size/XL
-  color: "ff0000"
-- name: size/XXL
-  color: "ff00ff"
 
 # =================================================================================================
 # Issue Types
 # =================================================================================================
-- name: issue/bug
+- name: Bug
   color: "ff0000"
-- name: issue/feature
+- name: Feature
   color: "00ff00"
-- name: issue/chore
+- name: Chore
   color: "0000ff"
