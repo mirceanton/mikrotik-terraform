@@ -27,7 +27,14 @@
             "automergeType": "branch",
             "matchUpdateTypes": ["minor", "patch", "digest"],
             "minimumReleaseAge": "7 days"
+        },
+        {
+            "description": "Auto-merge Mise Packages",
+            "matchManagers": ["mise"],
+            "automerge": true,
+            "automergeType": "branch",
+            "matchUpdateTypes": ["minor", "patch", "digest"],
+            "minimumReleaseAge": "7 days"
         }
     ]
-
 }
