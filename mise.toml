@@ -5,7 +5,7 @@ tf-summarize = "0.3.14"
 
 # Miscellaneous Tools
 age = "1.2.1"
-sops = "3.9.3"
+sops = "3.10.2"
 actionlint = "1.7.7"
 "npm:@commitlint/cli" = "19.8.0"
 
