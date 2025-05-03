@@ -7,8 +7,8 @@ tf-summarize = "0.3.14"
 age = "1.2.1"
 sops = "3.9.3"
 actionlint = "1.7.7"
+node = "latest"
 "npm:@commitlint/cli" = "latest"
-"npm:@commitlint/config-conventional" = "latest"
 
 
 # =================================================================================================
@@ -18,14 +18,14 @@ actionlint = "1.7.7"
 description = "Decrypt the terraform state and vars files."
 run = [
     "sops --decrypt terraform.tfstate.sops > terraform.tfstate",
-    "sops --decrypt credentials.auto.tfvars.sops > credentials.auto.tfvars"
+    "sops --decrypt credentials.auto.tfvars.sops > credentials.auto.tfvars",
 ]
 
 [tasks.encrypt]
 description = "Encrypt the terraform state and vars files."
 run = [
     "sops --encrypt terraform.tfstate > terraform.tfstate.sops",
-    "sops --encrypt credentials.auto.tfvars > credentials.auto.tfvars.sops"
+    "sops --encrypt credentials.auto.tfvars > credentials.auto.tfvars.sops",
 ]
 
 [tasks.plan]
