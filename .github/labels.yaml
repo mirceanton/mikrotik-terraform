@@ -28,14 +28,3 @@
 - name: device/hex
   color: "999999"
   description: Changes to the config for the HEX.
-
-
-# =================================================================================================
-# Issue Types
-# =================================================================================================
-- name: Bug
-  color: "ff0000"
-- name: Feature
-  color: "00ff00"
-- name: Chore
-  color: "0000ff"
