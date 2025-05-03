@@ -17,7 +17,7 @@
             "matchManagers": ["github-actions"],
             "automerge": true,
             "automergeType": "branch",
-            "matchUpdateTypes": ["minor", "patch", "digest"],
+            "matchUpdateTypes": ["minor", "patch", "digest", "pinDigest"],
             "minimumReleaseAge": "7 days"
         },
         {
