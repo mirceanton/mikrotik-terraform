@@ -1,13 +1,15 @@
 [tools]
 # Terraform Stuff
-terraform = "1.11.4"
-tf-summarize = "0.3.14"
+"aqua:hashicorp/terraform" = "1.11.4"
+"qua:dineshba/tf-summarize" = "0.3.14"
 
 # Miscellaneous Tools
-age = "1.2.1"
-sops = "3.10.2"
-actionlint = "1.7.7"
+"aqua:FiloSottile/age" = "1.2.1"
+"aqua:getsops/sops" = "3.10.2"
+"aqua:rhysd/actionlint" = "1.7.7"
+node = "22"
 "npm:@commitlint/cli" = "19.8.0"
+"npm:renovate" = "40.3.4"
 
 
 # =================================================================================================
