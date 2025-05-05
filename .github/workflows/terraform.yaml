@@ -1,13 +1,15 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Terraform
+permissions: { contents: read }
 
 on:
   workflow_dispatch: {}
-  pull_request: {}
-
-permissions:
-  contents: read
+  push:
+    paths:
+      - ".github/workflows/terraform.yaml"
+      - mise.toml
+      - "*.tf"
 
 jobs:
   fmt:
@@ -20,7 +22,7 @@ jobs:
         uses: jdx/mise-action@7a111ead46986ccad89a74ad013ba2a7c08c9e67 # v2.2.1
       
       - name: Run terraform fmt
-        run: terraform fmt -recursive -check
+        run: mise exec -- terraform fmt -recursive -check
 
   validate:
     runs-on: ubuntu-latest
@@ -32,7 +34,7 @@ jobs:
         uses: jdx/mise-action@7a111ead46986ccad89a74ad013ba2a7c08c9e67 # v2.2.1
       
       - name: Initialize workspace
-        run: terraform init
+        run: mise exec -- terraform init
         
       - name: Validate configuration
-        run: terraform validate
+        run: mise exec -- terraform validate

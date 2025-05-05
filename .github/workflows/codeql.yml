@@ -6,8 +6,7 @@ on:
   workflow_dispatch: {}
   push: { branches: ["main"] }
   pull_request: { branches: ["main"] }
-  schedule:
-    - cron: '0 * * * *'
+  schedule: [{cron: '0 0 * * *'}]
 
 permissions:
   security-events: write
