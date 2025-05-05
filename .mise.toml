@@ -1,7 +1,7 @@
 [tools]
 # Terraform Stuff
 "aqua:hashicorp/terraform" = "1.11.4"
-"qua:dineshba/tf-summarize" = "0.3.14"
+"aqua:dineshba/tf-summarize" = "0.3.14"
 
 # Miscellaneous Tools
 "aqua:FiloSottile/age" = "1.2.1"
