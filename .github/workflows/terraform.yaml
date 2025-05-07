@@ -12,6 +12,18 @@ on:
       - "*.tf"
 
 jobs:
+  tflint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Setup mise
+        uses: jdx/mise-action@7a111ead46986ccad89a74ad013ba2a7c08c9e67 # v2.2.1
+      
+      - name: Run terraform fmt
+        run: mise exec -- tflint
+
   fmt:
     runs-on: ubuntu-latest
     steps:
