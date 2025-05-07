@@ -1,12 +1,10 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Labeler
+permissions: { contents: read }
 
 on:
   pull_request_target: {}
-
-permissions:
-  contents: read
 
 jobs:
   size-label:

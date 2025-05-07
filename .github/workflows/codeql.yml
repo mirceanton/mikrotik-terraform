@@ -2,17 +2,17 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: CodeQL
 
-on:
-  workflow_dispatch: {}
-  push: { branches: ["main"] }
-  pull_request: { branches: ["main"] }
-  schedule: [{cron: '0 0 * * *'}]
-
 permissions:
   security-events: write
   packages: read
   actions: read
   contents: read
+
+on:
+  schedule: [{ cron: "0 0 * * *" }]
+  push: { branches: ["main"] }
+  pull_request: { branches: ["main"] }
+  workflow_dispatch: {}
 
 jobs:
   analyze:
@@ -24,6 +24,8 @@ jobs:
         include:
           - language: actions
             build-mode: none
+          - language: go
+            build-mode: autobuild
 
     steps:
       - name: Checkout

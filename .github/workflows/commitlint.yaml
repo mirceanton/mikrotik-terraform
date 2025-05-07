@@ -5,6 +5,7 @@ permissions: { contents: read }
 
 on:
   pull_request_target: {}
+  push: {}
 
 jobs:
   commitlint:
@@ -15,8 +16,13 @@ jobs:
 
       - name: Setup mise
         uses: jdx/mise-action@7a111ead46986ccad89a74ad013ba2a7c08c9e67 # v2.2.1
-      
-      - name: Run commitlint
-        run: echo "$PR_TITLE" | mise exec -- commitlint
+
+      - name: Validate PR Title
+        if: github.event_name == 'pull_request_target'
+        run: echo "$PR_TITLE" | mise exec -- commitlint --verbose
         env:
           PR_TITLE: ${{ github.event.pull_request.title }}
+
+      - name: Validate last commit
+        if: github.event_name == 'push'
+        run: mise exec -- commitlint --last --verbose

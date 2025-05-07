@@ -1,16 +1,14 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Actionlint
+permissions: { contents: read }
 
 on:
   workflow_dispatch: {}
   push:
     paths:
       - ".github/workflows/*.yaml"
-      - mise.toml
-
-permissions:
-  contents: read
+      - ".mise.toml"
 
 jobs:
   actionlint:
@@ -21,6 +19,6 @@ jobs:
 
       - name: Setup mise
         uses: jdx/mise-action@7a111ead46986ccad89a74ad013ba2a7c08c9e67 # v2.2.1
-      
+
       - name: Run actionlint
         run: mise exec -- actionlint
