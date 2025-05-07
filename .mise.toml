@@ -6,8 +6,14 @@
 # Encryption Tools
 "aqua:FiloSottile/age" = "1.2.1"
 "aqua:getsops/sops" = "3.10.2"
+
+# Linters
 "aqua:rhysd/actionlint" = "1.7.7"
-node = "22"
 "npm:@commitlint/cli" = "19.8.0"
-"npm:renovate" = "40.8.1"
+
+# Task runners
 "ubi:go-task/task" = "v3.43.1"
+
+# Renovate + runtime
+"npm:renovate" = "40.8.1"
+node = "22"
