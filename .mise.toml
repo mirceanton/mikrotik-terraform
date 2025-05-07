@@ -13,7 +13,7 @@
 "npm:@commitlint/cli" = "19.8.0"
 
 # Task runners
-"ubi:go-task/task" = "v3.43.1"
+"ubi:go-task/task" = "3.43.3"
 
 # Renovate + runtime
 "npm:renovate" = "40.8.1"
