@@ -10,7 +10,7 @@
 
 # Linters
 "aqua:rhysd/actionlint" = "1.7.7"
-"npm:@commitlint/cli" = "19.8.0"
+"npm:@commitlint/cli" = "19.8.1"
 
 # Task runners
 "ubi:go-task/task" = "3.43.3"
