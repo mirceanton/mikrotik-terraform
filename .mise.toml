@@ -16,5 +16,5 @@
 "ubi:go-task/task" = "3.43.3"
 
 # Renovate + runtime
-"npm:renovate" = "40.10.5"
+"npm:renovate" = "40.11.0"
 node = "22"
