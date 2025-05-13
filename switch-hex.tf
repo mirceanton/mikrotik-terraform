@@ -17,7 +17,7 @@ module "hex" {
   providers = { routeros = routeros.hex }
 
   certificate_common_name = "10.0.0.4"
-  hostname                = "Living Room Switch"
+  hostname                = "HEX"
   timezone                = local.timezone
   ntp_servers             = [local.cloudflare_ntp]
 

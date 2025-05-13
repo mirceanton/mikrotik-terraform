@@ -17,7 +17,7 @@ module "crs326" {
   providers = { routeros = routeros.crs326 }
 
   certificate_common_name = "10.0.0.3"
-  hostname                = "Rach Slow"
+  hostname                = "CRS326"
   timezone                = local.timezone
   ntp_servers             = [local.cloudflare_ntp]
 

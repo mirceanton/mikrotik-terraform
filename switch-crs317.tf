@@ -17,7 +17,7 @@ module "crs317" {
   providers = { routeros = routeros.crs317 }
 
   certificate_common_name = "10.0.0.2"
-  hostname                = "Rach Fast"
+  hostname                = "CRS317"
   timezone                = local.timezone
   ntp_servers             = [local.cloudflare_ntp]
 
