@@ -51,7 +51,7 @@ module "crs326" {
     "ether22"      = {}
     "ether23"      = { comment = "Uplink", tagged = local.all_vlans }
     "ether24"      = {}
-    "sfp-sfpplus1" = {}
+    "sfp-sfpplus1" = { comment = "CRS317", tagged = local.all_vlans }
     "sfp-sfpplus2" = { comment = "Mirkputer", untagged = local.vlans.Trusted.name }
   }
 }
