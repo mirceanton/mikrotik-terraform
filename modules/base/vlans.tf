@@ -19,24 +19,24 @@ locals {
         type      = "untagged"
       } if iface.untagged != null && iface.untagged != ""
     ],
-    # # Tagged bond interfaces
-    # flatten([
-    #   for bond_name, bond in var.bond_interfaces : [
-    #     for vlan_name in (bond.tagged != null ? bond.tagged : []) : {
-    #       vlan_name = vlan_name
-    #       iface = bond_name
-    #       type = "tagged"
-    #     }
-    #   ] if bond.tagged != null
-    # ]),
-    # # Untagged bond interfaces
-    # [
-    #   for bond_name, bond in var.bond_interfaces : {
-    #     vlan_name = bond.untagged
-    #     iface = bond_name
-    #     type = "untagged"
-    #   } if bond.untagged != null && bond.untagged != ""
-    # ]
+    # Tagged bond interfaces
+    flatten([
+      for bond_name, bond in var.bond_interfaces : [
+        for vlan_name in (bond.tagged != null ? bond.tagged : []) : {
+          vlan_name = vlan_name
+          iface = bond_name
+          type = "tagged"
+        }
+      ] if bond.tagged != null
+    ]),
+    # Untagged bond interfaces
+    [
+      for bond_name, bond in var.bond_interfaces : {
+        vlan_name = bond.untagged
+        iface = bond_name
+        type = "untagged"
+      } if bond.untagged != null && bond.untagged != ""
+    ]
   ])
 
   # Construct the final bridge_vlans data structure

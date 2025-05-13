@@ -127,9 +127,13 @@ variable "bond_interfaces" {
   type = map(object({
     slaves               = list(string)
     comment              = optional(string, "")
-    mode                 = optional(string, "802.3ad") # 802.3ad, balance-rr, balance-xor, broadcast, active-backup, balance-tlb, balance-alb
+    mode                 = optional(string, "802.3ad")       # 802.3ad, balance-rr, balance-xor, broadcast, active-backup, balance-tlb, balance-alb
     transmit_hash_policy = optional(string, "layer-2-and-3") # layer-2, layer-2-and-3, layer-3-and-4
     mtu                  = optional(number, 1514)
+
+    # VLAN configurations
+    tagged   = optional(list(string))
+    untagged = optional(string)
   }))
   default     = {}
   description = "Map of bond interfaces to configure"
