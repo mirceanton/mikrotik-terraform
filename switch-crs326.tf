@@ -34,7 +34,7 @@ module "crs326" {
     }
     "ether6"       = {}
     "ether7"       = { comment = "TeSmart KVM", untagged = local.vlans.Servers.name }
-    "ether8"       = { comment = "BliKVM", untagged = local.vlans.Servers.name }
+    "ether8"       = { comment = "JetKVM", untagged = local.vlans.Servers.name }
     "ether9"       = {}
     "ether10"      = {}
     "ether11"      = { comment = "HomeAssistant", untagged = local.vlans.Untrusted.name }
