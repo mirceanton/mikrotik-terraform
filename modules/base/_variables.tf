@@ -81,6 +81,12 @@ variable "bridge_comment" {
   description = "Comment for the bridge interface"
 }
 
+variable "bridge_mtu" {
+  type        = string
+  default     = "auto"
+  description = "MTU for the bridge interface"
+}
+
 
 # =================================================================================================
 # VLAN Configuration
@@ -110,9 +116,9 @@ variable "vlans" {
 # =================================================================================================
 variable "ethernet_interfaces" {
   type = map(object({
-    comment                  = optional(string)
-    mtu                      = optional(number)
-    disabled                 = optional(bool)
+    comment                  = optional(string, "")
+    mtu                      = optional(number, 1514)
+    disabled                 = optional(bool, false)
     sfp_shutdown_temperature = optional(number)
     bridge_port              = optional(bool, true)
     # VLAN configurations

@@ -11,12 +11,6 @@ resource "routeros_interface_bonding" "bonds" {
   mode                 = each.value.mode
   transmit_hash_policy = each.value.transmit_hash_policy
   mtu                  = each.value.mtu
-
-  # Force creation after ethernet interfaces and bridge ports are configured
-  depends_on = [
-    routeros_interface_ethernet.ethernet,
-    routeros_interface_bridge_port.ethernet_ports
-  ]
 }
 
 # =================================================================================================

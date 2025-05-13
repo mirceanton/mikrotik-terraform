@@ -7,6 +7,7 @@ resource "routeros_interface_bridge" "bridge" {
   comment        = var.bridge_comment
   disabled       = false
   vlan_filtering = true
+  mtu            = var.bridge_mtu
 }
 
 
