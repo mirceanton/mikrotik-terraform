@@ -1,0 +1,36 @@
+# =================================================================================================
+# Provider Configuration
+# =================================================================================================
+terraform {
+  required_version = "v1.11.4"
+  required_providers {
+    routeros = {
+      source  = "terraform-routeros/routeros"
+      version = "1.84.0"
+    }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = "5.4.0"
+    }
+  }
+}
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
+}
+
+# =================================================================================================
+# Cloudflare Zones
+# =================================================================================================
+data "cloudflare_zone" "main" {
+  filter = {
+    name   = "mirceanton.com"
+    status = "active"
+  }
+}
+data "cloudflare_zone" "secondary" {
+  filter = {
+    name   = "mirceaanton.com"
+    status = "active"
+  }
+}
