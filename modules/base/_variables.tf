@@ -122,3 +122,15 @@ variable "ethernet_interfaces" {
   default     = {}
   description = "Map of ethernet interfaces to configure"
 }
+
+variable "bond_interfaces" {
+  type = map(object({
+    slaves               = list(string)
+    comment              = optional(string, "")
+    mode                 = optional(string, "802.3ad") # 802.3ad, balance-rr, balance-xor, broadcast, active-backup, balance-tlb, balance-alb
+    transmit_hash_policy = optional(string, "layer-2-and-3") # layer-2, layer-2-and-3, layer-3-and-4
+    mtu                  = optional(number, 1514)
+  }))
+  default     = {}
+  description = "Map of bond interfaces to configure"
+}

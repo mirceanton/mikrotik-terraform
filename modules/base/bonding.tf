@@ -1,0 +1,35 @@
+# =================================================================================================
+# Bond Interfaces
+# https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/interface_bonding
+# =================================================================================================
+resource "routeros_interface_bonding" "bonds" {
+  for_each = var.bond_interfaces
+
+  name                 = each.key
+  slaves               = each.value.slaves
+  comment              = each.value.comment
+  mode                 = each.value.mode
+  transmit_hash_policy = each.value.transmit_hash_policy
+  mtu                  = each.value.mtu
+
+  # Force creation after ethernet interfaces and bridge ports are configured
+  depends_on = [
+    routeros_interface_ethernet.ethernet,
+    routeros_interface_bridge_port.ethernet_ports
+  ]
+}
+
+# =================================================================================================
+# Bond Bridge Ports
+# https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/interface_bridge_port
+# =================================================================================================
+resource "routeros_interface_bridge_port" "bond_ports" {
+  for_each = {
+    for k, v in var.bond_interfaces : k => v
+  }
+
+  bridge    = routeros_interface_bridge.bridge.name
+  interface = each.key
+  comment   = each.value.comment != null ? each.value.comment : ""
+  pvid      = 1
+}
