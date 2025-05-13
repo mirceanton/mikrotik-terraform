@@ -5,12 +5,12 @@
 resource "routeros_interface_bonding" "bonds" {
   for_each = var.bond_interfaces
 
-  name     = each.key
-  slaves   = each.value.slaves
-  comment  = each.value.comment
-  mode     = each.value.mode
+  name                 = each.key
+  slaves               = each.value.slaves
+  comment              = each.value.comment
+  mode                 = each.value.mode
   transmit_hash_policy = each.value.transmit_hash_policy
-  mtu      = each.value.mtu
+  mtu                  = each.value.mtu
 
   # Force creation after ethernet interfaces and bridge ports are configured
   depends_on = [

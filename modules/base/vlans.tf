@@ -22,10 +22,10 @@ locals {
     # Tagged bond interfaces
     flatten([
       for bond_name, bond in var.bond_interfaces : [
-        for vlan_name in (bond.tagged != null ? bond.tagged : []) : {
+        for vlan_name in(bond.tagged != null ? bond.tagged : []) : {
           vlan_name = vlan_name
-          iface = bond_name
-          type = "tagged"
+          iface     = bond_name
+          type      = "tagged"
         }
       ] if bond.tagged != null
     ]),
@@ -33,8 +33,8 @@ locals {
     [
       for bond_name, bond in var.bond_interfaces : {
         vlan_name = bond.untagged
-        iface = bond_name
-        type = "untagged"
+        iface     = bond_name
+        type      = "untagged"
       } if bond.untagged != null && bond.untagged != ""
     ]
   ])
