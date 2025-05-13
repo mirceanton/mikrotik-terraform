@@ -27,11 +27,7 @@ module "crs326" {
     "ether2" = { comment = "PVE 01 Onboard", untagged = local.vlans.Servers.name }
     "ether3" = { comment = "PVE 02 Onboard", untagged = local.vlans.Servers.name }
     "ether4" = { comment = "PVE 03 Onboard", untagged = local.vlans.Servers.name }
-    "ether5" = {
-      comment  = "New NAS Onboard",
-      tagged   = [local.vlans.Trusted.name, local.vlans.Untrusted.name],
-      untagged = local.vlans.Servers.name
-    }
+    "ether5" = { comment  = "NAS Onboard", untagged = local.vlans.Servers.name }
     "ether6"       = {}
     "ether7"       = { comment = "TeSmart KVM", untagged = local.vlans.Servers.name }
     "ether8"       = { comment = "JetKVM", untagged = local.vlans.Servers.name }
