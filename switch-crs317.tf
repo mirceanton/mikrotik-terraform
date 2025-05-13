@@ -23,14 +23,14 @@ module "crs317" {
 
   vlans = local.vlans
   ethernet_interfaces = {
-    "sfp-sfpplus1"  = { comment = "NAS 10g 1" }
-    "sfp-sfpplus2"  = { comment = "NAS 10g 2" }
-    "sfp-sfpplus3"  = { comment = "PVE01 10g 1" }
-    "sfp-sfpplus4"  = { comment = "PVE01 10g 2" }
-    "sfp-sfpplus5"  = { comment = "PVE02 10g 1" }
-    "sfp-sfpplus6"  = { comment = "PVE02 10g 2" }
-    "sfp-sfpplus7"  = { comment = "PVE03 10g 1" }
-    "sfp-sfpplus8"  = { comment = "PVE03 10g 2" }
+    "sfp-sfpplus1"  = { comment = "NAS 10g 1", bridge_port = false }
+    "sfp-sfpplus2"  = { comment = "NAS 10g 2", bridge_port = false }
+    "sfp-sfpplus3"  = { comment = "PVE01 10g 1", bridge_port = false }
+    "sfp-sfpplus4"  = { comment = "PVE01 10g 2", bridge_port = false }
+    "sfp-sfpplus5"  = { comment = "PVE02 10g 1", bridge_port = false }
+    "sfp-sfpplus6"  = { comment = "PVE02 10g 2", bridge_port = false }
+    "sfp-sfpplus7"  = { comment = "PVE03 10g 1", bridge_port = false }
+    "sfp-sfpplus8"  = { comment = "PVE03 10g 2", bridge_port = false }
     "sfp-sfpplus9"  = {}
     "sfp-sfpplus10" = {}
     "sfp-sfpplus11" = {}
