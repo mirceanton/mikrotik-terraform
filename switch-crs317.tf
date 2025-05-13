@@ -41,6 +41,24 @@ module "crs317" {
     "sfp-sfpplus16" = { comment = "CRS326", tagged = local.all_vlans }
     "ether1"        = {}
   }
+  bond_interfaces = {
+    "bond1" = {
+      slaves               = ["sfp-sfpplus1", "sfp-sfpplus2"]
+      comment              = "NAS Data"
+    }
+    "bond2" = {
+      slaves               = ["sfp-sfpplus3", "sfp-sfpplus4"]
+      comment              = "PVE01 Data"
+    }
+    "bond3" = {
+      slaves               = ["sfp-sfpplus5", "sfp-sfpplus6"]
+      comment              = "PVE02 Data"
+    }
+    "bond4" = {
+      slaves               = ["sfp-sfpplus7", "sfp-sfpplus8"]
+      comment              = "PVE03 Data"
+    }
+  }
 }
 
 # =================================================================================================
