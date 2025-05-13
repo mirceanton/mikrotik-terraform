@@ -23,7 +23,7 @@ module "crs326" {
 
   vlans = local.vlans
   ethernet_interfaces = {
-    "ether1" = { comment = "Old NAS Onboard", untagged = local.vlans.Servers.name }
+    "ether1" = {}
     "ether2" = { comment = "PVE 01 Onboard", untagged = local.vlans.Servers.name }
     "ether3" = { comment = "PVE 02 Onboard", untagged = local.vlans.Servers.name }
     "ether4" = { comment = "PVE 03 Onboard", untagged = local.vlans.Servers.name }
@@ -32,13 +32,10 @@ module "crs326" {
       tagged   = [local.vlans.Trusted.name, local.vlans.Untrusted.name],
       untagged = local.vlans.Servers.name
     }
-    "ether6" = {}
-    "ether7" = { comment = "TeSmart KVM", untagged = local.vlans.Servers.name }
-    "ether8" = { comment = "BliKVM", untagged = local.vlans.Servers.name }
-    "ether9" = {
-      comment = "Old NAS Data 1",
-      tagged  = [local.vlans.Kubernetes.name, local.vlans.Untrusted.name, local.vlans.Trusted.name],
-    }
+    "ether6"       = {}
+    "ether7"       = { comment = "TeSmart KVM", untagged = local.vlans.Servers.name }
+    "ether8"       = { comment = "BliKVM", untagged = local.vlans.Servers.name }
+    "ether9"       = {}
     "ether10"      = {}
     "ether11"      = { comment = "HomeAssistant", untagged = local.vlans.Untrusted.name }
     "ether12"      = {}
