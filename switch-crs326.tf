@@ -23,11 +23,11 @@ module "crs326" {
 
   vlans = local.vlans
   ethernet_interfaces = {
-    "ether1" = {}
-    "ether2" = { comment = "PVE 01 Onboard", untagged = local.vlans.Servers.name }
-    "ether3" = { comment = "PVE 02 Onboard", untagged = local.vlans.Servers.name }
-    "ether4" = { comment = "PVE 03 Onboard", untagged = local.vlans.Servers.name }
-    "ether5" = { comment  = "NAS Onboard", untagged = local.vlans.Servers.name }
+    "ether1"       = {}
+    "ether2"       = { comment = "PVE 01 Onboard", untagged = local.vlans.Servers.name }
+    "ether3"       = { comment = "PVE 02 Onboard", untagged = local.vlans.Servers.name }
+    "ether4"       = { comment = "PVE 03 Onboard", untagged = local.vlans.Servers.name }
+    "ether5"       = { comment = "NAS Onboard", untagged = local.vlans.Servers.name }
     "ether6"       = {}
     "ether7"       = { comment = "TeSmart KVM", untagged = local.vlans.Servers.name }
     "ether8"       = { comment = "JetKVM", untagged = local.vlans.Servers.name }

@@ -110,8 +110,8 @@ variable "vlans" {
 # =================================================================================================
 variable "ethernet_interfaces" {
   type = map(object({
-    comment                  = optional(string, "")
-    bridge_port              = optional(bool, true)
+    comment     = optional(string, "")
+    bridge_port = optional(bool, true)
 
     # VLAN configurations
     tagged   = optional(list(string)) # list of VLAN names
