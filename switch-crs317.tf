@@ -43,20 +43,25 @@ module "crs317" {
   }
   bond_interfaces = {
     "bond1" = {
-      slaves               = ["sfp-sfpplus1", "sfp-sfpplus2"]
-      comment              = "NAS Data"
+      slaves   = ["sfp-sfpplus1", "sfp-sfpplus2"]
+      comment  = "NAS"
+      tagged   = [for name, vlan in local.vlans : vlan.name if name != "Servers"]
+
     }
     "bond2" = {
-      slaves               = ["sfp-sfpplus3", "sfp-sfpplus4"]
-      comment              = "PVE01 Data"
+      slaves   = ["sfp-sfpplus3", "sfp-sfpplus4"]
+      comment  = "PVE01"
+      tagged   = [for name, vlan in local.vlans : vlan.name if name != "Servers"]
     }
     "bond3" = {
-      slaves               = ["sfp-sfpplus5", "sfp-sfpplus6"]
-      comment              = "PVE02 Data"
+      slaves   = ["sfp-sfpplus5", "sfp-sfpplus6"]
+      comment  = "PVE02"
+      tagged   = [for name, vlan in local.vlans : vlan.name if name != "Servers"]
     }
     "bond4" = {
-      slaves               = ["sfp-sfpplus7", "sfp-sfpplus8"]
-      comment              = "PVE03 Data"
+      slaves   = ["sfp-sfpplus7", "sfp-sfpplus8"]
+      comment  = "PVE03"
+      tagged   = [for name, vlan in local.vlans : vlan.name if name != "Servers"]
     }
   }
 }
