@@ -73,6 +73,7 @@ resource "routeros_interface_vlan" "vlans" {
   interface = var.bridge_name
   name      = each.value.name
   vlan_id   = each.value.vlan_id
+  mtu       = 1500 # ?Set to 9000 for jumbo frames
 }
 
 # =================================================================================================

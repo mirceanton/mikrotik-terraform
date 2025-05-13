@@ -10,7 +10,8 @@ resource "routeros_interface_bonding" "bonds" {
   comment              = each.value.comment
   mode                 = each.value.mode
   transmit_hash_policy = each.value.transmit_hash_policy
-  mtu                  = each.value.mtu
+  mtu                  = 1500 # ?Set to 9000 for jumbo frames
+
 }
 
 # =================================================================================================
