@@ -12,14 +12,14 @@ tasks:
       - sops --decrypt terraform.tfstate.sops > terraform.tfstate
       - sops --decrypt credentials.auto.tfvars.sops > credentials.auto.tfvars
 
-  encrypt:
+  sops:encrypt:
     desc: Encrypt the terraform state and vars files.
     aliases: [ "sops:enc", "sops:e" ]
     cmds:
       - sops --encrypt terraform.tfstate > terraform.tfstate.sops
       - sops --encrypt credentials.auto.tfvars > credentials.auto.tfvars.sops
 
-  plan:
+  terraform:plan:
     desc: Run and summarize terraform plan
     dir: ""
     deps: [{ task: sops:decrypt }]
