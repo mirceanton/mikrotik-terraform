@@ -127,7 +127,7 @@ resource "routeros_ip_firewall_filter" "allow_wireguard_to_k8s" {
   action           = "accept"
   chain            = "forward"
   in_interface     = routeros_interface_wireguard.wireguard.name
-  out_interface    = local.vlans.Kubernetes.name
+  out_interface    = local.vlans.Services.name
   dst_address_list = routeros_ip_firewall_addr_list.k8s_services.list
   place_before     = routeros_ip_firewall_filter.drop_wireguard_forward.id
 }
@@ -291,7 +291,7 @@ resource "routeros_ip_firewall_filter" "allow_untrusted_to_k8s" {
   action           = "accept"
   chain            = "forward"
   in_interface     = local.vlans.Untrusted.name
-  out_interface    = local.vlans.Kubernetes.name
+  out_interface    = local.vlans.Services.name
   dst_address_list = routeros_ip_firewall_addr_list.k8s_services.list
   place_before     = routeros_ip_firewall_filter.drop_untrusted_forward.id
 }
@@ -389,7 +389,7 @@ resource "routeros_ip_firewall_filter" "allow_kubernetes_to_internet" {
   comment            = "Allow Kubernetes to Internet"
   action             = "accept"
   chain              = "forward"
-  in_interface       = local.vlans.Kubernetes.name
+  in_interface       = local.vlans.Services.name
   out_interface_list = routeros_interface_list.wan.name
   place_before       = routeros_ip_firewall_filter.drop_kubernetes_forward.id
 }
@@ -398,7 +398,7 @@ resource "routeros_ip_firewall_filter" "drop_kubernetes_forward" {
   comment      = "Drop all Kubernetes forward"
   action       = "drop"
   chain        = "forward"
-  in_interface = local.vlans.Kubernetes.name
+  in_interface = local.vlans.Services.name
   place_before = routeros_ip_firewall_filter.allow_kubernetes_dns_tcp.id
   # log          = true
   # log_prefix   = "DROPPED Kubernetes FORWARD:"
@@ -409,7 +409,7 @@ resource "routeros_ip_firewall_filter" "allow_kubernetes_dns_tcp" {
   action       = "accept"
   chain        = "input"
   protocol     = "tcp"
-  in_interface = local.vlans.Kubernetes.name
+  in_interface = local.vlans.Services.name
   place_before = routeros_ip_firewall_filter.allow_kubernetes_dns_udp.id
 }
 resource "routeros_ip_firewall_filter" "allow_kubernetes_dns_udp" {
@@ -418,7 +418,7 @@ resource "routeros_ip_firewall_filter" "allow_kubernetes_dns_udp" {
   action       = "accept"
   chain        = "input"
   protocol     = "udp"
-  in_interface = local.vlans.Kubernetes.name
+  in_interface = local.vlans.Services.name
   place_before = routeros_ip_firewall_filter.drop_kubernetes_input.id
 }
 resource "routeros_ip_firewall_filter" "drop_kubernetes_input" {
@@ -426,7 +426,7 @@ resource "routeros_ip_firewall_filter" "drop_kubernetes_input" {
   comment      = "Drop all Kubernetes input"
   action       = "drop"
   chain        = "input"
-  in_interface = local.vlans.Kubernetes.name
+  in_interface = local.vlans.Services.name
   place_before = routeros_ip_firewall_filter.drop_all_forward.id
   # log          = true
   # log_prefix   = "DROPPED Kubernetes INPUT:"

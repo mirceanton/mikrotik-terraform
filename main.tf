@@ -45,8 +45,8 @@ locals {
         "172.16.69.250" = { name = "Smart TV", mac = "38:26:56:E2:93:99" }
       }
     },
-    "Kubernetes" = {
-      name          = "Kubernetes"
+    "Services" = {
+      name          = "Services"
       vlan_id       = 1010
       network       = "10.0.10.0"
       cidr_suffix   = "24"
