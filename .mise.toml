@@ -1,6 +1,6 @@
 [tools]
 # Terraform Stuff
-"aqua:hashicorp/terraform" = "1.11.4"
+"aqua:hashicorp/terraform" = "1.12.0"
 "aqua:dineshba/tf-summarize" = "0.3.14"
 "aqua:terraform-linters/tflint" = "0.57.0"
 
