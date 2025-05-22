@@ -46,3 +46,4 @@ age.key
 !*.sops
 
 .task/checksum
+.DS_Store
