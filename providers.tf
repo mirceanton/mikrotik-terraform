@@ -2,7 +2,7 @@
 # Provider Configuration
 # =================================================================================================
 terraform {
-  required_version = "v1.12.0"
+  required_version = "v1.12.1"
   required_providers {
     routeros = {
       source  = "terraform-routeros/routeros"
