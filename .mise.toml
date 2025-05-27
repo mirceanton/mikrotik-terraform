@@ -2,7 +2,7 @@
 # Terraform Stuff
 "aqua:hashicorp/terraform" = "1.12.1"
 "aqua:dineshba/tf-summarize" = "0.3.14"
-"aqua:terraform-linters/tflint" = "0.57.0"
+"aqua:terraform-linters/tflint" = "0.58.0"
 
 # Encryption Tools
 "aqua:FiloSottile/age" = "1.2.1"
