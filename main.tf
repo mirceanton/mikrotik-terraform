@@ -73,7 +73,7 @@ locals {
         "10.0.0.21"  = { name = "PVE01", mac = "74:56:3C:9E:BF:1A" }
         "10.0.0.22"  = { name = "PVE02", mac = "74:56:3C:99:5B:CE" }
         "10.0.0.23"  = { name = "PVE03", mac = "74:56:3C:B2:E5:A8" }
-        "10.0.0.254" = { name = "BliKVM", mac = "12:00:96:6F:5D:51" }
+        "10.0.0.254" = { name = "JetKVM", mac = "44:B7:D0:E6:2F:29" }
       }
     },
     "Trusted" = {
@@ -86,7 +86,7 @@ locals {
       dns_servers = ["192.168.69.1"]
       domain      = "trst.h.mirceanton.com"
       static_leases = {
-        "192.168.69.69" = { name = "MirkPuter-10g", mac = "24:2F:D0:7F:FA:1F" }
+        "192.168.69.69" = { name = "MirkPuter", mac = "D0:11:E5:D4:65:92" }
         "192.168.69.68" = { name = "BomkPuter", mac = "24:4B:FE:52:D0:65" }
       }
     },
@@ -101,7 +101,7 @@ locals {
       domain      = "utrst.h.mirceanton.com"
       static_leases = {
         "192.168.42.253" = { name = "HomeAssistant", mac = "00:1E:06:42:C7:73" }
-        "192.168.42.69"  = { name = "Mirk Phone", mac = "04:29:2E:ED:1B:4D" }
+        "192.168.42.69"  = { name = "Mirk Phone", mac = "A2:AA:9F:C7:AA:3E" }
         "192.168.42.68"  = { name = "Bomk Phone", mac = "5C:70:17:F3:5F:F8" }
         "192.168.42.42"  = { name = "Bomk iPad", mac = "74:8F:3C:34:FA:E8" }
       }
