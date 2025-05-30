@@ -1,20 +1,20 @@
 [tools]
-# Terraform Stuff
+# =================================================================================================
+# Project Tools
+# =================================================================================================
 "aqua:hashicorp/terraform" = "1.12.1"
 "aqua:dineshba/tf-summarize" = "0.3.14"
 "aqua:terraform-linters/tflint" = "0.58.0"
 
-# Encryption Tools
-"aqua:FiloSottile/age" = "1.2.1"
-"aqua:getsops/sops" = "3.10.2"
+"aqua:FiloSottile/age" = "1"
+"aqua:getsops/sops" = "3"
+"ubi:go-task/task" = "3"
 
-# Linters
-"aqua:rhysd/actionlint" = "1.7.7"
-"npm:@commitlint/cli" = "19.8.1"
-
-# Task runners
-"ubi:go-task/task" = "3.43.3"
-
-# Renovate + runtime
-"npm:renovate" = "40.25.0"
+# =================================================================================================
+# CI Tools
+# =================================================================================================
+"aqua:rhysd/actionlint" = "1"
+"pipx:yamllint" = "1"
 node = "22"
+"npm:@commitlint/cli" = "19"
+"npm:renovate" = "40"
