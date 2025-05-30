@@ -16,13 +16,7 @@ on:
         description: Log Level
         type: choice
         default: debug
-        options:
-          - debug
-          - info
-        required: true
-      version:
-        description: Renovate Version
-        default: latest
+        options: [ debug, info ]
         required: true
 
 concurrency:
