@@ -24,7 +24,7 @@ module "hex" {
   vlans = local.vlans
   ethernet_interfaces = {
     "ether1" = { comment = "Rack Downlink", tagged = local.all_vlans }
-    "ether2" = {}
+    "ether2" = { comment = "SteamBox", untagged = local.vlans.Trusted.name }
     "ether3" = {}
     "ether4" = { comment = "Router Uplink", tagged = local.all_vlans }
     "ether5" = { comment = "Smart TV", untagged = local.vlans.IoT.name }
