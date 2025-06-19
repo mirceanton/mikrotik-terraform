@@ -6,7 +6,7 @@ module "hex" {
 
   certificate_common_name = "10.0.0.4"
   hostname                = "HEX"
-  vlans = var.vlans
+  vlans                   = var.vlans
   ethernet_interfaces = {
     "ether1" = { comment = "Rack Downlink", tagged = var.all_vlans }
     "ether2" = { comment = "SteamBox", untagged = var.vlans.Trusted.name }

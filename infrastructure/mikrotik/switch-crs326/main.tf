@@ -6,7 +6,7 @@ module "crs326" {
 
   certificate_common_name = "10.0.0.3"
   hostname                = "CRS326"
-  vlans = var.vlans
+  vlans                   = var.vlans
   ethernet_interfaces = {
     "ether1"       = {}
     "ether2"       = { comment = "PVE 01 Onboard", untagged = var.vlans.Servers.name }

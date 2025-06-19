@@ -6,7 +6,7 @@ module "crs317" {
 
   certificate_common_name = "10.0.0.2"
   hostname                = "CRS317"
-  vlans = var.vlans
+  vlans                   = var.vlans
   ethernet_interfaces = {
     "sfp-sfpplus1"  = { comment = "NAS 10g 1", bridge_port = false }
     "sfp-sfpplus2"  = { comment = "NAS 10g 2", bridge_port = false }

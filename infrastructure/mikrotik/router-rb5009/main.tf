@@ -6,7 +6,7 @@ module "rb5009" {
 
   certificate_common_name = "10.0.0.1"
   hostname                = "Router"
-  vlans = var.vlans
+  vlans                   = var.vlans
   ethernet_interfaces = {
     "ether1" = { comment = "Digi Uplink", bridge_port = false }
     "ether2" = { comment = "Living Room", tagged = var.all_vlans }
