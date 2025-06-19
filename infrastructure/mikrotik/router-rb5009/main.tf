@@ -1,4 +1,3 @@
-# TODO: convert all locals to variables
 # =================================================================================================
 # Base System Configs
 # =================================================================================================
@@ -7,22 +6,19 @@ module "rb5009" {
 
   certificate_common_name = "10.0.0.1"
   hostname                = "Router"
-  timezone                = local.timezone
-  ntp_servers             = [local.cloudflare_ntp]
-
-  vlans = local.vlans
+  vlans = var.vlans
   ethernet_interfaces = {
     "ether1" = { comment = "Digi Uplink", bridge_port = false }
-    "ether2" = { comment = "Living Room", tagged = local.all_vlans }
-    "ether3" = { comment = "Sploinkhole", untagged = local.vlans.Trusted.name }
+    "ether2" = { comment = "Living Room", tagged = var.all_vlans }
+    "ether3" = { comment = "Sploinkhole", untagged = var.vlans.Trusted.name }
     "ether4" = {}
     "ether5" = {}
     "ether6" = {}
     "ether7" = {}
     "ether8" = {
       comment  = "Access Point",
-      untagged = local.vlans.Servers.name
-      tagged   = [local.vlans.Untrusted.name, local.vlans.Guest.name, local.vlans.IoT.name]
+      untagged = var.vlans.Servers.name
+      tagged   = [var.vlans.Untrusted.name, var.vlans.Guest.name, var.vlans.IoT.name]
     }
     "sfp-sfpplus1" = {}
   }

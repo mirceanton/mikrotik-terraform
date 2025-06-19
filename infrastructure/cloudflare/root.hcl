@@ -2,8 +2,15 @@ include "root" {
   path = find_in_parent_folders()
 }
 
+terraform {
+  source = "../../../modules/cloudflare-cname"
+}
 
-# TODO: Add a dependency on the RB5009 module, also require the router ddns output as an input to this module.
+dependency "router" {
+  config_path = "../mikrotik/router-rb5009"
 
-# TODO: both primary and secondary cloudflare zones are under the same account, so we can use the same credentials for both.
-# this means the provider block can be shared across both zones, so we can define it in the root module.
+  mock_outputs = {
+    ddns_hostname = "example.sn.mynetname.net"
+  }
+  mock_outputs_allowed_terraform_commands = ["validate", "plan", "destroy"]
+}

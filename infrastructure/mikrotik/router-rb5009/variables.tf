@@ -46,3 +46,14 @@ variable "iot_wifi_password" {
   sensitive   = true
   description = "The password for the IoT Wi-Fi network."
 }
+
+
+variable "vlans" {
+  type = map(any) #! barbaric but works i guess
+}
+variable "all_vlans" {
+  type = list(string)
+}
+variable "static_dns" {
+  type = map(any)
+}

@@ -9,3 +9,10 @@ variable "mikrotik_password" {
   description = "The password to authenticate against the RouterOS API."
   sensitive   = true
 }
+
+variable "vlans" {
+  type = map(any) #! barbaric but works i guess
+}
+variable "all_vlans" {
+  type = list(string)
+}

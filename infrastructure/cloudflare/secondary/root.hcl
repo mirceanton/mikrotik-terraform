@@ -1,5 +1,10 @@
-locals {
-    zone_name = "mirceaanton.com"
+include "root" {
+  path = find_in_parent_folders()
 }
 
-# TODO implement the cloudflare-cname module here to create a CNAME for vpn.mirceaanton.com pointing to the RB5009's DDNS hostname.
+inputs = {
+  cloudflare_api_token = get_env("CLOUDFLARE_API_TOKEN")
+  domain = "mirceaanton.com"
+  cname = "vpn"
+  cname_target = dependency.router.outputs.ddns_hostname
+}

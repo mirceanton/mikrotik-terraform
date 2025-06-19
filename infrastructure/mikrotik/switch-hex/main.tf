@@ -1,4 +1,3 @@
-# TODO: convert all locals to variables
 # =================================================================================================
 # Base System Configs
 # =================================================================================================
@@ -7,16 +6,13 @@ module "hex" {
 
   certificate_common_name = "10.0.0.4"
   hostname                = "HEX"
-  timezone                = local.timezone
-  ntp_servers             = [local.cloudflare_ntp]
-
-  vlans = local.vlans
+  vlans = var.vlans
   ethernet_interfaces = {
-    "ether1" = { comment = "Rack Downlink", tagged = local.all_vlans }
-    "ether2" = { comment = "SteamBox", untagged = local.vlans.Trusted.name }
+    "ether1" = { comment = "Rack Downlink", tagged = var.all_vlans }
+    "ether2" = { comment = "SteamBox", untagged = var.vlans.Trusted.name }
     "ether3" = {}
-    "ether4" = { comment = "Router Uplink", tagged = local.all_vlans }
-    "ether5" = { comment = "Smart TV", untagged = local.vlans.IoT.name }
+    "ether4" = { comment = "Router Uplink", tagged = var.all_vlans }
+    "ether5" = { comment = "Smart TV", untagged = var.vlans.IoT.name }
   }
 }
 
@@ -24,7 +20,7 @@ module "hex" {
 # DHCP Client
 # =================================================================================================
 resource "routeros_ip_dhcp_client" "hex" {
-  interface    = local.vlans.Servers.name
+  interface    = var.vlans.Servers.name
   use_peer_dns = true
   use_peer_ntp = false
 }

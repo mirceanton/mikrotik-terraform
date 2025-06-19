@@ -1,8 +1,4 @@
-include "root" {
-  path = find_in_parent_folders()
-}
-
-locals {
+inputs {
   timezone       = "Europe/Bucharest"
   cloudflare_ntp = "time.cloudflare.com"
 
@@ -20,7 +16,6 @@ locals {
     "proxmox.home.mirceanton.com" = { address = "10.0.0.240", type = "A", comment = "Proxmox Management Interface" },
   }
 
-  all_vlans = [for vlan in local.vlans : vlan.name]
   vlans = {
     "Guest" = {
       name          = "Guest"
