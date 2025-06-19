@@ -2,6 +2,10 @@ include "root" {
   path = find_in_parent_folders()
 }
 
+terraform {
+  source = "."
+}
+
 dependency "crs326" {
   config_path  = "../switch-crs326"
   skip_outputs = true

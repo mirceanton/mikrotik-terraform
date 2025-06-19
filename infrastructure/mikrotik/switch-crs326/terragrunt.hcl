@@ -1,10 +1,13 @@
-# infrastructure/mikrotik/switch-hex/terragrunt.hcl
 include "root" {
   path = find_in_parent_folders()
 }
 
-dependency "router" {
-  config_path  = "../router-rb5009"
+terraform {
+  source = "."
+}
+
+dependency "hex" {
+  config_path  = "../switch-hex"
   skip_outputs = true
 }
 

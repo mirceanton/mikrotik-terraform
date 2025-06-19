@@ -2,6 +2,10 @@ include "root" {
   path = find_in_parent_folders()
 }
 
+terraform {
+  source = "."
+}
+
 inputs = {
   mikrotik_username       = get_env("MIKROTIK_USERNAME")
   mikrotik_password       = get_env("MIKROTIK_PASSWORD")
