@@ -3,7 +3,6 @@
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ip_firewall_nat
 # =================================================================================================
 resource "routeros_ip_firewall_nat" "wan" {
-  provider           = routeros.rb5009
   comment            = "WAN masquerade"
   chain              = "srcnat"
   action             = "masquerade"
@@ -12,16 +11,14 @@ resource "routeros_ip_firewall_nat" "wan" {
 
 
 resource "routeros_ip_firewall_addr_list" "k8s_services" {
-  provider = routeros.rb5009
-  list     = "k8s_services"
-  comment  = "IPs allocated to K8S Services."
-  address  = "10.0.10.90-10.0.10.99"
+  list    = "k8s_services"
+  comment = "IPs allocated to K8S Services."
+  address = "10.0.10.90-10.0.10.99"
 }
 resource "routeros_ip_firewall_addr_list" "iot_internet" {
-  provider = routeros.rb5009
-  list     = "iot_internet"
-  comment  = "IoT IPs allowed to the internet."
-  address  = "172.16.69.201-172.16.69.250"
+  list    = "iot_internet"
+  comment = "IoT IPs allowed to the internet."
+  address = "172.16.69.201-172.16.69.250"
 }
 
 
@@ -31,7 +28,6 @@ resource "routeros_ip_firewall_addr_list" "iot_internet" {
 # =================================================================================================
 # Global Rules
 resource "routeros_ip_firewall_filter" "fasttrack" {
-  provider         = routeros.rb5009
   comment          = "Fasttrack"
   action           = "fasttrack-connection"
   chain            = "forward"
@@ -40,7 +36,6 @@ resource "routeros_ip_firewall_filter" "fasttrack" {
   place_before     = routeros_ip_firewall_filter.accept_established_related_untracked_forward.id
 }
 resource "routeros_ip_firewall_filter" "accept_established_related_untracked_forward" {
-  provider         = routeros.rb5009
   comment          = "Allow established, related, untracked"
   action           = "accept"
   chain            = "forward"
@@ -48,7 +43,6 @@ resource "routeros_ip_firewall_filter" "accept_established_related_untracked_for
   place_before     = routeros_ip_firewall_filter.truenas_asymmetric_routing_fix.id
 }
 resource "routeros_ip_firewall_filter" "truenas_asymmetric_routing_fix" {
-  provider         = routeros.rb5009
   comment          = "TrueNAS Asymmetric Routing Fix"
   action           = "accept"
   chain            = "forward"
@@ -58,7 +52,6 @@ resource "routeros_ip_firewall_filter" "truenas_asymmetric_routing_fix" {
   place_before     = routeros_ip_firewall_filter.drop_invalid_forward.id
 }
 resource "routeros_ip_firewall_filter" "drop_invalid_forward" {
-  provider         = routeros.rb5009
   comment          = "Drop invalid"
   action           = "drop"
   chain            = "forward"
@@ -84,7 +77,6 @@ resource "routeros_ip_firewall_filter" "allow_input_icmp" {
   place_before = routeros_ip_firewall_filter.accept_router_established_related_untracked.id
 }
 resource "routeros_ip_firewall_filter" "accept_router_established_related_untracked" {
-  provider         = routeros.rb5009
   comment          = "Allow established, related, untracked to router"
   action           = "accept"
   chain            = "input"
@@ -122,7 +114,6 @@ resource "routeros_ip_firewall_filter" "allow_wireguard_to_untrusted" {
   place_before  = routeros_ip_firewall_filter.allow_wireguard_to_k8s.id
 }
 resource "routeros_ip_firewall_filter" "allow_wireguard_to_k8s" {
-  provider         = routeros.rb5009
   comment          = "Allow Wireguard to K8S Services"
   action           = "accept"
   chain            = "forward"
@@ -286,7 +277,6 @@ resource "routeros_ip_firewall_filter" "allow_untrusted_to_iot" {
   place_before  = routeros_ip_firewall_filter.allow_untrusted_to_k8s.id
 }
 resource "routeros_ip_firewall_filter" "allow_untrusted_to_k8s" {
-  provider         = routeros.rb5009
   comment          = "Allow Untrusted to K8S Services"
   action           = "accept"
   chain            = "forward"

@@ -1,20 +1,8 @@
 # =================================================================================================
-# Provider Configuration
-# =================================================================================================
-provider "routeros" {
-  alias    = "rb5009"
-  hosturl  = "https://10.0.0.1"
-  username = var.mikrotik_username
-  password = var.mikrotik_password
-  insecure = true
-}
-
-# =================================================================================================
 # Base System Configs
 # =================================================================================================
 module "rb5009" {
-  source    = "./modules/base"
-  providers = { routeros = routeros.rb5009 }
+  source = "../../../modules/base"
 
   certificate_common_name = "10.0.0.1"
   hostname                = "Router"
@@ -37,4 +25,18 @@ module "rb5009" {
     }
     "sfp-sfpplus1" = {}
   }
+}
+
+# =================================================================================================
+# PPPoE Client
+# https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/interface_pppoe_client
+# =================================================================================================
+resource "routeros_interface_pppoe_client" "digi" {
+  interface         = "ether1"
+  name              = "PPPoE-Digi"
+  comment           = "Digi PPPoE Client"
+  add_default_route = true
+  use_peer_dns      = false
+  password          = var.digi_pppoe_password
+  user              = var.digi_pppoe_username
 }

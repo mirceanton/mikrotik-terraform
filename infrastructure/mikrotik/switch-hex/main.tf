@@ -1,20 +1,8 @@
 # =================================================================================================
-# Provider Configuration
-# =================================================================================================
-provider "routeros" {
-  alias    = "hex"
-  hosturl  = "https://10.0.0.4"
-  username = var.mikrotik_username
-  password = var.mikrotik_password
-  insecure = true
-}
-
-# =================================================================================================
 # Base System Configs
 # =================================================================================================
 module "hex" {
-  source    = "./modules/base"
-  providers = { routeros = routeros.hex }
+  source = "../../../modules/base"
 
   certificate_common_name = "10.0.0.4"
   hostname                = "HEX"
@@ -35,7 +23,6 @@ module "hex" {
 # DHCP Client
 # =================================================================================================
 resource "routeros_ip_dhcp_client" "hex" {
-  provider     = routeros.hex
   interface    = local.vlans.Servers.name
   use_peer_dns = true
   use_peer_ntp = false

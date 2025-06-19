@@ -1,20 +1,8 @@
 # =================================================================================================
-# Provider Configuration
-# =================================================================================================
-provider "routeros" {
-  alias    = "crs326"
-  hosturl  = "https://10.0.0.3"
-  username = var.mikrotik_username
-  password = var.mikrotik_password
-  insecure = true
-}
-
-# =================================================================================================
 # Base System Configs
 # =================================================================================================
 module "crs326" {
-  source    = "./modules/base"
-  providers = { routeros = routeros.crs326 }
+  source = "../../../modules/base"
 
   certificate_common_name = "10.0.0.3"
   hostname                = "CRS326"
@@ -56,7 +44,6 @@ module "crs326" {
 # DHCP Client
 # =================================================================================================
 resource "routeros_ip_dhcp_client" "crs326" {
-  provider     = routeros.crs326
   interface    = local.vlans.Servers.name
   use_peer_dns = true
   use_peer_ntp = false

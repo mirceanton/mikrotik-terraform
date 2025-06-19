@@ -46,12 +46,3 @@ variable "iot_wifi_password" {
   sensitive   = true
   description = "The password for the IoT Wi-Fi network."
 }
-
-## ================================================================================================
-## Cloudflare Variables
-## ================================================================================================
-variable "cloudflare_api_token" {
-  type        = string
-  description = "The API token for Cloudflare."
-  sensitive   = true
-}
