@@ -1,5 +1,5 @@
 terraform {
-  required_version = "v1.12.2"
+  required_version = ">=v1.10"
   required_providers {
     routeros = {
       source  = "terraform-routeros/routeros"
