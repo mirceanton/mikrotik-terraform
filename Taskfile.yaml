@@ -5,18 +5,14 @@ env:
   SOPS_AGE_KEY_FILE: age.key
 
 tasks:
-  sops:decrypt:
-    desc: Decrypt the terraform state and vars files.
-    aliases: [ "sops:dec", "sops:d" ]
-    dir: "{{.TASKFILE_DIR}}"
-    cmds:
-      - sops --decrypt tfstate.sops.json > tfstate.json
-      - sops --decrypt infrastructure/credentials.auto.tfvars.sops > infrastructure/credentials.auto.tfvars
-
   sops:encrypt:
-    desc: Encrypt the terraform state and vars files.
-    aliases: [ "sops:enc", "sops:e" ]
-    dir: "{{.TASKFILE_DIR}}"
-    cmds:
-      - sops --encrypt tfstate.json > tfstate.sops.json
-      - sops --encrypt infrastructure/credentials.auto.tfvars > infrastructure/credentials.auto.tfvars.sops
+    desc: Encrypt all sops files in this repository.
+    aliases: ["sops:enc", "sops:e"]
+    run: once
+    cmd: bash {{.TASKFILE_DIR}}/.scripts/sops-encrypt-all.sh
+
+  sops:decrypt:
+    desc: Decrypt all sops files in this repository.
+    aliases: ["sops:dec", "sops:d"]
+    run: once
+    cmd: bash {{.TASKFILE_DIR}}/.scripts/sops-decrypt-all.sh {{.CLI_ARGS}}
