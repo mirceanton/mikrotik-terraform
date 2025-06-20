@@ -47,3 +47,5 @@ age.key
 
 .task/checksum
 .DS_Store
+
+.terragrunt-cache/
