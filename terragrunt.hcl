@@ -21,6 +21,6 @@ remote_state {
   }
 
   config = {
-    path = "${get_terragrunt_dir()}/terraform.tfstate"
+    path = "${get_terragrunt_dir()}/tfstate.json"
   }
 }
