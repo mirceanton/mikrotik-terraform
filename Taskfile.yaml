@@ -11,7 +11,7 @@ tasks:
     dir: "{{.TASKFILE_DIR}}"
     cmds:
       - sops --decrypt tfstate.sops.json > tfstate.json
-      - sops --decrypt credentials.auto.tfvars.sops > credentials.auto.tfvars
+      - sops --decrypt infrastructure/credentials.auto.tfvars.sops > infrastructure/credentials.auto.tfvars
 
   sops:encrypt:
     desc: Encrypt the terraform state and vars files.
@@ -19,4 +19,4 @@ tasks:
     dir: "{{.TASKFILE_DIR}}"
     cmds:
       - sops --encrypt tfstate.json > tfstate.sops.json
-      - sops --encrypt credentials.auto.tfvars > credentials.auto.tfvars.sops
+      - sops --encrypt infrastructure/credentials.auto.tfvars > infrastructure/credentials.auto.tfvars.sops
