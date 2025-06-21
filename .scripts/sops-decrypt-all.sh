@@ -6,12 +6,17 @@ RED='\033[0;31m'
 NC='\033[0m'
 
 force=false
+verbose=false
 
 while [[ $# -gt 0 ]]; do
     key="$1"
     case $key in
     -f | --force)
         force=true
+        shift
+        ;;
+    -v | --verbose)
+        verbose=true
         shift
         ;;
     *)
@@ -95,7 +100,9 @@ decrypt_file() {
 # Find and decrypt tfstate.sops.json files
 find . -name "tfstate.sops.json" -type f | while IFS= read -r file; do
     if should_ignore "$file"; then
-        echo -e "${GRAY}Ignoring file: $file${NC}"
+        if [ "$verbose" = true ]; then
+            echo -e "${GRAY}Ignoring file: $file${NC}"
+        fi
         continue
     fi
     decrypted_file="${file%.sops.json}.json"
@@ -105,7 +112,9 @@ done
 # Find and decrypt credentials.auto.sops.tfvars files
 find . -name "credentials.auto.sops.tfvars" -type f | while IFS= read -r file; do
     if should_ignore "$file"; then
-        echo -e "${GRAY}Ignoring file: $file${NC}"
+        if [ "$verbose" = true ]; then
+            echo -e "${GRAY}Ignoring file: $file${NC}"
+        fi
         continue
     fi
     decrypted_file="${file%.sops.tfvars}.tfvars"

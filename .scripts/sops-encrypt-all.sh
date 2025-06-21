@@ -5,6 +5,22 @@ GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
 
+verbose=false
+
+while [[ $# -gt 0 ]]; do
+    key="$1"
+    case $key in
+    -v | --verbose)
+        verbose=true
+        shift
+        ;;
+    *)
+        echo "Unknown option: $1"
+        exit 1
+        ;;
+    esac
+done
+
 # Read ignore patterns from .sopsignore if it exists
 declare -a ignore_patterns=()
 if [ -f ".sopsignore" ]; then
@@ -73,7 +89,9 @@ encrypt_file() {
 # Find and encrypt tfstate.json files
 find . -name "tfstate.json" -type f | while IFS= read -r file; do
     if should_ignore "$file"; then
-        echo -e "${GRAY}Ignoring file: $file${NC}"
+        if [ "$verbose" = true ]; then
+            echo -e "${GRAY}Ignoring file: $file${NC}"
+        fi
         continue
     fi
     encrypted_file="${file%.json}.sops.json"
@@ -83,7 +101,9 @@ done
 # Find and encrypt credentials.auto.tfvars files
 find . -name "credentials.auto.tfvars" -type f | while IFS= read -r file; do
     if should_ignore "$file"; then
-        echo -e "${GRAY}Ignoring file: $file${NC}"
+        if [ "$verbose" = true ]; then
+            echo -e "${GRAY}Ignoring file: $file${NC}"
+        fi
         continue
     fi
     encrypted_file="${file%.tfvars}.sops.tfvars"
