@@ -1,6 +1,7 @@
 .terraform/
 .terragrunt-cache/
 tfstate.json
+*backup
 
 age.key
 *.auto.tfvars
