@@ -3,7 +3,7 @@ include "root" {
 }
 
 terraform {
-  source = "..//infrastructure"
+  source = "${get_repo_root()}//infrastructure/mikrotik/router-rb5009"
 
   extra_arguments custom_vars {
     commands = get_terraform_commands_that_need_vars()

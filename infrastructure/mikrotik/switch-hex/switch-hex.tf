@@ -13,7 +13,7 @@ provider "routeros" {
 # Base System Configs
 # =================================================================================================
 module "hex" {
-  source    = "../modules/base"
+  source    = "../../../modules/base"
   providers = { routeros = routeros.hex }
 
   certificate_common_name = "10.0.0.4"

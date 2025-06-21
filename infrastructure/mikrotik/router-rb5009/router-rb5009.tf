@@ -13,7 +13,7 @@ provider "routeros" {
 # Base System Configs
 # =================================================================================================
 module "rb5009" {
-  source    = "../modules/base"
+  source    = "../../../modules/base"
   providers = { routeros = routeros.rb5009 }
 
   certificate_common_name = "10.0.0.1"
