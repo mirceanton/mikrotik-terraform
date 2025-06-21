@@ -1,11 +1,4 @@
 terraform {
-  source = "infrastructure"
-
-  before_hook "setup_modules" {
-    commands = ["init"]
-    execute  = ["ln", "-sf", "${get_terragrunt_dir()}/modules", "modules"]
-  }
-
   before_hook "decrypt" {
     commands = ["apply", "plan"]
     execute = ["task", "sops:decrypt"]

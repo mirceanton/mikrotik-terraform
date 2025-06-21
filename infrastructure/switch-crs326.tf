@@ -13,7 +13,7 @@ provider "routeros" {
 # Base System Configs
 # =================================================================================================
 module "crs326" {
-  source    = "./modules/base"
+  source    = "../modules/base"
   providers = { routeros = routeros.crs326 }
 
   certificate_common_name = "10.0.0.3"
