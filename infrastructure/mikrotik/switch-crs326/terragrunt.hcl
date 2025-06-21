@@ -13,5 +13,5 @@ terraform {
 inputs = {}
 
 dependencies {
-    paths = []
+    paths = ["../switch-hex"]
 }
