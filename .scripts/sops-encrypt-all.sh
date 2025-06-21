@@ -1,8 +1,48 @@
 #!/bin/bash
 
+GRAY='\033[0;37m'
 GREEN='\033[0;32m'
 RED='\033[0;31m'
 NC='\033[0m'
+
+# Read ignore patterns from .sopsignore if it exists
+declare -a ignore_patterns=()
+if [ -f ".sopsignore" ]; then
+    while IFS= read -r line; do
+        # Skip empty lines and comments
+        if [[ -n "$line" && ! "$line" =~ ^[[:space:]]*# ]]; then
+            # Remove leading/trailing whitespace
+            line=$(echo "$line" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+            if [[ -n "$line" ]]; then
+                ignore_patterns+=("$line")
+            fi
+        fi
+    done < ".sopsignore"
+fi
+
+# Function to check if a path should be ignored
+should_ignore() {
+    local file_path="$1"
+    
+    for pattern in "${ignore_patterns[@]}"; do
+        # Convert relative path to match against pattern
+        local check_path="${file_path#./}"
+        
+        # Handle directory patterns (ending with /)
+        if [[ "$pattern" == */ ]]; then
+            if [[ "$check_path/" == $pattern* ]]; then
+                return 0
+            fi
+        else
+            # Handle file patterns
+            if [[ "$check_path" == $pattern* ]] || [[ "$check_path" == */$pattern* ]] || [[ "$(basename "$check_path")" == $pattern ]]; then
+                return 0
+            fi
+        fi
+    done
+    
+    return 1
+}
 
 # Function to encrypt a file
 encrypt_file() {
@@ -32,12 +72,20 @@ encrypt_file() {
 
 # Find and encrypt tfstate.json files
 find . -name "tfstate.json" -type f | while IFS= read -r file; do
+    if should_ignore "$file"; then
+        echo -e "${GRAY}Ignoring file: $file${NC}"
+        continue
+    fi
     encrypted_file="${file%.json}.sops.json"
     encrypt_file "$file" "$encrypted_file"
 done
 
 # Find and encrypt credentials.auto.tfvars files
 find . -name "credentials.auto.tfvars" -type f | while IFS= read -r file; do
+    if should_ignore "$file"; then
+        echo -e "${GRAY}Ignoring file: $file${NC}"
+        continue
+    fi
     encrypted_file="${file%.tfvars}.sops.tfvars"
     encrypt_file "$file" "$encrypted_file"
 done
