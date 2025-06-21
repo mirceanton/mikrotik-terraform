@@ -19,6 +19,6 @@ remote_state {
   }
 
   config = {
-    path = "${get_terragrunt_dir()}/tfstate.json"
+    path = "${get_repo_root()}/tfstate/${replace(path_relative_to_include(), "infrastructure/", "")}/tfstate.json"
   }
 }
