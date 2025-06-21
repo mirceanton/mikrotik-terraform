@@ -1,6 +1,6 @@
 module "dhcp-server" {
   for_each  = local.vlans
-  source    = "../../../modules/dhcp-server"
+  source    = "../../../modules/mikrotik-dhcp-server"
   providers = { routeros = routeros.rb5009 }
 
   interface_name = each.value.name

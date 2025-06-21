@@ -13,7 +13,7 @@ provider "routeros" {
 # Base System Configs
 # =================================================================================================
 module "crs317" {
-  source    = "../../../modules/base"
+  source    = "../../../modules/mikrotik-base"
   providers = { routeros = routeros.crs317 }
 
   certificate_common_name = "10.0.0.2"
