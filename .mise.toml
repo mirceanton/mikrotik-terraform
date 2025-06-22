@@ -17,4 +17,4 @@
 "pipx:yamllint" = "1"
 node = "22"
 "npm:@commitlint/cli" = "19"
-"npm:renovate" = "40"
+"npm:renovate" = "41"
