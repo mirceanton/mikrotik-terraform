@@ -1,22 +1,3 @@
-variable "mikrotik_hostname" {
-  type        = string
-  description = "The hostname or IP address of the MikroTik device."
-}
-variable "mikrotik_username" {
-  type        = string
-  description = "The username for accessing the MikroTik device."
-}
-variable "mikrotik_password" {
-  type        = string
-  description = "The password for accessing the MikroTik device."
-  sensitive   = true
-}
-variable "mikrotik_insecure" {
-  type        = bool
-  default     = true
-  description = "Whether to skip TLS certificate verification when connecting to the MikroTik device."
-}
-
 # =================================================================================================
 # Device settings
 # =================================================================================================
