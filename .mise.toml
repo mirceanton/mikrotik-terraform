@@ -3,7 +3,7 @@
 # Project Tools
 # =================================================================================================
 "aqua:hashicorp/terraform" = "1.12.2"
-"aqua:dineshba/tf-summarize" = "0.3.14"
+"aqua:gruntwork-io/terragrunt" = "0.81.8"
 "aqua:terraform-linters/tflint" = "0.58.0"
 
 "aqua:FiloSottile/age" = "1"
