@@ -3,14 +3,14 @@ include "root" {
 }
 
 dependencies {
-    paths = [
-      find_in_parent_folders("mikrotik/router-rb5009/services")
-    ]
+  paths = [
+    find_in_parent_folders("mikrotik/router-rb5009/services")
+  ]
 }
 
 locals {
   mikrotik_hostname = "10.0.0.4"
-  shared_locals = read_terragrunt_config(find_in_parent_folders("locals.hcl")).locals
+  shared_locals     = read_terragrunt_config(find_in_parent_folders("locals.hcl")).locals
 }
 
 terraform {
