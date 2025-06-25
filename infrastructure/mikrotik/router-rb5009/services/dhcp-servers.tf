@@ -1,7 +1,6 @@
 module "dhcp-server" {
   for_each  = local.vlans
   source    = "../../../../modules/mikrotik-dhcp-server"
-  providers = { routeros = routeros.rb5009 }
 
   interface_name = each.value.name
   network        = "${each.value.network}/${each.value.cidr_suffix}"
@@ -18,7 +17,6 @@ module "dhcp-server" {
 # =================================================================================================
 resource "routeros_ip_address" "rb5009" {
   for_each  = local.vlans
-  provider  = routeros.rb5009
   address   = "${each.value.gateway}/${each.value.cidr_suffix}"
   interface = each.value.name
   network   = each.value.network
