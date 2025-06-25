@@ -106,6 +106,7 @@ resource "routeros_ip_firewall_filter" "allow_wireguard_dns_tcp" {
   chain        = "input"
   protocol     = "tcp"
   in_interface = routeros_interface_wireguard.wireguard.name
+  dst_port     = "53"
   place_before = routeros_ip_firewall_filter.allow_wireguard_dns_udp.id
 }
 resource "routeros_ip_firewall_filter" "allow_wireguard_dns_udp" {
@@ -114,6 +115,7 @@ resource "routeros_ip_firewall_filter" "allow_wireguard_dns_udp" {
   chain        = "input"
   protocol     = "udp"
   in_interface = routeros_interface_wireguard.wireguard.name
+  dst_port     = "53"
   place_before = routeros_ip_firewall_filter.drop_wireguard_input.id
 }
 resource "routeros_ip_firewall_filter" "drop_wireguard_input" {
@@ -194,6 +196,7 @@ resource "routeros_ip_firewall_filter" "allow_iot_dns_tcp" {
   chain        = "input"
   protocol     = "tcp"
   in_interface = local.vlans.IoT.name
+  dst_port     = "53"
   place_before = routeros_ip_firewall_filter.allow_iot_dns_udp.id
 }
 resource "routeros_ip_firewall_filter" "allow_iot_dns_udp" {
@@ -202,6 +205,7 @@ resource "routeros_ip_firewall_filter" "allow_iot_dns_udp" {
   chain        = "input"
   protocol     = "udp"
   in_interface = local.vlans.IoT.name
+  dst_port     = "53"
   place_before = routeros_ip_firewall_filter.drop_iot_input.id
 }
 resource "routeros_ip_firewall_filter" "drop_iot_input" {
@@ -255,6 +259,7 @@ resource "routeros_ip_firewall_filter" "allow_untrusted_dns_tcp" {
   chain        = "input"
   protocol     = "tcp"
   in_interface = local.vlans.Untrusted.name
+  dst_port     = "53"
   place_before = routeros_ip_firewall_filter.allow_untrusted_dns_udp.id
 }
 resource "routeros_ip_firewall_filter" "allow_untrusted_dns_udp" {
@@ -263,6 +268,7 @@ resource "routeros_ip_firewall_filter" "allow_untrusted_dns_udp" {
   chain        = "input"
   protocol     = "udp"
   in_interface = local.vlans.Untrusted.name
+  dst_port     = "53"
   place_before = routeros_ip_firewall_filter.drop_untrusted_input.id
 }
 resource "routeros_ip_firewall_filter" "drop_untrusted_input" {
@@ -299,6 +305,7 @@ resource "routeros_ip_firewall_filter" "allow_servers_dns_tcp" {
   chain        = "input"
   protocol     = "tcp"
   in_interface = local.vlans.Servers.name
+  dst_port     = "53"
   place_before = routeros_ip_firewall_filter.allow_servers_dns_udp.id
 }
 resource "routeros_ip_firewall_filter" "allow_servers_dns_udp" {
@@ -307,6 +314,7 @@ resource "routeros_ip_firewall_filter" "allow_servers_dns_udp" {
   chain        = "input"
   protocol     = "udp"
   in_interface = local.vlans.Servers.name
+  dst_port     = "53"
   place_before = routeros_ip_firewall_filter.drop_servers_input.id
 }
 resource "routeros_ip_firewall_filter" "drop_servers_input" {
@@ -343,6 +351,7 @@ resource "routeros_ip_firewall_filter" "allow_kubernetes_dns_tcp" {
   chain        = "input"
   protocol     = "tcp"
   in_interface = local.vlans.Services.name
+  dst_port     = "53"
   place_before = routeros_ip_firewall_filter.allow_kubernetes_dns_udp.id
 }
 resource "routeros_ip_firewall_filter" "allow_kubernetes_dns_udp" {
@@ -351,6 +360,7 @@ resource "routeros_ip_firewall_filter" "allow_kubernetes_dns_udp" {
   chain        = "input"
   protocol     = "udp"
   in_interface = local.vlans.Services.name
+  dst_port     = "53"
   place_before = routeros_ip_firewall_filter.drop_kubernetes_input.id
 }
 resource "routeros_ip_firewall_filter" "drop_kubernetes_input" {
