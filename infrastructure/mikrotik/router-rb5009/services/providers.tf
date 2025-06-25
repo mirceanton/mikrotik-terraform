@@ -10,3 +10,11 @@ terraform {
     }
   }
 }
+
+provider "routeros" {
+  alias   = "rb5009"
+  hosturl = "https://10.0.0.1"
+  username = var.mikrotik_username
+  password = var.mikrotik_password
+  insecure = true
+}
