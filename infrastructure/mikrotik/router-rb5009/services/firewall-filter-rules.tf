@@ -166,56 +166,9 @@ resource "routeros_ip_firewall_filter" "drop_guest_input" {
   action       = "drop"
   chain        = "input"
   in_interface = local.vlans.Guest.name
-  place_before = routeros_ip_firewall_filter.allow_iot_to_internet.id
-  # log          = true
-  # log_prefix   = "DROPPED GUEST INPUT:"
-}
-
-# IOT
-resource "routeros_ip_firewall_filter" "allow_iot_to_internet" {
-  comment            = "Allow SOME IoT to Internet"
-  action             = "accept"
-  chain              = "forward"
-  in_interface       = local.vlans.IoT.name
-  out_interface_list = routeros_interface_list.wan.name
-  src_address_list   = routeros_ip_firewall_addr_list.iot_internet.list
-  place_before       = routeros_ip_firewall_filter.drop_iot_forward.id
-}
-resource "routeros_ip_firewall_filter" "drop_iot_forward" {
-  comment      = "Drop all IoT forward"
-  action       = "drop"
-  chain        = "forward"
-  in_interface = local.vlans.IoT.name
-  place_before = routeros_ip_firewall_filter.allow_iot_dns_tcp.id
-  # log          = true
-  # log_prefix   = "DROPPED IoT FORWARD:"
-}
-resource "routeros_ip_firewall_filter" "allow_iot_dns_tcp" {
-  comment      = "Allow local DNS (TCP) for IoT"
-  action       = "accept"
-  chain        = "input"
-  protocol     = "tcp"
-  in_interface = local.vlans.IoT.name
-  dst_port     = "53"
-  place_before = routeros_ip_firewall_filter.allow_iot_dns_udp.id
-}
-resource "routeros_ip_firewall_filter" "allow_iot_dns_udp" {
-  comment      = "Allow local DNS (UDP) for IoT"
-  action       = "accept"
-  chain        = "input"
-  protocol     = "udp"
-  in_interface = local.vlans.IoT.name
-  dst_port     = "53"
-  place_before = routeros_ip_firewall_filter.drop_iot_input.id
-}
-resource "routeros_ip_firewall_filter" "drop_iot_input" {
-  comment      = "Drop all IoT input"
-  action       = "drop"
-  chain        = "input"
-  in_interface = local.vlans.IoT.name
   place_before = routeros_ip_firewall_filter.allow_untrusted_to_internet.id
   # log          = true
-  # log_prefix   = "DROPPED IoT INPUT:"
+  # log_prefix   = "DROPPED GUEST INPUT:"
 }
 
 # UNTRUSTED
@@ -225,15 +178,7 @@ resource "routeros_ip_firewall_filter" "allow_untrusted_to_internet" {
   chain              = "forward"
   in_interface       = local.vlans.Untrusted.name
   out_interface_list = routeros_interface_list.wan.name
-  place_before       = routeros_ip_firewall_filter.allow_untrusted_to_iot.id
-}
-resource "routeros_ip_firewall_filter" "allow_untrusted_to_iot" {
-  comment       = "Allow Untrusted to IoT"
-  action        = "accept"
-  chain         = "forward"
-  in_interface  = local.vlans.Untrusted.name
-  out_interface = local.vlans.IoT.name
-  place_before  = routeros_ip_firewall_filter.allow_untrusted_to_k8s.id
+  place_before       = routeros_ip_firewall_filter.allow_untrusted_to_k8s.id
 }
 resource "routeros_ip_firewall_filter" "allow_untrusted_to_k8s" {
   comment          = "Allow Untrusted to K8S Services"
