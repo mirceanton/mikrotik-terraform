@@ -10,21 +10,10 @@ on:
       - ".github/workflows/terraform.yaml"
       - mise.toml
       - "*.tf"
+      - "*.hcl"
 
 jobs:
-  tflint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-
-      - name: Setup mise
-        uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2.2.3
-      
-      - name: Run terraform fmt
-        run: mise exec -- tflint
-
-  fmt:
+  terraform-fmt:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,8 +25,9 @@ jobs:
       - name: Run terraform fmt
         run: mise exec -- terraform fmt -recursive -check
 
-  validate:
+  terragrunt-format:
     runs-on: ubuntu-latest
+    needs: terraform-fmt
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
@@ -45,8 +35,5 @@ jobs:
       - name: Setup mise
         uses: jdx/mise-action@13abe502c30c1559a5c37dff303831bab82c9402 # v2.2.3
       
-      - name: Initialize workspace
-        run: mise exec -- terraform init
-        
-      - name: Validate configuration
-        run: mise exec -- terraform validate
+      - name: Run terragrunt fmt
+        run: mise exec -- terragrunt hcl format --check
