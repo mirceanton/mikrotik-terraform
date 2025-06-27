@@ -5,15 +5,25 @@ locals {
   upstream_dns = ["1.1.1.1", "8.8.8.8"]
   adlist       = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
   static_dns = {
+    # TrueNAS
     "nas.trst.h.mirceanton.com"  = { address = "192.168.69.245", type = "A", comment = "TrueNAS Trusted" },
     "nas.utrst.h.mirceanton.com" = { address = "192.168.42.245", type = "A", comment = "TrueNAS Untrusted" },
-    "nas.k8s.h.mirceanton.com"   = { address = "10.0.10.245", type = "A", comment = "TrueNAS K8S" },
-    "nas.srv.h.mirceanton.com"   = { address = "10.0.0.245", type = "A", comment = "TrueNAS Servers" },
+    "nas.svc.h.mirceanton.com"   = { address = "10.0.10.245", type = "A", comment = "TrueNAS Services" },
+    "nas.mgmt.h.mirceanton.com"   = { address = "10.0.0.245", type = "A", comment = "TrueNAS Servers" },
 
-    "kvm.home.mirceanton.com"     = { address = "10.0.0.254", type = "A", comment = "BliKVM Web UI" },
-    "hass.home.mirceanton.com"    = { address = "192.168.42.253", type = "A", comment = "HomeAssistant Odroid" },
-    "truenas.home.mirceanton.com" = { address = "10.0.0.245", type = "A", comment = "TrueNAS Management Interface" },
-    "proxmox.home.mirceanton.com" = { address = "10.0.0.240", type = "A", comment = "Proxmox Management Interface" },
+    # JetKVM
+    "kvm.home.mirceanton.com"      = { address = "10.0.0.254", type = "A", comment = "JetKVM Web UI" },
+    "jetkvm.mgmt.h.mirceanton.com" = { address = "10.0.0.254", type = "A", comment = "JetKVM Web UI" },
+
+    # HomeAssistant
+    "hass.home.mirceanton.com"  = { address = "10.0.10.253", type = "A", comment = "HomeAssistant Odroid" },
+    "hass.svc.h.mirceanton.com" = { address = "10.0.10.253", type = "A", comment = "HomeAssistant Odroid" },
+
+    # Proxmox
+    "pve.mgmt.h.mirceanton.com"   = { address = "10.0.0.20", type = "A", comment = "Proxmox Cluster Management Interface" },
+    "pve01.mgmt.h.mirceanton.com" = { address = "10.0.0.21", type = "A", comment = "Proxmox Node 1 Management Interface" },
+    "pve02.mgmt.h.mirceanton.com" = { address = "10.0.0.22", type = "A", comment = "Proxmox Node 2 Management Interface" },
+    "pve03.mgmt.h.mirceanton.com" = { address = "10.0.0.23", type = "A", comment = "Proxmox Node 3 Management Interface" },
   }
 
   all_vlans = [for vlan in local.vlans : vlan.name]
