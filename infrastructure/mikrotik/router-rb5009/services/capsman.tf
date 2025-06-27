@@ -38,11 +38,6 @@ resource "routeros_wifi_security" "guest_wifi_password" {
   authentication_types = ["wpa2-psk", "wpa3-psk"]
   passphrase           = var.guest_wifi_password
 }
-resource "routeros_wifi_security" "iot_wifi_password" {
-  name                 = "iot-wifi-password"
-  authentication_types = ["wpa2-psk", "wpa3-psk"]
-  passphrase           = var.iot_wifi_password
-}
 
 
 # =================================================================================================
@@ -59,11 +54,6 @@ resource "routeros_wifi_datapath" "guest_tagging" {
   comment          = "WiFi -> Guest VLAN"
   vlan_id          = local.vlans.Guest.vlan_id
   client_isolation = true
-}
-resource "routeros_wifi_datapath" "iot_tagging" {
-  name     = "iot-tagging"
-  comment  = "WiFi -> IoT VLAN"
-  vlan_id  = local.vlans.IoT.vlan_id
 }
 
 # =================================================================================================
@@ -84,22 +74,6 @@ resource "routeros_wifi_configuration" "guest" {
   }
   security = {
     config = routeros_wifi_security.guest_wifi_password.name
-  }
-}
-resource "routeros_wifi_configuration" "iot" {
-  country  = "Romania"
-  name     = "badoink-iot"
-  ssid     = "badoink-iot"
-  comment  = ""
-
-  channel = {
-    config = routeros_wifi_channel.slow.name
-  }
-  datapath = {
-    config = routeros_wifi_datapath.iot_tagging.name
-  }
-  security = {
-    config = routeros_wifi_security.iot_wifi_password.name
   }
 }
 resource "routeros_wifi_configuration" "untrusted_slow" {
@@ -148,7 +122,6 @@ resource "routeros_wifi_provisioning" "slow" {
   master_configuration = routeros_wifi_configuration.untrusted_slow.name
   slave_configurations = [
     routeros_wifi_configuration.guest.name,
-    routeros_wifi_configuration.iot.name
   ]
 }
 resource "routeros_wifi_provisioning" "fast" {
