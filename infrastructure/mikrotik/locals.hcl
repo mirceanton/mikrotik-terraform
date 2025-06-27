@@ -11,9 +11,8 @@ locals {
     "nas.svc.h.mirceanton.com"   = { address = "10.0.10.245", type = "A", comment = "TrueNAS Services" },
     "nas.mgmt.h.mirceanton.com"   = { address = "10.0.0.245", type = "A", comment = "TrueNAS Servers" },
 
-    # JetKVM
-    "kvm.home.mirceanton.com"      = { address = "10.0.0.254", type = "A", comment = "JetKVM Web UI" },
-    "jetkvm.mgmt.h.mirceanton.com" = { address = "10.0.0.254", type = "A", comment = "JetKVM Web UI" },
+    "kvm.mgmt.h.mirceanton.com" = { address = "10.0.0.254", type = "A", comment = "JetKVM Web UI" },
+    "tesmart.mgmt.h.mirceanton.com" = { address = "10.0.0.253", type = "A", comment = "TeSmart KVM" },
 
     # HomeAssistant
     "hass.home.mirceanton.com"  = { address = "10.0.10.253", type = "A", comment = "HomeAssistant Odroid" },
