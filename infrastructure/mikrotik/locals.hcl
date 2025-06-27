@@ -70,7 +70,7 @@ locals {
       dns_servers   = ["10.0.10.1"]
       domain        = "svc.h.mirceanton.com"
       static_leases = {
-        "192.168.42.253" = { name = "HomeAssistant", mac = "00:1E:06:42:C7:73" }
+        "10.0.10.253" = { name = "HomeAssistant", mac = "00:1E:06:42:C7:73" }
       }
     },
     "Servers" = {
