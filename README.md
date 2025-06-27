@@ -6,17 +6,23 @@ This repository contains [Terraform](https://developer.hashicorp.com/terraform) 
 
 The purpose of this repository is to provide a structured and repeatable way to manage and automate the setup of my MikroTik devices using Infrastructure as Code (IaC) principles.
 
-## Why Terraform for Network Infrastructure?
+## 🤔 Why Terraform for Network Infrastructure?
 
 Fundamentally speaking, there is nothing that sets this approach apart from, say, a configuration script or just backing up and importing the configuration on the device. Yet, I still decided to use Terraform for this. Why?
 
-1. **I'm weird like that**: As someone who works in DevOps as my main gig, manual configurations (or ClickOps, as we also call it 😉), makes me cringe and I avoid it like the plague. I like defining configuration as code whenever possible since it makes it easy to reproduce and tweak this system.
+1. **I'm weird like that** 🤓
+   
+   As someone who works in DevOps as my main gig, manual configurations (or ClickOps, as we also call it 😉), makes me cringe and I avoid it like the plague. I like defining configuration as code whenever possible since it makes it easy to reproduce and tweak this system.
 
-2. **Skill ~~Issue~~Development**: Working on this project provides a practical, hands-on opportunity to explore advanced Terraform and Terragrunt features and patterns. Not to mention that breaking something takes my entire internet away until I fix it, and fixing it without internet may be tricker than you think. This forces me to think more carefully about the configuration before applying.
+2. **Skill ~~Issue~~Development** 💪🏻
 
-3. **Because I can**: Not everything in life has to have a good reason. Sometimes reinventing the wheel just to learn or doing things for the heck of it are valid reasons.
+   Working on this project provides a practical, hands-on opportunity to explore advanced Terraform and Terragrunt features and patterns. Not to mention that breaking something takes my entire internet away until I fix it, and fixing it without internet may be tricker than you think. This forces me to think more carefully about the configuration before applying.
 
-## Network Overview
+3. **Because I can** 🤷🏼
+
+   Not everything in life has to have a good reason. Sometimes reinventing the wheel just to learn or doing things for the heck of it are valid reasons.
+
+## 🌐 Network Overview
 
 ![Network Diagram](./docs/img/network-diagram.drawio.png)
 
@@ -28,9 +34,11 @@ This project provides automated deployment and management for the following devi
 - **CRS326 switch** -> Main Rack Switch
 - **Hex switch** -> Living Room Switch (no AP functionality used here)
 
+It also automates some external services, such as DNS records in [CloudFlare](https://www.cloudflare.com/).
+
 I was initially planning to also add some more details about my network, like VLAN setup and wireless networks and whatnot, but then I realised I can't really be bothered to also update those whenever I change something, so if you're curious, feel free to look at the code!
 
-## Project Structure
+## 📁 Project Structure
 
 ```bash
 ├── .github/                # Various repo configuration/metadata files
@@ -58,20 +66,20 @@ I was initially planning to also add some more details about my network, like VL
 └── README.md              # This file, lol
 ```
 
-## Getting Started
+## 🚀 Getting Started
 
-### Requirements
+### ⚙️ Requirements
 
 - [Terraform](https://www.terraform.io/) - Infrastructure as Code tool
 - [Terragrunt](https://terragrunt.gruntwork.io/) - Terraform wrapper
-- [mise](https://mise.jdx.dev/) for managing dependencies and running tasks
+- [mise](https://mise.jdx.dev/) for managing dependencies
 - Access to a [BackBlaze](https://www.backblaze.com/) B2 bucket for remote state storage or any other S3 compatible service
 
-### Initial Device Setup
+### 🔧 Initial Device Setup
 
 Before applying any Terraform configurations, new Mikrotik devices need some minimal setup. I will not go into details here, but I did write a [blog post](https://mirceanton.com/posts/mikrotik-terraform-getting-started/) about onboarding a Mikrotik device under Terraform.
 
-### Environment Setup
+### 🌍 Environment Setup
 
 This project uses environment variables for sensitive configuration. Set up the following environment variables:
 
@@ -92,7 +100,7 @@ export GUEST_WIFI_PASSWORD="your_guest_wifi_password"
 export CLOUDFLARE_API_TOKEN="your_cloudflare_api_token"
 ```
 
-### Remote State Configuration
+### ☁️ Remote State Configuration
 
 This project uses BackBlaze B2 for remote state storage. The state configuration is defined in `root.hcl` and automatically manages state files for each device configuration.
 
@@ -103,8 +111,10 @@ export AWS_ACCESS_KEY_ID="your_b2_key_id"
 export AWS_SECRET_ACCESS_KEY="your_b2_application_key"
 ```
 
+Previously, I was using local state files with [SOPS](https://github.com/getsops/sops) encryption to manage sensitive data in the state. While this approach worked, I ultimately decided to migrate to remote state storage to simplify the workflow by removing the encryption/decryption step, and also to stop polluting my commit history with redundant `chore: terraform apply` commits.  
+This may prove to be problematic if I end up cutting my own internet access during an `apply`... but he who lives by the sword, he also dies by it 🗿
 
-## Limitations
+## ⚠️ Limitations
 
 While this project aims to provide comprehensive automation for Mikrotik devices, there are some limitations:
 
@@ -113,7 +123,7 @@ While this project aims to provide comprehensive automation for Mikrotik devices
 - The risk of cutting yourself off of the internet may be low... but it's never zero. Ask me how I know! 😉
 - Prepare to get close and intimate with `terraform state mv` if you plan to rename or move objects around. Very few things are stateless, so they can't be deleted and recreated generally.
 
-## Sharing & Risks
+## 🤝 Sharing & Risks
 
 By publishing this repository, I accept the risk of exposing aspects of my home network topology. While I've taken **some** steps to ensure sensitive information is managed securely, sharing this code inherently comes with certain risks.
 
@@ -122,6 +132,6 @@ All that being said, I ultimately decided to open-source this code and publish i
 1. I believe that sharing knowledge is valuable to the community. As I have learned from others, so shall others be able to learn from me. Such is the cycle.
 2. I truly believe this was an interesting project. I hope that seeing this will inspire others to attempt similar projects and in turn also share their experiences.
 
-## License
+## ⚖️ License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
