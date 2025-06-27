@@ -18,6 +18,37 @@ locals {
 
   all_vlans = [for vlan in local.vlans : vlan.name]
   vlans = {
+    "Trusted" = {
+      name        = "Trusted"
+      vlan_id     = 1969
+      network     = "192.168.69.0"
+      cidr_suffix = "24"
+      gateway     = "192.168.69.1"
+      dhcp_pool   = ["192.168.69.190-192.168.69.199"]
+      dns_servers = ["192.168.69.1"]
+      domain      = "trst.h.mirceanton.com"
+      static_leases = {
+        "192.168.69.69" = { name = "MirkPuter", mac = "D0:11:E5:D4:65:92" }
+        "192.168.69.68" = { name = "BomkPuter", mac = "24:4B:FE:52:D0:65" }
+      }
+    },
+    "Untrusted" = {
+      name        = "Untrusted"
+      vlan_id     = 1942
+      network     = "192.168.42.0"
+      cidr_suffix = "24"
+      gateway     = "192.168.42.1"
+      dhcp_pool   = ["192.168.42.100-192.168.42.199"]
+      dns_servers = ["192.168.42.1"]
+      domain      = "utrst.h.mirceanton.com"
+      static_leases = {
+        "192.168.42.253" = { name = "HomeAssistant", mac = "00:1E:06:42:C7:73" }
+        "192.168.42.250" = { name = "Smart TV", mac = "38:26:56:E2:93:99" }
+        "192.168.42.69"  = { name = "Mirk Phone", mac = "A2:AA:9F:C7:AA:3E" }
+        "192.168.42.68"  = { name = "Bomk Phone", mac = "5C:70:17:F3:5F:F8" }
+        "192.168.42.42"  = { name = "Bomk iPad", mac = "74:8F:3C:34:FA:E8" }
+      }
+    },
     "Guest" = {
       name          = "Guest"
       vlan_id       = 1742
@@ -61,36 +92,6 @@ locals {
         "10.0.0.254" = { name = "JetKVM", mac = "44:B7:D0:E6:2F:29" }
       }
     },
-    "Trusted" = {
-      name        = "Trusted"
-      vlan_id     = 1969
-      network     = "192.168.69.0"
-      cidr_suffix = "24"
-      gateway     = "192.168.69.1"
-      dhcp_pool   = ["192.168.69.190-192.168.69.199"]
-      dns_servers = ["192.168.69.1"]
-      domain      = "trst.h.mirceanton.com"
-      static_leases = {
-        "192.168.69.69" = { name = "MirkPuter", mac = "D0:11:E5:D4:65:92" }
-        "192.168.69.68" = { name = "BomkPuter", mac = "24:4B:FE:52:D0:65" }
-      }
-    },
-    "Untrusted" = {
-      name        = "Untrusted"
-      vlan_id     = 1942
-      network     = "192.168.42.0"
-      cidr_suffix = "24"
-      gateway     = "192.168.42.1"
-      dhcp_pool   = ["192.168.42.100-192.168.42.199"]
-      dns_servers = ["192.168.42.1"]
-      domain      = "utrst.h.mirceanton.com"
-      static_leases = {
-        "192.168.42.253" = { name = "HomeAssistant", mac = "00:1E:06:42:C7:73" }
-        "192.168.42.250" = { name = "Smart TV", mac = "38:26:56:E2:93:99" }
-        "192.168.42.69"  = { name = "Mirk Phone", mac = "A2:AA:9F:C7:AA:3E" }
-        "192.168.42.68"  = { name = "Bomk Phone", mac = "5C:70:17:F3:5F:F8" }
-        "192.168.42.42"  = { name = "Bomk iPad", mac = "74:8F:3C:34:FA:E8" }
-      }
-    },
+
   }
 }
