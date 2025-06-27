@@ -9,9 +9,9 @@ locals {
     "nas.trst.h.mirceanton.com"  = { address = "192.168.69.245", type = "A", comment = "TrueNAS Trusted" },
     "nas.utrst.h.mirceanton.com" = { address = "192.168.42.245", type = "A", comment = "TrueNAS Untrusted" },
     "nas.svc.h.mirceanton.com"   = { address = "10.0.10.245", type = "A", comment = "TrueNAS Services" },
-    "nas.mgmt.h.mirceanton.com"   = { address = "10.0.0.245", type = "A", comment = "TrueNAS Servers" },
+    "nas.mgmt.h.mirceanton.com"  = { address = "10.0.0.245", type = "A", comment = "TrueNAS Servers" },
 
-    "kvm.mgmt.h.mirceanton.com" = { address = "10.0.0.254", type = "A", comment = "JetKVM Web UI" },
+    "kvm.mgmt.h.mirceanton.com"     = { address = "10.0.0.254", type = "A", comment = "JetKVM Web UI" },
     "tesmart.mgmt.h.mirceanton.com" = { address = "10.0.0.253", type = "A", comment = "TeSmart KVM" },
 
     # HomeAssistant
@@ -70,14 +70,14 @@ locals {
     },
 
     "Services" = {
-      name          = "Services"
-      vlan_id       = 1010
-      network       = "10.0.10.0"
-      cidr_suffix   = "24"
-      gateway       = "10.0.10.1"
-      dhcp_pool     = ["10.0.10.195-10.0.10.199"]
-      dns_servers   = ["10.0.10.1"]
-      domain        = "svc.h.mirceanton.com"
+      name        = "Services"
+      vlan_id     = 1010
+      network     = "10.0.10.0"
+      cidr_suffix = "24"
+      gateway     = "10.0.10.1"
+      dhcp_pool   = ["10.0.10.195-10.0.10.199"]
+      dns_servers = ["10.0.10.1"]
+      domain      = "svc.h.mirceanton.com"
       static_leases = {
         "10.0.10.253" = { name = "HomeAssistant", mac = "00:1E:06:42:C7:73" }
       }

@@ -14,7 +14,7 @@ resource "routeros_ip_dns" "dns-server" {
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ip_dns_adlist
 # =================================================================================================
 resource "routeros_ip_dns_adlist" "dns_blocker" {
-  url      = local.adlist
+  url = local.adlist
 }
 
 # =================================================================================================
@@ -24,8 +24,8 @@ resource "routeros_ip_dns_adlist" "dns_blocker" {
 resource "routeros_ip_dns_record" "static" {
   for_each = local.static_dns
 
-  name     = each.key
-  address  = each.value.address
-  comment  = each.value.comment
-  type     = each.value.type
+  name    = each.key
+  address = each.value.address
+  comment = each.value.comment
+  type    = each.value.type
 }

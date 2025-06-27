@@ -15,12 +15,12 @@ resource "routeros_wifi_capsman" "settings" {
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/wifi_channel
 # =================================================================================================
 resource "routeros_wifi_channel" "slow" {
-  name     = "2.4ghz"
-  band     = "2ghz-ax"
+  name = "2.4ghz"
+  band = "2ghz-ax"
 }
 resource "routeros_wifi_channel" "fast" {
-  name     = "5ghz"
-  band     = "5ghz-ax"
+  name = "5ghz"
+  band = "5ghz-ax"
 }
 
 
@@ -45,9 +45,9 @@ resource "routeros_wifi_security" "guest_wifi_password" {
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/wifi_datapath
 # =================================================================================================
 resource "routeros_wifi_datapath" "untrusted_tagging" {
-  name     = "untrusted-tagging"
-  comment  = "WiFi -> Untrusted VLAN"
-  vlan_id  = local.vlans.Untrusted.vlan_id
+  name    = "untrusted-tagging"
+  comment = "WiFi -> Untrusted VLAN"
+  vlan_id = local.vlans.Untrusted.vlan_id
 }
 resource "routeros_wifi_datapath" "guest_tagging" {
   name             = "guest-tagging"
@@ -61,10 +61,10 @@ resource "routeros_wifi_datapath" "guest_tagging" {
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/wifi_configuration
 # =================================================================================================
 resource "routeros_wifi_configuration" "guest" {
-  country  = "Romania"
-  name     = "badoink-guest"
-  ssid     = "badoink-guest"
-  comment  = ""
+  country = "Romania"
+  name    = "badoink-guest"
+  ssid    = "badoink-guest"
+  comment = ""
 
   channel = {
     config = routeros_wifi_channel.slow.name
@@ -77,10 +77,10 @@ resource "routeros_wifi_configuration" "guest" {
   }
 }
 resource "routeros_wifi_configuration" "untrusted_slow" {
-  country  = "Romania"
-  name     = "badoink-2ghz"
-  ssid     = "badoink-2ghz"
-  comment  = ""
+  country = "Romania"
+  name    = "badoink-2ghz"
+  ssid    = "badoink-2ghz"
+  comment = ""
 
   channel = {
     config = routeros_wifi_channel.slow.name
@@ -93,10 +93,10 @@ resource "routeros_wifi_configuration" "untrusted_slow" {
   }
 }
 resource "routeros_wifi_configuration" "untrusted_fast" {
-  country  = "Romania"
-  name     = "badoink-5ghz"
-  ssid     = "badoink-5ghz"
-  comment  = ""
+  country = "Romania"
+  name    = "badoink-5ghz"
+  ssid    = "badoink-5ghz"
+  comment = ""
 
 
   channel = {

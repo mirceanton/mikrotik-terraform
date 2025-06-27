@@ -1,6 +1,6 @@
 module "dhcp-server" {
-  for_each  = local.vlans
-  source    = "../../../../modules/mikrotik-dhcp-server"
+  for_each = local.vlans
+  source   = "../../../../modules/mikrotik-dhcp-server"
 
   interface_name = each.value.name
   network        = "${each.value.network}/${each.value.cidr_suffix}"
