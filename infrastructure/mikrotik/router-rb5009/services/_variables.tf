@@ -11,18 +11,3 @@ variable "digi_pppoe_username" {
   sensitive   = true
   description = "The PPPoE username for the Digi connection."
 }
-
-
-## ================================================================================================
-## WiFi Variables
-## ================================================================================================
-variable "untrusted_wifi_password" {
-  type        = string
-  sensitive   = true
-  description = "The password for the Untrusted Wi-Fi network."
-}
-variable "guest_wifi_password" {
-  type        = string
-  sensitive   = true
-  description = "The password for the Guest Wi-Fi network."
-}

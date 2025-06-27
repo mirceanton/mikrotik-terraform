@@ -92,10 +92,6 @@ export MIKROTIK_PASSWORD="your_password"
 export PPPOE_USERNAME="your_pppoe_username"
 export PPPOE_PASSWORD="your_pppoe_password"
 
-# WiFi passwords
-export UNTRUSTED_WIFI_PASSWORD="your_untrusted_wifi_password"
-export GUEST_WIFI_PASSWORD="your_guest_wifi_password"
-
 # Cloudflare API token (for DNS automation)
 export CLOUDFLARE_API_TOKEN="your_cloudflare_api_token"
 ```

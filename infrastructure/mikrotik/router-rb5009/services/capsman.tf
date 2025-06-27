@@ -28,15 +28,18 @@ resource "routeros_wifi_channel" "fast" {
 # WiFi Security
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/wifi_security
 # =================================================================================================
+resource "random_string" "untrusted_wifi_password" { length  = 32 }
 resource "routeros_wifi_security" "untrusted_wifi_password" {
   name                 = "untrusted-wifi-password"
   authentication_types = ["wpa2-psk", "wpa3-psk"]
-  passphrase           = var.untrusted_wifi_password
+  passphrase           = random_string.untrusted_wifi_password.result
 }
+
+resource "random_string" "guest_wifi_password" { length  = 32 }
 resource "routeros_wifi_security" "guest_wifi_password" {
   name                 = "guest-wifi-password"
   authentication_types = ["wpa2-psk", "wpa3-psk"]
-  passphrase           = var.guest_wifi_password
+  passphrase           = random_string.guest_wifi_password.result
 }
 
 
