@@ -14,8 +14,8 @@ resource "routeros_interface_wireguard" "wireguard" {
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ip_address
 # =================================================================================================
 resource "routeros_ip_address" "wireguard" {
-  address   = "192.168.255.1/24"
+  address   = "192.168.250.1/24"
   interface = routeros_interface_wireguard.wireguard.name
   comment   = "Wireguard VPN"
-  network   = "192.168.255.0"
+  network   = "192.168.250.0"
 }
