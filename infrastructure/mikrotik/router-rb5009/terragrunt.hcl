@@ -36,7 +36,7 @@ inputs = {
     "ether7" = {}
     "ether8" = {
       comment  = "Access Point",
-      untagged = local.shared_locals.vlans.Servers.name
+      untagged = local.shared_locals.vlans.Management.name
       tagged   = [local.shared_locals.vlans.Untrusted.name, local.shared_locals.vlans.Guest.name]
     }
     "sfp-sfpplus1" = {}

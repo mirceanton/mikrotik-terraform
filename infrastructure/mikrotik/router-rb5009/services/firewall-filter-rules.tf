@@ -56,7 +56,7 @@ resource "routeros_ip_firewall_filter" "truenas_asymmetric_routing_fix" {
   chain            = "forward"
   connection_state = "invalid"
   in_interface     = local.vlans.Trusted.name
-  out_interface    = local.vlans.Servers.name
+  out_interface    = local.vlans.Management.name
   place_before     = routeros_ip_firewall_filter.allow_wireguard_connections.id
 }
 
@@ -249,7 +249,7 @@ resource "routeros_ip_firewall_filter" "allow_servers_to_internet" {
   comment            = "Allow Servers to Internet"
   action             = "accept"
   chain              = "forward"
-  in_interface       = local.vlans.Servers.name
+  in_interface       = local.vlans.Management.name
   out_interface_list = routeros_interface_list.wan.name
   place_before       = routeros_ip_firewall_filter.drop_servers_forward.id
 }
@@ -257,7 +257,7 @@ resource "routeros_ip_firewall_filter" "drop_servers_forward" {
   comment      = "Drop all Servers forward"
   action       = "drop"
   chain        = "forward"
-  in_interface = local.vlans.Servers.name
+  in_interface = local.vlans.Management.name
   place_before = routeros_ip_firewall_filter.allow_servers_dns_tcp.id
   # log          = true
   # log_prefix   = "DROPPED Servers FORWARD:"
@@ -269,7 +269,7 @@ resource "routeros_ip_firewall_filter" "allow_servers_dns_tcp" {
   action       = "accept"
   chain        = "input"
   protocol     = "tcp"
-  in_interface = local.vlans.Servers.name
+  in_interface = local.vlans.Management.name
   dst_port     = "53"
   place_before = routeros_ip_firewall_filter.allow_servers_dns_udp.id
 }
@@ -278,7 +278,7 @@ resource "routeros_ip_firewall_filter" "allow_servers_dns_udp" {
   action       = "accept"
   chain        = "input"
   protocol     = "udp"
-  in_interface = local.vlans.Servers.name
+  in_interface = local.vlans.Management.name
   dst_port     = "53"
   place_before = routeros_ip_firewall_filter.drop_servers_input.id
 }
@@ -286,7 +286,7 @@ resource "routeros_ip_firewall_filter" "drop_servers_input" {
   comment      = "Drop all Servers input"
   action       = "drop"
   chain        = "input"
-  in_interface = local.vlans.Servers.name
+  in_interface = local.vlans.Management.name
   place_before = routeros_ip_firewall_filter.allow_services_to_internet.id
   # log          = true
   # log_prefix   = "DROPPED Servers INPUT:"

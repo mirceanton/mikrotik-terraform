@@ -82,8 +82,8 @@ locals {
         "10.0.10.253" = { name = "HomeAssistant", mac = "00:1E:06:42:C7:73" }
       }
     },
-    "Servers" = {
-      name        = "Servers"
+    "Management" = {
+      name        = "Management"
       vlan_id     = 1000
       network     = "10.0.0.0"
       cidr_suffix = "24"
