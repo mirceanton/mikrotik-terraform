@@ -29,19 +29,7 @@ locals {
       domain        = "gst.h.mirceanton.com"
       static_leases = {}
     },
-    "IoT" = {
-      name        = "IoT"
-      vlan_id     = 1769
-      network     = "172.16.69.0"
-      cidr_suffix = "24"
-      gateway     = "172.16.69.1"
-      dhcp_pool   = ["172.16.69.10-172.16.69.200"]
-      dns_servers = ["172.16.69.1"]
-      domain      = "iot.h.mirceanton.com"
-      static_leases = {
-        
-      }
-    },
+
     "Services" = {
       name          = "Services"
       vlan_id       = 1010
