@@ -69,7 +69,7 @@ locals {
       gateway       = "10.0.10.1"
       dhcp_pool     = ["10.0.10.195-10.0.10.199"]
       dns_servers   = ["10.0.10.1"]
-      domain        = "k8s.h.mirceanton.com"
+      domain        = "svc.h.mirceanton.com"
       static_leases = {}
     },
     "Servers" = {
