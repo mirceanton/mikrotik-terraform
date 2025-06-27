@@ -42,7 +42,6 @@ locals {
       dns_servers = ["192.168.42.1"]
       domain      = "utrst.h.mirceanton.com"
       static_leases = {
-        "192.168.42.253" = { name = "HomeAssistant", mac = "00:1E:06:42:C7:73" }
         "192.168.42.250" = { name = "Smart TV", mac = "38:26:56:E2:93:99" }
         "192.168.42.69"  = { name = "Mirk Phone", mac = "A2:AA:9F:C7:AA:3E" }
         "192.168.42.68"  = { name = "Bomk Phone", mac = "5C:70:17:F3:5F:F8" }
@@ -70,7 +69,9 @@ locals {
       dhcp_pool     = ["10.0.10.195-10.0.10.199"]
       dns_servers   = ["10.0.10.1"]
       domain        = "svc.h.mirceanton.com"
-      static_leases = {}
+      static_leases = {
+        "192.168.42.253" = { name = "HomeAssistant", mac = "00:1E:06:42:C7:73" }
+      }
     },
     "Servers" = {
       name        = "Servers"
