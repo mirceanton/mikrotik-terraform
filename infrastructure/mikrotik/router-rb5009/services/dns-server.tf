@@ -7,7 +7,6 @@ resource "routeros_ip_dns" "dns-server" {
   servers               = local.upstream_dns
   cache_size            = 8192
   cache_max_ttl         = "1d"
-  mdns_repeat_ifaces    = [local.vlans.IoT.name, local.vlans.Untrusted.name]
 }
 
 # =================================================================================================

@@ -37,7 +37,7 @@ inputs = {
     "ether2" = { comment = "SteamBox", untagged = local.shared_locals.vlans.Trusted.name }
     "ether3" = {}
     "ether4" = { comment = "Router Uplink", tagged = local.shared_locals.all_vlans }
-    "ether5" = { comment = "Smart TV", untagged = local.shared_locals.vlans.IoT.name }
+    "ether5" = { comment = "Smart TV", untagged = local.shared_locals.vlans.Untrusted.name }
   }
 }
 

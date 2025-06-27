@@ -29,19 +29,7 @@ locals {
       domain        = "gst.h.mirceanton.com"
       static_leases = {}
     },
-    "IoT" = {
-      name        = "IoT"
-      vlan_id     = 1769
-      network     = "172.16.69.0"
-      cidr_suffix = "24"
-      gateway     = "172.16.69.1"
-      dhcp_pool   = ["172.16.69.10-172.16.69.200"]
-      dns_servers = ["172.16.69.1"]
-      domain      = "iot.h.mirceanton.com"
-      static_leases = {
-        "172.16.69.250" = { name = "Smart TV", mac = "38:26:56:E2:93:99" }
-      }
-    },
+
     "Services" = {
       name          = "Services"
       vlan_id       = 1010
@@ -98,6 +86,7 @@ locals {
       domain      = "utrst.h.mirceanton.com"
       static_leases = {
         "192.168.42.253" = { name = "HomeAssistant", mac = "00:1E:06:42:C7:73" }
+        "192.168.42.250" = { name = "Smart TV", mac = "38:26:56:E2:93:99" }
         "192.168.42.69"  = { name = "Mirk Phone", mac = "A2:AA:9F:C7:AA:3E" }
         "192.168.42.68"  = { name = "Bomk Phone", mac = "5C:70:17:F3:5F:F8" }
         "192.168.42.42"  = { name = "Bomk iPad", mac = "74:8F:3C:34:FA:E8" }
