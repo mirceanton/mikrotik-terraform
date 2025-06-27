@@ -37,7 +37,7 @@ inputs = {
     "ether8" = {
       comment  = "Access Point",
       untagged = local.shared_locals.vlans.Servers.name
-      tagged   = [local.shared_locals.vlans.Untrusted.name, local.shared_locals.vlans.Guest.name ]
+      tagged   = [local.shared_locals.vlans.Untrusted.name, local.shared_locals.vlans.Guest.name]
     }
     "sfp-sfpplus1" = {}
   }
