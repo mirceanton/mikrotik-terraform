@@ -26,8 +26,3 @@ variable "guest_wifi_password" {
   sensitive   = true
   description = "The password for the Guest Wi-Fi network."
 }
-variable "iot_wifi_password" {
-  type        = string
-  sensitive   = true
-  description = "The password for the IoT Wi-Fi network."
-}

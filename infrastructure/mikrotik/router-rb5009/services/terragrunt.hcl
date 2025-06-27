@@ -31,6 +31,5 @@ inputs = {
   digi_pppoe_username = get_env("DIGI_PPPOE_USERNAME")
   untrusted_wifi_password = get_env("UNTRUSTED_WIFI_PASSWORD")
   guest_wifi_password = get_env("GUEST_WIFI_PASSWORD")
-  iot_wifi_password = get_env("IOT_WIFI_PASSWORD")
 }
 
