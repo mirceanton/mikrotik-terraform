@@ -2,7 +2,9 @@
 
 ![Thumbnail](./docs/img/thumbnail.png)
 
-This repository contains Terraform automation for my entire Mikrotik-powered home network. The purpose of this repository is to provide a structured and repeatable way to manage and automate the setup of my MikroTik devices using Infrastructure as Code (IaC) principles.
+This repository contains [Terraform](https://developer.hashicorp.com/terraform) automation for my entire Mikrotik-powered home network, applied and orchestrated via [Terragrunt](https://terragrunt.gruntwork.io/).
+
+The purpose of this repository is to provide a structured and repeatable way to manage and automate the setup of my MikroTik devices using Infrastructure as Code (IaC) principles.
 
 ## Why Terraform for Network Infrastructure?
 
@@ -10,7 +12,7 @@ Fundamentally speaking, there is nothing that sets this approach apart from, say
 
 1. **I'm weird like that**: As someone who works in DevOps as my main gig, manual configurations (or ClickOps, as we also call it 😉), makes me cringe and I avoid it like the plague. I like defining configuration as code whenever possible since it makes it easy to reproduce and tweak this system.
 
-2. **Skill ~~Issue~~Development**: Working on this project provides a practical, hands-on opportunity to explore advanced Terraform features and patterns. Not to mention that breaking something takes my entire internet away until I fix it, and fixing it without internet may be tricker than you think. This forces me to think more carefully about the configuration before applying.
+2. **Skill ~~Issue~~Development**: Working on this project provides a practical, hands-on opportunity to explore advanced Terraform and Terragrunt features and patterns. Not to mention that breaking something takes my entire internet away until I fix it, and fixing it without internet may be tricker than you think. This forces me to think more carefully about the configuration before applying.
 
 3. **Because I can**: Not everything in life has to have a good reason. Sometimes reinventing the wheel just to learn or doing things for the heck of it are valid reasons.
 
@@ -22,6 +24,7 @@ This project provides automated deployment and management for the following devi
 
 - **RB5009 router** -> main router + firewall + CAPSMAN server
 - **cAP AX Access Point** -> provisioned via CAPSMAN
+- **CRS317 switch** -> High-performance 10G switch for server connectivity
 - **CRS326 switch** -> Main Rack Switch
 - **Hex switch** -> Living Room Switch (no AP functionality used here)
 
@@ -30,62 +33,76 @@ I was initially planning to also add some more details about my network, like VL
 ## Project Structure
 
 ```bash
-├── .github/   # GitHub workflow configurations and automation
-├── modules
-│   ├── base        # Base configuration for all devices
-│   └── dhcp-server # DHCP server configuration
-├── .sops.yaml      # SOPS configuration
-├── credentials.auto.tfvars.sops # SOPS encrypted tfvars file
-├── mise.toml       # tool configuration + dev tasks
-├── main.tf         # Provider configuration + Local variables
-├── router-*.tf               # RB5009 router configurations
-├── switch-*.tf               # Switch device configuration
-├── terraform.tfstate.sops    # SOPS-encrypted TF state file
-└── variables.tf              # Terraform input variables
+├── .github/                # Various repo configuration/metadata files
+│   └── workflows/          # GitHub workflow configurations and automation
+├── docs/img                # Network Diagram(s)
+├── infrastructure/         # Terragrunt configurations
+│   ├── cloudflare/         # Cloudflare DNS automation
+│   │   ├── dependency.hcl  # Shared dependency configuration
+│   │   ├── primary/        # Primary domain CNAME records
+│   │   └── secondary/      # Secondary domain CNAME records
+│   └── mikrotik/           # MikroTik device configurations
+│       ├── locals.hcl      # Shared local variables (VLANs, DNS, etc.)
+│       ├── provider.hcl    # Shared provider configuration
+│       ├── _shared/        # Shared Terraform files
+│       ├── router-rb5009/  # RB5009 router configuration
+│       │   └── services/   # Router services (DHCP, DNS, VPN, etc.)
+│       ├── switch-crs317/  # CRS317 switch configuration
+│       ├── switch-crs326/  # CRS326 switch configuration
+│       └── switch-hex/     # Hex switch configuration
+├── modules/                # Reusable Terraform modules
+│   ├── cloudflare-cname/   # Cloudflare CNAME record module
+│   ├── mikrotik-base/      # Base MikroTik device configuration
+│   └── mikrotik-dhcp-server/ # DHCP server configuration
+├── root.hcl               # Root Terragrunt configuration (remote state)
+└── README.md              # This file, lol
 ```
 
 ## Getting Started
 
 ### Requirements
 
-- [Terraform](https://www.terraform.io/) (duh!)
+- [Terraform](https://www.terraform.io/) - Infrastructure as Code tool
+- [Terragrunt](https://terragrunt.gruntwork.io/) - Terraform wrapper
 - [mise](https://mise.jdx.dev/) for managing dependencies and running tasks
-- [SOPS](https://github.com/getsops/sops) for secrets management
-- [age](https://github.com/FiloSottile/age) for encryption
+- Access to a [BackBlaze](https://www.backblaze.com/) B2 bucket for remote state storage or any other S3 compatible service
 
 ### Initial Device Setup
 
-Before applying Terraform configurations, new Mikrotik devices need minimal setup to enable Terraform management. I will not go into details here, but I did write a [blog post](https://mirceanton.com/posts/mikrotik-terraform-getting-started/) about it in which you can learn more.
+Before applying any Terraform configurations, new Mikrotik devices need some minimal setup. I will not go into details here, but I did write a [blog post](https://mirceanton.com/posts/mikrotik-terraform-getting-started/) about onboarding a Mikrotik device under Terraform.
 
-### Secrets Management
+### Environment Setup
 
-This project uses SOPS with age for encryption of sensitive data:
+This project uses environment variables for sensitive configuration. Set up the following environment variables:
 
-1. **Setup environment**:
+```bash
+# MikroTik device credentials
+export MIKROTIK_USERNAME="your_username"
+export MIKROTIK_PASSWORD="your_password"
 
-   ```bash
-   mise install
-   ```
+# ISP credentials (for PPPoE)
+export PPPOE_USERNAME="your_pppoe_username"
+export PPPOE_PASSWORD="your_pppoe_password"
 
-2. **Decrypt secrets** (requires access to the age key):
+# WiFi passwords
+export UNTRUSTED_WIFI_PASSWORD="your_untrusted_wifi_password"
+export GUEST_WIFI_PASSWORD="your_guest_wifi_password"
 
-   ```bash
-   mise run decrypt
-   ```
+# Cloudflare API token (for DNS automation)
+export CLOUDFLARE_API_TOKEN="your_cloudflare_api_token"
+```
 
-3. **After making changes, encrypt secrets**:
+### Remote State Configuration
 
-   ```bash
-   mise run encrypt
-   ```
+This project uses BackBlaze B2 for remote state storage. The state configuration is defined in `root.hcl` and automatically manages state files for each device configuration.
 
-### Applying Terraform Configuration
+To authenticate against the B2 API endpoint, you need these environment variables configured:
 
-1. **Initialize Terraform**: `terraform init`
-2. **Decrypt secrets**: `mise run decrypt`
-3. **Plan** (and review) **changes**: `mise run plan`
-4. **Apply changes**: `terraform apply`
-5. **Re-encrypt secrets** (state file, mainly): `mise run encrypt`
+```bash
+export AWS_ACCESS_KEY_ID="your_b2_key_id"
+export AWS_SECRET_ACCESS_KEY="your_b2_application_key"
+```
+
 
 ## Limitations
 
@@ -98,8 +115,7 @@ While this project aims to provide comprehensive automation for Mikrotik devices
 
 ## Sharing & Risks
 
-By publishing this repository, I accept the risk of exposing aspects of my home network topology. Storing the state and tfvars in git, albeit encrypted, doesn't help much in this regard either! 😅  
-While I've taken **some** steps to ensure sensitive information is managed securely, sharing this code inherently comes with certain risks.
+By publishing this repository, I accept the risk of exposing aspects of my home network topology. While I've taken **some** steps to ensure sensitive information is managed securely, sharing this code inherently comes with certain risks.
 
 All that being said, I ultimately decided to open-source this code and publish it for 2 main reasons:
 
