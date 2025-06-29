@@ -16,6 +16,15 @@ resource "routeros_ip_firewall_filter" "accept_established_related_untracked_for
   action           = "accept"
   chain            = "forward"
   connection_state = "established,related,untracked"
+  place_before     = routeros_ip_firewall_filter.truenas_asymmetric_routing_fix.id
+}
+resource "routeros_ip_firewall_filter" "truenas_asymmetric_routing_fix" {
+  comment          = "TrueNAS Asymmetric Routing Fix"
+  action           = "accept"
+  chain            = "forward"
+  connection_state = "invalid"
+  in_interface     = local.vlans.Trusted.name
+  out_interface    = local.vlans.Management.name
   place_before     = routeros_ip_firewall_filter.drop_invalid_forward.id
 }
 resource "routeros_ip_firewall_filter" "drop_invalid_forward" {
@@ -46,19 +55,9 @@ resource "routeros_ip_firewall_filter" "accept_router_established_related_untrac
   action           = "accept"
   chain            = "input"
   connection_state = "established,related,untracked"
-  place_before     = routeros_ip_firewall_filter.truenas_asymmetric_routing_fix.id
-}
-
-# ???
-resource "routeros_ip_firewall_filter" "truenas_asymmetric_routing_fix" {
-  comment          = "TrueNAS Asymmetric Routing Fix"
-  action           = "accept"
-  chain            = "forward"
-  connection_state = "invalid"
-  in_interface     = local.vlans.Trusted.name
-  out_interface    = local.vlans.Management.name
   place_before     = routeros_ip_firewall_filter.allow_wireguard_connections.id
 }
+
 
 # ===============================================
 # WIREGUARD
