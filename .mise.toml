@@ -12,7 +12,5 @@
 # CI Tools
 # =================================================================================================
 "aqua:rhysd/actionlint" = "1"
-"pipx:yamllint" = "1"
-node = "22"
 "npm:@commitlint/cli" = "19"
-"npm:renovate" = "41"
+"pipx:yamllint" = "1"
