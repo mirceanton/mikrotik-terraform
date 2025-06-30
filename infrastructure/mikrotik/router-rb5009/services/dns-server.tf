@@ -14,7 +14,7 @@ resource "routeros_ip_dns" "dns-server" {
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ip_dns_adlist
 # =================================================================================================
 resource "routeros_ip_dns_adlist" "dns_blocker" {
-  url = local.adlist
+  url        = local.adlist
   ssl_verify = false
 }
 

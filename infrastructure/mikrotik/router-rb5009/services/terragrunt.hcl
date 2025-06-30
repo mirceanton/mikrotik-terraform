@@ -27,7 +27,7 @@ inputs = {
   mikrotik_password = get_env("MIKROTIK_PASSWORD")
   mikrotik_insecure = true
 
-  digi_pppoe_password     = get_env("PPPOE_PASSWORD")
-  digi_pppoe_username     = get_env("PPPOE_USERNAME")
+  digi_pppoe_password = get_env("PPPOE_PASSWORD")
+  digi_pppoe_username = get_env("PPPOE_USERNAME")
 }
 
