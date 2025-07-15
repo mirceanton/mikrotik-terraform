@@ -4,7 +4,7 @@
 # =================================================================================================
 "aqua:hashicorp/terraform" = "1.12.2"
 "aqua:gruntwork-io/terragrunt" = "0.83.1"
-"aqua:terraform-linters/tflint" = "0.58.0"
+"aqua:terraform-linters/tflint" = "0.58.1"
 
 "ubi:go-task/task" = "3"
 
