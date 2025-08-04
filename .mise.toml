@@ -3,7 +3,7 @@
 # Project Tools
 # =================================================================================================
 "aqua:hashicorp/terraform" = "1.12.2"
-"aqua:gruntwork-io/terragrunt" = "0.84.0"
+"aqua:gruntwork-io/terragrunt" = "0.84.1"
 "aqua:terraform-linters/tflint" = "0.58.1"
 
 "ubi:go-task/task" = "3"
