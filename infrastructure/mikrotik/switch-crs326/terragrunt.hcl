@@ -37,7 +37,7 @@ inputs = {
     "ether2"       = { comment = "PVE 01 Onboard", untagged = local.shared_locals.vlans.Management.name }
     "ether3"       = { comment = "PVE 02 Onboard", untagged = local.shared_locals.vlans.Management.name }
     "ether4"       = { comment = "PVE 03 Onboard", untagged = local.shared_locals.vlans.Management.name }
-    "ether5"       = { comment = "NAS Onboard", untagged = local.shared_locals.vlans.Management.name }
+    "ether5"       = { comment = "NAS BMC", untagged = local.shared_locals.vlans.Management.name }
     "ether6"       = {}
     "ether7"       = { comment = "TeSmart KVM", untagged = local.shared_locals.vlans.Management.name }
     "ether8"       = { comment = "JetKVM", untagged = local.shared_locals.vlans.Management.name }
