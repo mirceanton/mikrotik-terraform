@@ -33,7 +33,7 @@ inputs = {
 
   vlans = local.shared_locals.vlans
   ethernet_interfaces = {
-    "ether1"       = {}
+    "ether1"       = { comment = "Backup NAS BMC", untagged = local.shared_locals.vlans.Management.name }
     "ether2"       = { comment = "PVE 01 Onboard", untagged = local.shared_locals.vlans.Management.name }
     "ether3"       = { comment = "PVE 02 Onboard", untagged = local.shared_locals.vlans.Management.name }
     "ether4"       = { comment = "PVE 03 Onboard", untagged = local.shared_locals.vlans.Management.name }
