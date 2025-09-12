@@ -56,7 +56,7 @@ inputs = {
     "ether21"      = {}
     "ether22"      = {}
     "ether23"      = { comment = "Uplink", tagged = local.shared_locals.all_vlans }
-    "ether24"      = {}
+    "ether24"      = { comment = "Odroid C4", untagged = local.shared_locals.vlans.Management.name }
     "sfp-sfpplus1" = { comment = "CRS317", tagged = local.shared_locals.all_vlans }
     "sfp-sfpplus2" = { comment = "Mirkputer", untagged = local.shared_locals.vlans.Trusted.name }
   }
