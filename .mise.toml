@@ -12,5 +12,5 @@
 # CI Tools
 # =================================================================================================
 "aqua:rhysd/actionlint" = "1"
-"npm:@commitlint/cli" = "19"
+"npm:@commitlint/cli" = "20"
 "pipx:yamllint" = "1"
