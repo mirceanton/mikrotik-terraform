@@ -55,9 +55,27 @@ resource "routeros_ip_firewall_filter" "accept_router_established_related_untrac
   action           = "accept"
   chain            = "input"
   connection_state = "established,related,untracked"
-  place_before     = routeros_ip_firewall_filter.allow_wireguard_connections.id
+  place_before     = routeros_ip_firewall_filter.allow_management_forward.id
 }
 
+# ===============================================
+# Management
+# ===============================================
+resource "routeros_ip_firewall_filter" "allow_management_forward" {
+  comment            = "Allow all forward from management"
+  action             = "accept"
+  chain              = "forward"
+  in_interface       = local.vlans.Management.name
+  out_interface_list = routeros_interface_list.wan.name
+  place_before       = routeros_ip_firewall_filter.allow_management_input.id
+}
+resource "routeros_ip_firewall_filter" "allow_management_input" {
+  comment      = "Allow input from management"
+  action       = "accept"
+  chain        = "input"
+  in_interface = local.vlans.Management.name
+  place_before = routeros_ip_firewall_filter.allow_wireguard_connections.id
+}
 
 # ===============================================
 # WIREGUARD
