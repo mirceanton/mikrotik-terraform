@@ -1,6 +1,6 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: Labeler
+name: PR Metadata
 permissions: { contents: read }
 
 on:
@@ -22,7 +22,7 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
 
-  labeler:
+  scope-label:
     runs-on: ubuntu-latest
     steps:
       - name: Generate Token
@@ -43,3 +43,17 @@ jobs:
           sync-labels: true
           repo-token: "${{ steps.app-token.outputs.token }}"
           configuration-path: .github/labeler.yaml
+
+  commitlint:
+    runs-on: ubuntu-latest
+    env:
+      PR_TITLE: ${{ github.event.pull_request.title }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Setup mise
+        uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3.2.0
+
+      - name: Validate PR Title
+        run: echo "$PR_TITLE" | mise exec -- commitlint --verbose
