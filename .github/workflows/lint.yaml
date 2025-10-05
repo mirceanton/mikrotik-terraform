@@ -1,18 +1,26 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-name: Terraform
+name: Lint
 permissions: { contents: read }
 
 on:
   workflow_dispatch: {}
-  push:
-    paths:
-      - ".github/workflows/terraform.yaml"
-      - mise.toml
-      - "*.tf"
-      - "*.hcl"
+  pull_request: { branches: [main] }
+  push: {}
 
 jobs:
+  actionlint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Setup mise
+        uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3.2.0
+
+      - name: Run actionlint
+        run: mise exec -- actionlint
+
   terraform-fmt:
     runs-on: ubuntu-latest
     steps:
@@ -27,7 +35,6 @@ jobs:
 
   terragrunt-format:
     runs-on: ubuntu-latest
-    needs: terraform-fmt
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0

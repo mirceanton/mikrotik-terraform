@@ -7,14 +7,14 @@ locals {
   static_dns = {
     # Others
     "odroidc4.mgmt.h.mirceanton.com" = { address = "10.0.0.250", type = "A", comment = "Odroid C4 GH Runners" },
-    "bmc.nas.mgmt.h.mirceanton.com" = { address = "10.0.0.10", type = "A", comment = "TrueNAS BMC" },
+    "bmc.nas.mgmt.h.mirceanton.com"  = { address = "10.0.0.10", type = "A", comment = "TrueNAS BMC" },
 
     # TrueNAS
-    "nas.trst.h.mirceanton.com"     = { address = "192.168.69.245", type = "A", comment = "TrueNAS Trusted" },
-    "nas.utrst.h.mirceanton.com"    = { address = "192.168.42.245", type = "A", comment = "TrueNAS Untrusted" },
-    "nas.svc.h.mirceanton.com"      = { address = "10.0.10.245", type = "A", comment = "TrueNAS Services" },
-    "nas.mgmt.h.mirceanton.com"     = { address = "10.0.0.245", type = "A", comment = "TrueNAS Servers" },
-    "nas.stor.h.mirceanton.com"     = { address = "10.255.255.245", type = "A", comment = "TrueNAS Servers" },
+    "nas.trst.h.mirceanton.com"  = { address = "192.168.69.245", type = "A", comment = "TrueNAS Trusted" },
+    "nas.utrst.h.mirceanton.com" = { address = "192.168.42.245", type = "A", comment = "TrueNAS Untrusted" },
+    "nas.svc.h.mirceanton.com"   = { address = "10.0.10.245", type = "A", comment = "TrueNAS Services" },
+    "nas.mgmt.h.mirceanton.com"  = { address = "10.0.0.245", type = "A", comment = "TrueNAS Servers" },
+    "nas.stor.h.mirceanton.com"  = { address = "10.255.255.245", type = "A", comment = "TrueNAS Servers" },
 
     # KVM
     "kvm.mgmt.h.mirceanton.com"     = { address = "10.0.0.254", type = "A", comment = "JetKVM Web UI" },
