@@ -1,0 +1,55 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Terragrunt Drift Detection
+permissions:
+  contents: read
+  issues: write
+
+on:
+  workflow_dispatch: {}
+  schedule: [{ cron: "0 0 * * *" }]
+
+env:
+  MIKROTIK_USERNAME: "${{ secrets.MIKROTIK_USERNAME }}"
+  MIKROTIK_PASSWORD: "${{ secrets.MIKROTIK_PASSWORD }}"
+  PPPOE_USERNAME: "${{ secrets.PPPOE_USERNAME }}"
+  PPPOE_PASSWORD: "${{ secrets.PPPOE_PASSWORD }}"
+  CLOUDFLARE_API_TOKEN: "${{ secrets.CLOUDFLARE_API_TOKEN }}"
+  AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+  AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+
+jobs:
+  terragrunt-drift:
+    runs-on: [self-hosted, infra]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Setup mise
+        uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3.2.0
+
+      - name: Terragrunt Init
+        run: terragrunt init --all -upgrade
+
+      - name: Terragrunt Plan
+        id: plan
+        run: terragrunt plan --all --detailed-exitcode || echo "PLAN_EXIT=$?" >> "$GITHUB_ENV"
+
+      - name: Check for Drift
+        id: check
+        run: echo "DRIFT_DETECTED=$([ "$PLAN_EXIT" -eq 2 ] && echo true || echo false)" >> "$GITHUB_ENV"
+
+      - name: Create GitHub Issue
+        if: env.DRIFT_DETECTED == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ISSUE_TITLE="Terragrunt Drift Detected"
+          ISSUE_BODY="Terragrunt detected configuration drift in one or more units. Run \`terragrunt apply --all\` to reconcile changes."
+
+          # Check if an issue already exists
+          EXISTING_ISSUE=$(gh issue list --state=open --search "$ISSUE_TITLE" --json number --jq '.[0].number')
+
+          if [ -z "$EXISTING_ISSUE" ]; then
+            gh issue create --title "$ISSUE_TITLE" --body "$ISSUE_BODY"
+          fi

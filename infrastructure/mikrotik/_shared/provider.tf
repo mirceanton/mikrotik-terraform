@@ -27,8 +27,9 @@ variable "mikrotik_insecure" {
 }
 
 provider "routeros" {
-  hosturl  = var.mikrotik_hostname
-  username = var.mikrotik_username
-  password = var.mikrotik_password
-  insecure = var.mikrotik_insecure
+  hosturl      = var.mikrotik_hostname
+  username     = var.mikrotik_username
+  password     = var.mikrotik_password
+  insecure     = var.mikrotik_insecure
+  rest_timeout = 60
 }
