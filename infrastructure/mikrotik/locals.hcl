@@ -5,7 +5,8 @@ locals {
   upstream_dns = ["1.1.1.1", "8.8.8.8"]
   adlist       = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
   static_dns = {
-    # BMCs
+    # Others
+    "odroidc4.mgmt.h.mirceanton.com" = { address = "10.0.0.250", type = "A", comment = "Odroid C4 GH Runners" },
     "bmc.nas.mgmt.h.mirceanton.com" = { address = "10.0.0.10", type = "A", comment = "TrueNAS BMC" },
 
     # TrueNAS
