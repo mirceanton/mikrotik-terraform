@@ -1,7 +1,0 @@
-{
-    "recommendations": [
-        "hashicorp.terraform",
-        "tamasfe.even-better-toml",
-        "redhat.vscode-yaml"
-    ]
-}
