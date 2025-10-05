@@ -62,9 +62,6 @@ locals {
       domain      = "utrst.h.mirceanton.com"
       static_leases = {
         "192.168.42.250" = { name = "Smart TV", mac = "38:26:56:E2:93:99" }
-        "192.168.42.69"  = { name = "Mirk Phone", mac = "A2:AA:9F:C7:AA:3E" }
-        "192.168.42.68"  = { name = "Bomk Phone", mac = "5C:70:17:F3:5F:F8" }
-        "192.168.42.42"  = { name = "Bomk iPad", mac = "74:8F:3C:34:FA:E8" }
       }
     },
     "Guest" = {
