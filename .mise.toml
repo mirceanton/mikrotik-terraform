@@ -6,14 +6,12 @@
 "aqua:gruntwork-io/terragrunt" = "0.88.1"
 "aqua:terraform-linters/tflint" = "0.59.1"
 
-"ubi:go-task/task" = "3"
-
 # =================================================================================================
 # CI Tools
 # =================================================================================================
 node = "latest"
 uv = "latest"
-"aqua:rhysd/actionlint" = "1"
-"npm:@commitlint/cli" = "20"
-"pipx:yamllint" = "1"
+"aqua:rhysd/actionlint" = "latest"
+"npm:@commitlint/cli" = "latest"
+"pipx:yamllint" = "latest"
 gh = "latest"
