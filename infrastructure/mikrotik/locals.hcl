@@ -5,13 +5,17 @@ locals {
   upstream_dns = ["1.1.1.1", "8.8.8.8"]
   adlist       = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
   static_dns = {
+    # BMCs
+    "bmc.nas.mgmt.h.mirceanton.com" = { address = "10.0.0.10", type = "A", comment = "TrueNAS BMC" },
+
     # TrueNAS
     "nas.trst.h.mirceanton.com"     = { address = "192.168.69.245", type = "A", comment = "TrueNAS Trusted" },
     "nas.utrst.h.mirceanton.com"    = { address = "192.168.42.245", type = "A", comment = "TrueNAS Untrusted" },
     "nas.svc.h.mirceanton.com"      = { address = "10.0.10.245", type = "A", comment = "TrueNAS Services" },
     "nas.mgmt.h.mirceanton.com"     = { address = "10.0.0.245", type = "A", comment = "TrueNAS Servers" },
-    "bmc.nas.mgmt.h.mirceanton.com" = { address = "10.0.0.10", type = "A", comment = "TrueNAS BMC" },
+    "nas.stor.h.mirceanton.com"     = { address = "10.255.255.245", type = "A", comment = "TrueNAS Servers" },
 
+    # KVM
     "kvm.mgmt.h.mirceanton.com"     = { address = "10.0.0.254", type = "A", comment = "JetKVM Web UI" },
     "tesmart.mgmt.h.mirceanton.com" = { address = "10.0.0.253", type = "A", comment = "TeSmart KVM" },
 
@@ -24,6 +28,10 @@ locals {
     "pve01.mgmt.h.mirceanton.com" = { address = "10.0.0.21", type = "A", comment = "Proxmox Node 1 Management Interface" },
     "pve02.mgmt.h.mirceanton.com" = { address = "10.0.0.22", type = "A", comment = "Proxmox Node 2 Management Interface" },
     "pve03.mgmt.h.mirceanton.com" = { address = "10.0.0.23", type = "A", comment = "Proxmox Node 3 Management Interface" },
+
+    "pve01.stor.h.mirceanton.com" = { address = "10.255.255.21", type = "A", comment = "Proxmox Node 1 Storage Interface" },
+    "pve02.stor.h.mirceanton.com" = { address = "10.255.255.22", type = "A", comment = "Proxmox Node 2 Storage Interface" },
+    "pve03.stor.h.mirceanton.com" = { address = "10.255.255.23", type = "A", comment = "Proxmox Node 3 Storage Interface" },
   }
 
   all_vlans = [for vlan in local.vlans : vlan.name]
