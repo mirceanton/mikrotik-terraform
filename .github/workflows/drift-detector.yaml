@@ -49,6 +49,7 @@ jobs:
           fi
 
       - name: Open Issue if Drift Detected
+        if: env.DRIFT_DETECTED == 'true'
         env:
           GITHUB_TOKEN: '${{ steps.app-token.outputs.token }}'
         run: |
@@ -60,13 +61,7 @@ jobs:
             sleep 3 # Wait for issue to be created
             ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
           fi
-          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> "$GITHUB_ENV"
-
-      - name: Update Issue with Drift Details
-        if: env.DRIFT_DETECTED == 'true'
-        env:
-          GITHUB_TOKEN: '${{ steps.app-token.outputs.token }}'
-        run: |
+          
           RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           {
             echo "## ⚠️ **Drift detected in workflow run [#${{ github.run_number }}]($RUN_URL)**"
@@ -87,7 +82,7 @@ jobs:
           gh issue pin "$ISSUE_NUMBER"
 
       - name: Close GitHub Issue if No Drift
-        if: env.DRIFT_DETECTED == 'false' && env.ISSUE_STATE == 'open'
+        if: env.DRIFT_DETECTED == 'false'
         env:
           GITHUB_TOKEN: '${{ steps.app-token.outputs.token }}'
           COMMENT: |
