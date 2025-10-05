@@ -6,7 +6,7 @@ resource "routeros_interface_bridge" "bridge" {
   name           = var.bridge_name
   comment        = var.bridge_comment
   vlan_filtering = true
-  mtu            = 1514 # ?Set to 9500 for jumbo frames
+  mtu            = var.bridge_mtu
 }
 
 

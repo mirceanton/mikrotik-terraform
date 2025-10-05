@@ -81,6 +81,12 @@ variable "bridge_comment" {
   description = "Comment for the bridge interface"
 }
 
+variable "bridge_mtu" {
+  type        = number
+  default     = 1514
+  description = "MTU for the bridge interface. If null, defaults to 1514."
+}
+
 
 # =================================================================================================
 # VLAN Configuration
@@ -95,6 +101,7 @@ variable "vlans" {
     dhcp_pool   = list(string)
     dns_servers = list(string)
     domain      = string
+    mtu         = optional(number, 1500)
     static_leases = map(object({
       name = string
       mac  = string
@@ -112,6 +119,8 @@ variable "ethernet_interfaces" {
   type = map(object({
     comment     = optional(string, "")
     bridge_port = optional(bool, true)
+    l2mtu       = optional(number, 1514) # Layer 2 MTU
+    mtu         = optional(number, 1500) # Layer 3 MTU
 
     # VLAN configurations
     tagged   = optional(list(string)) # list of VLAN names
@@ -127,6 +136,7 @@ variable "bond_interfaces" {
     slaves               = list(string)
     mode                 = optional(string, "802.3ad")       # 802.3ad, balance-rr, balance-xor, broadcast, active-backup, balance-tlb, balance-alb
     transmit_hash_policy = optional(string, "layer-2-and-3") # layer-2, layer-2-and-3, layer-3-and-4
+    mtu                  = optional(number, 1500)            # MTU for the bond interface
 
     # VLAN configurations
     tagged   = optional(list(string))
