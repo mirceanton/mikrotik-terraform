@@ -34,9 +34,21 @@ inputs = {
   vlans = local.shared_locals.vlans
   ethernet_interfaces = {
     "ether1"       = { comment = "Backup NAS BMC", untagged = local.shared_locals.vlans.Management.name }
-    "ether2"       = { comment = "PVE 01 Onboard", untagged = local.shared_locals.vlans.Management.name }
-    "ether3"       = { comment = "PVE 02 Onboard", untagged = local.shared_locals.vlans.Management.name }
-    "ether4"       = { comment = "PVE 03 Onboard", untagged = local.shared_locals.vlans.Management.name }
+    "ether2"       = {
+      comment = "PVE 01 Onboard"
+      untagged = local.shared_locals.vlans.Management.name
+      tagged  = [for name, vlan in local.shared_locals.vlans : vlan.name if name != local.shared_locals.vlans.Management.name]
+    }
+    "ether3"       = {
+      comment = "PVE 02 Onboard"
+      untagged = local.shared_locals.vlans.Management.name
+      tagged  = [for name, vlan in local.shared_locals.vlans : vlan.name if name != local.shared_locals.vlans.Management.name]
+    }
+    "ether4"       = {
+      comment = "PVE 03 Onboard"
+      untagged = local.shared_locals.vlans.Management.name
+      tagged  = [for name, vlan in local.shared_locals.vlans : vlan.name if name != local.shared_locals.vlans.Management.name]
+    }
     "ether5"       = { comment = "NAS BMC", untagged = local.shared_locals.vlans.Management.name }
     "ether6"       = {}
     "ether7"       = { comment = "TeSmart KVM", untagged = local.shared_locals.vlans.Management.name }
@@ -61,4 +73,3 @@ inputs = {
     "sfp-sfpplus2" = { comment = "Mirkputer", untagged = local.shared_locals.vlans.Trusted.name }
   }
 }
-
