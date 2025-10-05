@@ -33,14 +33,14 @@ inputs = {
 
   vlans = local.shared_locals.vlans
   ethernet_interfaces = {
-    "sfp-sfpplus1"  = { comment = "NAS 10g 1", bridge_port = false }
-    "sfp-sfpplus2"  = { comment = "NAS 10g 2", bridge_port = false }
-    "sfp-sfpplus3"  = { comment = "PVE01 10g 1", bridge_port = false }
-    "sfp-sfpplus4"  = { comment = "PVE01 10g 2", bridge_port = false }
-    "sfp-sfpplus5"  = { comment = "PVE02 10g 1", bridge_port = false }
-    "sfp-sfpplus6"  = { comment = "PVE02 10g 2", bridge_port = false }
-    "sfp-sfpplus7"  = { comment = "PVE03 10g 1", bridge_port = false }
-    "sfp-sfpplus8"  = { comment = "PVE03 10g 2", bridge_port = false }
+    "sfp-sfpplus1"  = { comment = "NAS 10g 1", bridge_port = false, l2mtu = 9216, mtu = 9000 }
+    "sfp-sfpplus2"  = { comment = "NAS 10g 2", bridge_port = false, l2mtu = 9216, mtu = 9000 }
+    "sfp-sfpplus3"  = { comment = "PVE01 10g 1", bridge_port = false, l2mtu = 9216, mtu = 9000 }
+    "sfp-sfpplus4"  = { comment = "PVE01 10g 2", bridge_port = false, l2mtu = 9216, mtu = 9000 }
+    "sfp-sfpplus5"  = { comment = "PVE02 10g 1", bridge_port = false, l2mtu = 9216, mtu = 9000 }
+    "sfp-sfpplus6"  = { comment = "PVE02 10g 2", bridge_port = false, l2mtu = 9216, mtu = 9000 }
+    "sfp-sfpplus7"  = { comment = "PVE03 10g 1", bridge_port = false, l2mtu = 9216, mtu = 9000 }
+    "sfp-sfpplus8"  = { comment = "PVE03 10g 2", bridge_port = false, l2mtu = 9216, mtu = 9000 }
     "sfp-sfpplus9"  = {}
     "sfp-sfpplus10" = {}
     "sfp-sfpplus11" = {}
@@ -53,22 +53,22 @@ inputs = {
   }
   bond_interfaces = {
     "bond1" = {
-      comment = "NAS"
+      comment = "NAS", mtu = 9000
       slaves  = ["sfp-sfpplus1", "sfp-sfpplus2"]
       tagged  = [for name, vlan in local.shared_locals.vlans : vlan.name if name != local.shared_locals.vlans.Management.name]
     }
     "bond2" = {
-      comment  = "PVE01"
+      comment  = "PVE01", mtu = 9000
       slaves   = ["sfp-sfpplus3", "sfp-sfpplus4"]
       untagged = local.shared_locals.vlans.Storage.name
     }
     "bond3" = {
-      comment  = "PVE02"
+      comment  = "PVE02", mtu = 9000
       slaves   = ["sfp-sfpplus5", "sfp-sfpplus6"]
       untagged = local.shared_locals.vlans.Storage.name
     }
     "bond4" = {
-      comment  = "PVE03"
+      comment  = "PVE03", mtu = 9000
       slaves   = ["sfp-sfpplus7", "sfp-sfpplus8"]
       untagged = local.shared_locals.vlans.Storage.name
     }
