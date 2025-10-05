@@ -6,10 +6,10 @@ locals {
   adlist       = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
   static_dns = {
     # TrueNAS
-    "nas.trst.h.mirceanton.com"  = { address = "192.168.69.245", type = "A", comment = "TrueNAS Trusted" },
-    "nas.utrst.h.mirceanton.com" = { address = "192.168.42.245", type = "A", comment = "TrueNAS Untrusted" },
-    "nas.svc.h.mirceanton.com"   = { address = "10.0.10.245", type = "A", comment = "TrueNAS Services" },
-    "nas.mgmt.h.mirceanton.com"  = { address = "10.0.0.245", type = "A", comment = "TrueNAS Servers" },
+    "nas.trst.h.mirceanton.com"     = { address = "192.168.69.245", type = "A", comment = "TrueNAS Trusted" },
+    "nas.utrst.h.mirceanton.com"    = { address = "192.168.42.245", type = "A", comment = "TrueNAS Untrusted" },
+    "nas.svc.h.mirceanton.com"      = { address = "10.0.10.245", type = "A", comment = "TrueNAS Services" },
+    "nas.mgmt.h.mirceanton.com"     = { address = "10.0.0.245", type = "A", comment = "TrueNAS Servers" },
     "bmc.nas.mgmt.h.mirceanton.com" = { address = "10.0.0.10", type = "A", comment = "TrueNAS BMC" },
 
     "kvm.mgmt.h.mirceanton.com"     = { address = "10.0.0.254", type = "A", comment = "JetKVM Web UI" },
@@ -107,14 +107,14 @@ locals {
       }
     },
     "Storage" = {
-      name        = "Storage"
-      vlan_id     = 1255
-      network     = "10.255.255.0"
-      cidr_suffix = "24"
-      gateway     = "10.255.255.1"
-      dhcp_pool   = ["10.255.255.195-10.255.255.199"]
-      dns_servers = ["10.255.255.1"]
-      domain      = "stor.h.mirceanton.com",
+      name          = "Storage"
+      vlan_id       = 1255
+      network       = "10.255.255.0"
+      cidr_suffix   = "24"
+      gateway       = "10.255.255.1"
+      dhcp_pool     = ["10.255.255.195-10.255.255.199"]
+      dns_servers   = ["10.255.255.1"]
+      domain        = "stor.h.mirceanton.com",
       static_leases = {}
     }
   }

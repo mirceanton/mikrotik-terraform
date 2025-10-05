@@ -58,18 +58,18 @@ inputs = {
       tagged  = [for name, vlan in local.shared_locals.vlans : vlan.name if name != local.shared_locals.vlans.Management.name]
     }
     "bond2" = {
-      comment = "PVE01"
-      slaves  = ["sfp-sfpplus3", "sfp-sfpplus4"]
+      comment  = "PVE01"
+      slaves   = ["sfp-sfpplus3", "sfp-sfpplus4"]
       untagged = local.shared_locals.vlans.Storage.name
     }
     "bond3" = {
-      comment = "PVE02"
-      slaves  = ["sfp-sfpplus5", "sfp-sfpplus6"]
+      comment  = "PVE02"
+      slaves   = ["sfp-sfpplus5", "sfp-sfpplus6"]
       untagged = local.shared_locals.vlans.Storage.name
     }
     "bond4" = {
-      comment = "PVE03"
-      slaves  = ["sfp-sfpplus7", "sfp-sfpplus8"]
+      comment  = "PVE03"
+      slaves   = ["sfp-sfpplus7", "sfp-sfpplus8"]
       untagged = local.shared_locals.vlans.Storage.name
     }
   }
