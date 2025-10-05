@@ -63,7 +63,7 @@ inputs = {
     "ether16"      = {}
     "ether17"      = { comment = "NAS Onboard 1", untagged = local.shared_locals.vlans.Management.name }
     "ether18"      = {}
-    "ether19"      = { comment = "NAS Onboard 2", untagged = local.shared_locals.vlans.Management.name }
+    "ether19"      = { comment = "NAS Onboard 2", untagged = local.shared_locals.vlans.Services .name }
     "ether20"      = {}
     "ether21"      = {}
     "ether22"      = {}
