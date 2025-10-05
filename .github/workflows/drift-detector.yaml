@@ -1,15 +1,16 @@
 ---
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 name: Terragrunt Drift Detection
-permissions:
-  contents: read
-  issues: write
+permissions: { contents: read }
 
 on:
   workflow_dispatch: {}
   schedule: [{ cron: "0 0 * * *" }]
 
 env:
+  ISSUE_TITLE: "⚠️ Terragrunt Drift Detected ⚠️"
+
+  # Terragrunt Vars
   MIKROTIK_USERNAME: "${{ secrets.MIKROTIK_USERNAME }}"
   MIKROTIK_PASSWORD: "${{ secrets.MIKROTIK_PASSWORD }}"
   PPPOE_USERNAME: "${{ secrets.PPPOE_USERNAME }}"
@@ -25,6 +26,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
 
+      - name: Generate Token
+        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2.1.4
+        id: app-token
+        with:
+          app-id: '${{ secrets.BOT_APP_ID }}'
+          private-key: '${{ secrets.BOT_APP_PRIVATE_KEY }}'
+
       - name: Setup mise
         uses: jdx/mise-action@5ac50f778e26fac95da98d50503682459e86d566 # v3.2.0
 
@@ -32,24 +40,60 @@ jobs:
         run: terragrunt init --all -upgrade
 
       - name: Terragrunt Plan
-        id: plan
-        run: terragrunt plan --all --detailed-exitcode || echo "PLAN_EXIT=$?" >> "$GITHUB_ENV"
+        run: |
+          terragrunt plan --all --detailed-exitcode -no-color 2>&1 | tee plan_output.txt
+          if [ "${PIPESTATUS[0]}" -eq 2 ]; then
+            echo "DRIFT_DETECTED=true" | tee "$GITHUB_ENV"
+          else
+            echo "DRIFT_DETECTED=false" | tee "$GITHUB_ENV"
+          fi
 
-      - name: Check for Drift
-        id: check
-        run: echo "DRIFT_DETECTED=$([ "$PLAN_EXIT" -eq 2 ] && echo true || echo false)" >> "$GITHUB_ENV"
+      - name: Open Issue if Drift Detected
+        env:
+          GITHUB_TOKEN: '${{ steps.app-token.outputs.token }}'
+        run: |
+          ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
+          if [ -n "$ISSUE_NUMBER" ]; then
+            gh issue reopen "$ISSUE_NUMBER"
+          else
+            gh issue create --title "$ISSUE_TITLE" --body ""
+            sleep 3 # Wait for issue to be created
+            ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
+          fi
+          echo "ISSUE_NUMBER=$ISSUE_NUMBER" >> "$GITHUB_ENV"
 
-      - name: Create GitHub Issue
+      - name: Update Issue with Drift Details
         if: env.DRIFT_DETECTED == 'true'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: '${{ steps.app-token.outputs.token }}'
         run: |
-          ISSUE_TITLE="Terragrunt Drift Detected"
-          ISSUE_BODY="Terragrunt detected configuration drift in one or more units. Run \`terragrunt apply --all\` to reconcile changes."
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          {
+            echo "## ⚠️ **Drift detected in workflow run [#${{ github.run_number }}]($RUN_URL)**"
+            echo ""
+            echo "Run \`terragrunt apply --all\` to reconcile changes."
+            echo ""
+            echo "### Plan Output"
+            echo "<details>"
+            echo "<summary>Click to expand drift details</summary>"
+            echo ""
+            echo '```'
+            cat plan_output.txt
+            echo '```'
+            echo ""
+            echo "</details>"
+          } > issue_body.txt
+          gh issue edit "$ISSUE_NUMBER" --body-file issue_body.txt
+          gh issue pin "$ISSUE_NUMBER"
 
-          # Check if an issue already exists
-          EXISTING_ISSUE=$(gh issue list --state=open --search "$ISSUE_TITLE" --json number --jq '.[0].number')
-
-          if [ -z "$EXISTING_ISSUE" ]; then
-            gh issue create --title "$ISSUE_TITLE" --body "$ISSUE_BODY"
-          fi
+      - name: Close GitHub Issue if No Drift
+        if: env.DRIFT_DETECTED == 'false' && env.ISSUE_STATE == 'open'
+        env:
+          GITHUB_TOKEN: '${{ steps.app-token.outputs.token }}'
+          COMMENT: |
+            ✅ No drift detected. Closing issue automatically.
+            Verified in [workflow run #${{ github.run_number }}]("${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}").
+        run: |
+          ISSUE_NUMBER=$(gh issue list --state "open" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
+          gh issue close "$ISSUE_NUMBER" --comment "$COMMENT"
+          gh issue unpin "$ISSUE_NUMBER"
