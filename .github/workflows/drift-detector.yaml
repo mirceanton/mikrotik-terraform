@@ -5,7 +5,7 @@ permissions: { contents: read }
 
 on:
   workflow_dispatch: {}
-  schedule: [{ cron: "0 0 * * *" }]
+  schedule: [{ cron: "0 0/2 * * *" }] # Every 2 hours
 
 env:
   ISSUE_TITLE: "⚠️ Terragrunt Drift Detected ⚠️"
