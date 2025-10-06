@@ -90,5 +90,8 @@ jobs:
             Verified in [workflow run #${{ github.run_number }}]("${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}").
         run: |
           ISSUE_NUMBER=$(gh issue list --state "open" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
-          gh issue close "$ISSUE_NUMBER" --comment "$COMMENT"
-          gh issue unpin "$ISSUE_NUMBER"
+          echo "ISSUE_NUMBER is '$ISSUE_NUMBER'"
+          if [ -n "$ISSUE_NUMBER" ]; then
+            gh issue close "$ISSUE_NUMBER" --comment "$COMMENT"
+            gh issue unpin "$ISSUE_NUMBER"
+          fi
