@@ -47,7 +47,6 @@ locals {
       dns_servers = ["192.168.69.1"]
       domain      = "trst.h.mirceanton.com"
       static_leases = {
-        "192.168.69.70" = { name = "MirkDeskPi", mac = "E4:5F:01:03:61:34" }
         "192.168.69.69" = { name = "MirkPuter", mac = "74:56:3C:B7:9B:D8" }
         "192.168.69.68" = { name = "BomkPuter", mac = "24:4B:FE:52:D0:65" }
       }
@@ -62,6 +61,7 @@ locals {
       dns_servers = ["192.168.42.1"]
       domain      = "utrst.h.mirceanton.com"
       static_leases = {
+        "192.168.42.69" = { name = "MirkDeskPi", mac = "E4:5F:01:03:61:34" }
         "192.168.42.250" = { name = "Smart TV", mac = "38:26:56:E2:93:99" }
       }
     },
