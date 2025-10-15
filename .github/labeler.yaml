@@ -16,20 +16,17 @@ area/terraform:
 # =================================================================================================
 device/rb5009:
   - changed-files:
-      - any-glob-to-any-file: "router-*.tf"
-
-device/cap-ax:
-  - changed-files:
-      - any-glob-to-any-file: "router-capsman.tf"
+      - any-glob-to-any-file: "infrastructure/mikrotik/router-base/**"
+      - any-glob-to-any-file: "infrastructure/mikrotik/router-services/**"
 
 device/crs326:
   - changed-files:
-      - any-glob-to-any-file: "switch-crs326.tf"
+      - any-glob-to-any-file: "infrastructure/mikrotik/switch-crs326/**"
 
 device/crs-317:
   - changed-files:
-      - any-glob-to-any-file: "switch-crs317.tf"
+      - any-glob-to-any-file: "infrastructure/mikrotik/switch-crs317/**"
 
 device/hex:
   - changed-files:
-      - any-glob-to-any-file: "switch-hex.tf"
+      - any-glob-to-any-file: "infrastructure/mikrotik/switch-hex/**"
