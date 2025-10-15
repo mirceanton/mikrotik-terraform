@@ -74,73 +74,8 @@ resource "routeros_ip_firewall_filter" "allow_management_input" {
   action       = "accept"
   chain        = "input"
   in_interface = local.vlans.Management.name
-  place_before = routeros_ip_firewall_filter.allow_wireguard_connections.id
-}
-
-# ===============================================
-# WIREGUARD
-# ===============================================
-# INPUT CHAIN
-resource "routeros_ip_firewall_filter" "allow_wireguard_connections" {
-  comment      = "Allow Wireguard Incoming Connections"
-  action       = "accept"
-  chain        = "input"
-  protocol     = "udp"
-  dst_port     = routeros_interface_wireguard.wireguard.listen_port
-  place_before = routeros_ip_firewall_filter.allow_wireguard_dns_tcp.id
-}
-resource "routeros_ip_firewall_filter" "allow_wireguard_dns_tcp" {
-  comment      = "Allow local DNS (TCP) for Wireguard"
-  action       = "accept"
-  chain        = "input"
-  protocol     = "tcp"
-  in_interface = routeros_interface_wireguard.wireguard.name
-  dst_port     = "53"
-  place_before = routeros_ip_firewall_filter.allow_wireguard_dns_udp.id
-}
-resource "routeros_ip_firewall_filter" "allow_wireguard_dns_udp" {
-  comment      = "Allow local DNS (UDP) for Wireguard"
-  action       = "accept"
-  chain        = "input"
-  protocol     = "udp"
-  in_interface = routeros_interface_wireguard.wireguard.name
-  dst_port     = "53"
-  place_before = routeros_ip_firewall_filter.drop_wireguard_input.id
-}
-resource "routeros_ip_firewall_filter" "drop_wireguard_input" {
-  comment      = "Drop all Wireguard input"
-  action       = "drop"
-  chain        = "input"
-  in_interface = routeros_interface_wireguard.wireguard.name
-  place_before = routeros_ip_firewall_filter.allow_wireguard_to_internet.id
-}
-
-# FORWARD CHAIN
-resource "routeros_ip_firewall_filter" "allow_wireguard_to_internet" {
-  comment            = "Allow Wireguard to Internet"
-  action             = "accept"
-  chain              = "forward"
-  in_interface       = routeros_interface_wireguard.wireguard.name
-  out_interface_list = routeros_interface_list.wan.name
-  place_before       = routeros_ip_firewall_filter.allow_wireguard_to_services.id
-}
-resource "routeros_ip_firewall_filter" "allow_wireguard_to_services" {
-  comment          = "Allow Wireguard to Services"
-  action           = "accept"
-  chain            = "forward"
-  in_interface     = routeros_interface_wireguard.wireguard.name
-  out_interface    = local.vlans.Services.name
-  dst_address_list = routeros_ip_firewall_addr_list.services.list
-  place_before     = routeros_ip_firewall_filter.drop_wireguard_forward.id
-}
-resource "routeros_ip_firewall_filter" "drop_wireguard_forward" {
-  comment      = "Drop all Wireguard forward"
-  action       = "drop"
-  chain        = "forward"
-  in_interface = routeros_interface_wireguard.wireguard.name
   place_before = routeros_ip_firewall_filter.accept_trusted_input.id
 }
-
 
 # ===============================================
 # TRUSTED
@@ -215,7 +150,6 @@ resource "routeros_ip_firewall_filter" "allow_untrusted_to_services" {
   chain            = "forward"
   in_interface     = local.vlans.Untrusted.name
   out_interface    = local.vlans.Services.name
-  dst_address_list = routeros_ip_firewall_addr_list.services.list
   place_before     = routeros_ip_firewall_filter.drop_untrusted_forward.id
 }
 resource "routeros_ip_firewall_filter" "drop_untrusted_forward" {
