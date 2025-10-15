@@ -145,12 +145,12 @@ resource "routeros_ip_firewall_filter" "allow_untrusted_to_internet" {
   place_before       = routeros_ip_firewall_filter.allow_untrusted_to_services.id
 }
 resource "routeros_ip_firewall_filter" "allow_untrusted_to_services" {
-  comment          = "Allow Untrusted to Services"
-  action           = "accept"
-  chain            = "forward"
-  in_interface     = local.vlans.Untrusted.name
-  out_interface    = local.vlans.Services.name
-  place_before     = routeros_ip_firewall_filter.drop_untrusted_forward.id
+  comment       = "Allow Untrusted to Services"
+  action        = "accept"
+  chain         = "forward"
+  in_interface  = local.vlans.Untrusted.name
+  out_interface = local.vlans.Services.name
+  place_before  = routeros_ip_firewall_filter.drop_untrusted_forward.id
 }
 resource "routeros_ip_firewall_filter" "drop_untrusted_forward" {
   comment      = "Drop all Untrusted forward"
