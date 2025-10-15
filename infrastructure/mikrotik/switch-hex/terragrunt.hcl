@@ -7,7 +7,7 @@ include "shared_provider" {
 
 dependencies {
   paths = [
-    find_in_parent_folders("mikrotik/router-rb5009/services")
+    find_in_parent_folders("mikrotik/router-services")
   ]
 }
 
