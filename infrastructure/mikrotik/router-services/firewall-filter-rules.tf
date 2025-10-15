@@ -74,6 +74,53 @@ resource "routeros_ip_firewall_filter" "allow_management_input" {
   action       = "accept"
   chain        = "input"
   in_interface = local.vlans.Management.name
+  place_before = routeros_ip_firewall_filter.allow_zerotier_dns_tcp.id
+}
+
+# ===============================================
+# ZeroTier
+# ===============================================
+# INPUT CHAIN
+resource "routeros_ip_firewall_filter" "allow_zerotier_dns_tcp" {
+  comment      = "Allow local DNS (TCP) for ZeroTier"
+  action       = "accept"
+  chain        = "input"
+  protocol     = "tcp"
+  dst_port     = "53"
+  in_interface = routeros_zerotier_interface.zerotier1.name
+  place_before = routeros_ip_firewall_filter.allow_zerotier_dns_udp.id
+}
+resource "routeros_ip_firewall_filter" "allow_zerotier_dns_udp" {
+  comment      = "Allow local DNS (UDP) for ZeroTier"
+  action       = "accept"
+  chain        = "input"
+  protocol     = "udp"
+  dst_port     = "53"
+  in_interface = routeros_zerotier_interface.zerotier1.name
+  place_before = routeros_ip_firewall_filter.drop_untrusted_input.id
+}
+resource "routeros_ip_firewall_filter" "drop_zerotier_input" {
+  comment      = "Drop all ZeroTier input"
+  action       = "drop"
+  chain        = "input"
+  in_interface = routeros_zerotier_interface.zerotier1.name
+  place_before = routeros_ip_firewall_filter.allow_servers_to_internet.id
+}
+
+# FORWARD CHAIN
+resource "routeros_ip_firewall_filter" "allow_zerotier_to_services" {
+  comment       = "Allow ZeroTier to Services"
+  action        = "accept"
+  chain         = "forward"
+  in_interface = routeros_zerotier_interface.zerotier1.name
+  out_interface = local.vlans.Services.name
+  place_before  = routeros_ip_firewall_filter.drop_zerotier_forward.id
+}
+resource "routeros_ip_firewall_filter" "drop_zerotier_forward" {
+  comment      = "Drop all ZeroTier forward"
+  action       = "drop"
+  chain        = "forward"
+  in_interface = routeros_zerotier_interface.zerotier1.name
   place_before = routeros_ip_firewall_filter.accept_trusted_input.id
 }
 
