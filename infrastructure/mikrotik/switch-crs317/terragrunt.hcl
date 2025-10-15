@@ -1,9 +1,6 @@
 include "root" {
   path = find_in_parent_folders("root.hcl")
 }
-include "shared_provider" {
-  path = find_in_parent_folders("provider.hcl")
-}
 
 dependencies {
   paths = [

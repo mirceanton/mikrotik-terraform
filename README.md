@@ -51,8 +51,6 @@ I was initially planning to also add some more details about my network, like VL
 │   │   └── secondary/      # Secondary domain CNAME records
 │   └── mikrotik/           # MikroTik device configurations
 │       ├── locals.hcl      # Shared local variables (VLANs, DNS, etc.)
-│       ├── provider.hcl    # Shared provider configuration
-│       ├── _shared/        # Shared Terraform files
 │       ├── router-base/    # RB5009 router base configuration
 │       ├── router-services # Router services (DHCP, DNS, VPN, etc.)
 │       ├── switch-crs317/  # CRS317 switch configuration
