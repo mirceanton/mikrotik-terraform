@@ -7,7 +7,7 @@ include "shared_provider" {
 
 dependencies {
   paths = [
-    find_in_parent_folders("mikrotik/router-rb5009")
+    find_in_parent_folders("mikrotik/router-base")
   ]
 }
 
@@ -17,12 +17,16 @@ generate "locals" {
   contents  = file(find_in_parent_folders("locals.hcl"))
 }
 
+locals {
+  mikrotik_hostname = "10.0.0.1"
+}
+
 terraform {
-  source = "${get_repo_root()}//infrastructure/mikrotik/router-rb5009/services"
+  source = "${get_repo_root()}//infrastructure/mikrotik/router-services"
 }
 
 inputs = {
-  mikrotik_hostname = "https://${read_terragrunt_config(find_in_parent_folders("terragrunt.hcl")).locals.mikrotik_hostname}"
+  mikrotik_hostname = "https://${local.mikrotik_hostname}"
   mikrotik_username = get_env("MIKROTIK_USERNAME")
   mikrotik_password = get_env("MIKROTIK_PASSWORD")
   mikrotik_insecure = true
