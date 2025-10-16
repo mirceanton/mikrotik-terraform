@@ -63,10 +63,10 @@ inputs = {
     "ether19"      = { comment = "NAS Onboard 2", untagged = local.shared_locals.vlans.Services.name }
     "ether20"      = {}
     "ether21"      = {}
-    "ether22"      = {}
+    "ether22"      = { comment = "Mirkputer 1g", untagged = local.shared_locals.vlans.Trusted.name }
     "ether23"      = { comment = "Uplink", tagged = local.shared_locals.all_vlans }
     "ether24"      = { comment = "Odroid C4", untagged = local.shared_locals.vlans.Management.name }
     "sfp-sfpplus1" = { comment = "CRS317", tagged = local.shared_locals.all_vlans }
-    "sfp-sfpplus2" = { comment = "Mirkputer", untagged = local.shared_locals.vlans.Trusted.name }
+    "sfp-sfpplus2" = { comment = "Mirkputer 10g", untagged = local.shared_locals.vlans.Storage.name }
   }
 }
