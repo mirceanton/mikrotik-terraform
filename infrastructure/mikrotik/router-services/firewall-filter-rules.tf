@@ -1,367 +1,366 @@
+locals {
+  filter_rules = {
+    # =========================================================================
+    # GLOBAL RULES - Forward Chain
+    # =========================================================================
+    "fasttrack" = {
+      chain            = "forward"
+      action           = "fasttrack-connection"
+      connection_state = "established,related"
+      hw_offload       = true
+      order            = 100
+    }
+    "accept-established-related-untracked-forward" = {
+      chain            = "forward"
+      action           = "accept"
+      connection_state = "established,related,untracked"
+      order            = 110
+    }
+    "truenas-asymmetric-routing-fix" = {
+      chain            = "forward"
+      action           = "accept"
+      connection_state = "invalid"
+      in_interface     = local.vlans.Trusted.name
+      out_interface    = local.vlans.Management.name
+      dst_address      = "10.0.0.245"
+      order            = 120
+    }
+    "drop-invalid-forward" = {
+      chain            = "forward"
+      action           = "drop"
+      connection_state = "invalid"
+      order            = 130
+      # log              = true
+      # log_prefix       = "DROPPED INVALID:"
+    }
+
+    # =========================================================================
+    # GLOBAL RULES - Input Chain
+    # =========================================================================
+    "accept-capsman-loopback" = {
+      chain       = "input"
+      action      = "accept"
+      dst_address = "127.0.0.1"
+      order       = 200
+    }
+    "allow-input-icmp" = {
+      chain    = "input"
+      action   = "accept"
+      protocol = "icmp"
+      order    = 210
+    }
+    "accept-router-established-related-untracked" = {
+      chain            = "input"
+      action           = "accept"
+      connection_state = "established,related,untracked"
+      order            = 220
+    }
+
+    # =========================================================================
+    # MANAGEMENT ZONE
+    # =========================================================================
+    "accept-management-forward" = {
+      chain        = "forward"
+      action       = "accept"
+      in_interface = local.vlans.Management.name
+      order        = 1000
+    }
+    "accept-management-input" = {
+      chain        = "input"
+      action       = "accept"
+      in_interface = local.vlans.Management.name
+      order        = 1100
+    }
+
+    # =========================================================================
+    # TRUSTED ZONE
+    # =========================================================================
+    "accept-trusted-input" = {
+      chain        = "input"
+      action       = "accept"
+      in_interface = local.vlans.Trusted.name
+      order        = 1200
+    }
+    "accept-trusted-forward" = {
+      chain        = "forward"
+      action       = "accept"
+      in_interface = local.vlans.Trusted.name
+      order        = 1300
+    }
+
+    # =========================================================================
+    # ZEROTIER ZONE
+    # =========================================================================
+    "allow-zerotier-dns-tcp" = {
+      chain        = "input"
+      action       = "accept"
+      protocol     = "tcp"
+      dst_port     = "53"
+      in_interface = routeros_zerotier_interface.zerotier1.name
+      order        = 1400
+    }
+    "allow-zerotier-dns-udp" = {
+      chain        = "input"
+      action       = "accept"
+      protocol     = "udp"
+      dst_port     = "53"
+      in_interface = routeros_zerotier_interface.zerotier1.name
+      order        = 1401
+    }
+    "drop-zerotier-input" = {
+      chain        = "input"
+      action       = "drop"
+      in_interface = routeros_zerotier_interface.zerotier1.name
+      order        = 1499
+    }
+
+    "allow-zerotier-to-services-http" = {
+      chain         = "forward"
+      action        = "accept"
+      in_interface  = routeros_zerotier_interface.zerotier1.name
+      out_interface = local.vlans.Services.name
+      protocol      = "tcp"
+      dst_port      = "80"
+      order         = 1500
+    }
+    "allow-zerotier-to-services-https" = {
+      chain         = "forward"
+      action        = "accept"
+      in_interface  = routeros_zerotier_interface.zerotier1.name
+      out_interface = local.vlans.Services.name
+      protocol      = "tcp"
+      dst_port      = "443"
+      order         = 1501
+    }
+    "allow-zerotier-to-services-hass" = {
+      chain         = "forward"
+      action        = "accept"
+      in_interface  = routeros_zerotier_interface.zerotier1.name
+      out_interface = local.vlans.Services.name
+      protocol      = "tcp"
+      dst_port      = "8123"
+      order         = 1502
+    }
+    "drop-zerotier-forward" = {
+      chain        = "forward"
+      action       = "drop"
+      in_interface = routeros_zerotier_interface.zerotier1.name
+      order        = 1599
+    }
+
+    # =========================================================================
+    # GUEST ZONE
+    # =========================================================================
+    "allow-guest-to-internet" = {
+      chain              = "forward"
+      action             = "accept"
+      in_interface       = local.vlans.Guest.name
+      out_interface_list = routeros_interface_list.wan.name
+      order              = 1600
+    }
+    "drop-guest-forward" = {
+      chain        = "forward"
+      action       = "drop"
+      in_interface = local.vlans.Guest.name
+      order        = 1699
+      # log          = true
+      # log_prefix   = "DROPPED GUEST FORWARD:"
+    }
+    "drop-guest-input" = {
+      chain        = "input"
+      action       = "drop"
+      in_interface = local.vlans.Guest.name
+      order        = 1799
+      # log          = true
+      # log_prefix   = "DROPPED GUEST INPUT:"
+    }
+
+    # =========================================================================
+    # UNTRUSTED ZONE
+    # =========================================================================
+    "allow-untrusted-to-internet" = {
+      chain              = "forward"
+      action             = "accept"
+      in_interface       = local.vlans.Untrusted.name
+      out_interface_list = routeros_interface_list.wan.name
+      order              = 1800
+    }
+    "allow-untrusted-to-services-http" = {
+      chain         = "forward"
+      action        = "accept"
+      in_interface  = local.vlans.Untrusted.name
+      out_interface = local.vlans.Services.name
+      protocol      = "tcp"
+      dst_port      = "80"
+      order         = 1801
+    }
+    "allow-untrusted-to-services-https" = {
+      chain         = "forward"
+      action        = "accept"
+      in_interface  = local.vlans.Untrusted.name
+      out_interface = local.vlans.Services.name
+      protocol      = "tcp"
+      dst_port      = "443"
+      order         = 1802
+    }
+    "allow-untrusted-to-services-hass" = {
+      chain         = "forward"
+      action        = "accept"
+      in_interface  = local.vlans.Untrusted.name
+      out_interface = local.vlans.Services.name
+      protocol      = "tcp"
+      dst_port      = "8123"
+      order         = 1803
+    }
+    "drop-untrusted-forward" = {
+      chain        = "forward"
+      action       = "drop"
+      in_interface = local.vlans.Untrusted.name
+      order        = 1899
+      # log          = true
+      # log_prefix   = "DROPPED Untrusted FORWARD:"
+    }
+
+    "allow-untrusted-dns-tcp" = {
+      chain        = "input"
+      action       = "accept"
+      protocol     = "tcp"
+      in_interface = local.vlans.Untrusted.name
+      dst_port     = "53"
+      order        = 1900
+    }
+    "allow-untrusted-dns-udp" = {
+      chain        = "input"
+      action       = "accept"
+      protocol     = "udp"
+      in_interface = local.vlans.Untrusted.name
+      dst_port     = "53"
+      order        = 1901
+    }
+    "drop-untrusted-input" = {
+      chain        = "input"
+      action       = "drop"
+      in_interface = local.vlans.Untrusted.name
+      order        = 1999
+      # log          = true
+      # log_prefix   = "DROPPED Untrusted INPUT:"
+    }
+
+    # =========================================================================
+    # SERVICES ZONE
+    # =========================================================================
+    "allow-services-to-internet" = {
+      chain              = "forward"
+      action             = "accept"
+      in_interface       = local.vlans.Services.name
+      out_interface_list = routeros_interface_list.wan.name
+      order              = 2000
+    }
+    "allow-hass-to-tesmart" = {
+      chain         = "forward"
+      action        = "accept"
+      in_interface  = local.vlans.Services.name
+      out_interface = local.vlans.Management.name
+      src_address   = local.static_dns["hass.home.mirceanton.com"].address
+      dst_address   = local.static_dns["tesmart.mgmt.h.mirceanton.com"].address
+      order         = 2010
+    }
+    "drop-services-forward" = {
+      chain        = "forward"
+      action       = "drop"
+      in_interface = local.vlans.Services.name
+      order        = 2099
+    }
+
+    "allow-services-dns-tcp" = {
+      chain        = "input"
+      action       = "accept"
+      protocol     = "tcp"
+      in_interface = local.vlans.Services.name
+      dst_port     = "53"
+      order        = 2100
+    }
+    "allow-services-dns-udp" = {
+      chain        = "input"
+      action       = "accept"
+      protocol     = "udp"
+      in_interface = local.vlans.Services.name
+      dst_port     = "53"
+      order        = 2101
+    }
+    "drop-services-input" = {
+      chain        = "input"
+      action       = "drop"
+      in_interface = local.vlans.Services.name
+      order        = 2199
+    }
+
+    # =========================================================================
+    # DEFAULT DENY
+    # =========================================================================
+    "drop-all-forward" = {
+      chain        = "forward"
+      action       = "drop"
+      in_interface = "!${local.vlans.Trusted.name}"
+      order        = 9000
+    }
+    "drop-all-input" = {
+      chain        = "input"
+      action       = "drop"
+      in_interface = "!${local.vlans.Trusted.name}"
+      order        = 9010
+    }
+  }
+
+  # Convert to ordered list for move_items
+  # Create entries with sort keys based on order field
+  filter_rules_ordered = [
+    for k, v in local.filter_rules : merge(v, {
+      key      = k
+      sort_key = format("%04d-%s", v.order, k)
+    })
+  ]
+
+  # Create a map with lexicographically sortable keys for for_each
+  # Map keys are always iterated in lexicographical order
+  filter_rules_map = {
+    for rule in local.filter_rules_ordered :
+    rule.sort_key => rule
+  }
+}
+
 # =================================================================================================
-# Firewall Rules
-# https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ip_firewall_filter
+# Firewall Filter Rules
 # =================================================================================================
-# Global Rules
-resource "routeros_ip_firewall_filter" "fasttrack" {
-  comment          = "Fasttrack"
-  action           = "fasttrack-connection"
-  chain            = "forward"
-  connection_state = "established,related"
-  hw_offload       = true
-  place_before     = routeros_ip_firewall_filter.accept_established_related_untracked_forward.id
-}
-resource "routeros_ip_firewall_filter" "accept_established_related_untracked_forward" {
-  comment          = "Allow established, related, untracked"
-  action           = "accept"
-  chain            = "forward"
-  connection_state = "established,related,untracked"
-  place_before     = routeros_ip_firewall_filter.truenas_asymmetric_routing_fix.id
-}
-resource "routeros_ip_firewall_filter" "truenas_asymmetric_routing_fix" {
-  comment          = "TrueNAS Asymmetric Routing Fix"
-  action           = "accept"
-  chain            = "forward"
-  connection_state = "invalid"
-  in_interface     = local.vlans.Trusted.name
-  out_interface    = local.vlans.Management.name
-  place_before     = routeros_ip_firewall_filter.drop_invalid_forward.id
-}
-resource "routeros_ip_firewall_filter" "drop_invalid_forward" {
-  comment          = "Drop invalid"
-  action           = "drop"
-  chain            = "forward"
-  connection_state = "invalid"
-  place_before     = routeros_ip_firewall_filter.accept_capsman_loopback.id
-  # log              = true
-  # log_prefix       = "DROPPED INVALID:"
-}
-resource "routeros_ip_firewall_filter" "accept_capsman_loopback" {
-  comment      = "Accept to local loopback for CAPsMAN"
-  action       = "accept"
-  chain        = "input"
-  dst_address  = "127.0.0.1"
-  place_before = routeros_ip_firewall_filter.allow_input_icmp.id
-}
-resource "routeros_ip_firewall_filter" "allow_input_icmp" {
-  comment      = "Allow input ICMP"
-  action       = "accept"
-  chain        = "input"
-  protocol     = "icmp"
-  place_before = routeros_ip_firewall_filter.accept_router_established_related_untracked.id
-}
-resource "routeros_ip_firewall_filter" "accept_router_established_related_untracked" {
-  comment          = "Allow established, related, untracked to router"
-  action           = "accept"
-  chain            = "input"
-  connection_state = "established,related,untracked"
-  place_before     = routeros_ip_firewall_filter.allow_management_forward.id
+resource "routeros_ip_firewall_filter" "rules" {
+  for_each = local.filter_rules_map
+
+  comment = "Managed by Terrform - ${each.value.key}"
+  chain   = each.value.chain
+  action  = each.value.action
+
+  # Optional fields - only set if present in rule definition
+  connection_state   = lookup(each.value, "connection_state", null)
+  in_interface       = lookup(each.value, "in_interface", null)
+  out_interface      = lookup(each.value, "out_interface", null)
+  in_interface_list  = lookup(each.value, "in_interface_list", null)
+  out_interface_list = lookup(each.value, "out_interface_list", null)
+  protocol           = lookup(each.value, "protocol", null)
+  dst_port           = lookup(each.value, "dst_port", null)
+  src_port           = lookup(each.value, "src_port", null)
+  src_address        = lookup(each.value, "src_address", null)
+  dst_address        = lookup(each.value, "dst_address", null)
+  jump_target        = lookup(each.value, "jump_target", null)
+  hw_offload         = lookup(each.value, "hw_offload", null)
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
-# ===============================================
-# Management
-# ===============================================
-resource "routeros_ip_firewall_filter" "allow_management_forward" {
-  comment            = "Allow all forward from management"
-  action             = "accept"
-  chain              = "forward"
-  in_interface       = local.vlans.Management.name
-  out_interface_list = routeros_interface_list.wan.name
-  place_before       = routeros_ip_firewall_filter.allow_management_input.id
-}
-resource "routeros_ip_firewall_filter" "allow_management_input" {
-  comment      = "Allow input from management"
-  action       = "accept"
-  chain        = "input"
-  in_interface = local.vlans.Management.name
-  place_before = routeros_ip_firewall_filter.allow_zerotier_dns_tcp.id
-}
-
-# ===============================================
-# ZeroTier
-# ===============================================
-# INPUT CHAIN
-resource "routeros_ip_firewall_filter" "allow_zerotier_dns_tcp" {
-  comment      = "Allow local DNS (TCP) for ZeroTier"
-  action       = "accept"
-  chain        = "input"
-  protocol     = "tcp"
-  dst_port     = "53"
-  in_interface = routeros_zerotier_interface.zerotier1.name
-  place_before = routeros_ip_firewall_filter.allow_zerotier_dns_udp.id
-}
-resource "routeros_ip_firewall_filter" "allow_zerotier_dns_udp" {
-  comment      = "Allow local DNS (UDP) for ZeroTier"
-  action       = "accept"
-  chain        = "input"
-  protocol     = "udp"
-  dst_port     = "53"
-  in_interface = routeros_zerotier_interface.zerotier1.name
-  place_before = routeros_ip_firewall_filter.drop_untrusted_input.id
-}
-resource "routeros_ip_firewall_filter" "drop_zerotier_input" {
-  comment      = "Drop all ZeroTier input"
-  action       = "drop"
-  chain        = "input"
-  in_interface = routeros_zerotier_interface.zerotier1.name
-  place_before = routeros_ip_firewall_filter.allow_servers_to_internet.id
-}
-
-# FORWARD CHAIN
-resource "routeros_ip_firewall_filter" "allow_zerotier_to_services" {
-  comment       = "Allow ZeroTier to Services"
-  action        = "accept"
-  chain         = "forward"
-  in_interface = routeros_zerotier_interface.zerotier1.name
-  out_interface = local.vlans.Services.name
-  place_before  = routeros_ip_firewall_filter.drop_zerotier_forward.id
-}
-resource "routeros_ip_firewall_filter" "drop_zerotier_forward" {
-  comment      = "Drop all ZeroTier forward"
-  action       = "drop"
-  chain        = "forward"
-  in_interface = routeros_zerotier_interface.zerotier1.name
-  place_before = routeros_ip_firewall_filter.accept_trusted_input.id
-}
-
-# ===============================================
-# TRUSTED
-# ===============================================
-# INPUT CHAIN
-resource "routeros_ip_firewall_filter" "accept_trusted_input" {
-  comment      = "Accept all Trusted input"
-  action       = "accept"
-  chain        = "input"
-  in_interface = local.vlans.Trusted.name
-  place_before = routeros_ip_firewall_filter.accept_trusted_forward.id
-}
-
-# FORWARD CHAIN
-resource "routeros_ip_firewall_filter" "accept_trusted_forward" {
-  comment      = "Accept all Trusted forward"
-  action       = "accept"
-  chain        = "forward"
-  in_interface = local.vlans.Trusted.name
-  place_before = routeros_ip_firewall_filter.allow_guest_to_internet.id
-}
-
-# ===============================================
-# GUEST
-# ===============================================
-# FORWARD CHAIN
-resource "routeros_ip_firewall_filter" "allow_guest_to_internet" {
-  comment            = "Allow Guest to Internet"
-  action             = "accept"
-  chain              = "forward"
-  in_interface       = local.vlans.Guest.name
-  out_interface_list = routeros_interface_list.wan.name
-  place_before       = routeros_ip_firewall_filter.drop_guest_forward.id
-}
-resource "routeros_ip_firewall_filter" "drop_guest_forward" {
-  comment      = "Drop all Guest forward"
-  action       = "drop"
-  chain        = "forward"
-  in_interface = local.vlans.Guest.name
-  place_before = routeros_ip_firewall_filter.drop_guest_input.id
-  # log          = true
-  # log_prefix   = "DROPPED GUEST FORWARD:"
-}
-
-# INPUT CHAIN
-resource "routeros_ip_firewall_filter" "drop_guest_input" {
-  comment      = "Drop all Guest input"
-  action       = "drop"
-  chain        = "input"
-  in_interface = local.vlans.Guest.name
-  place_before = routeros_ip_firewall_filter.allow_untrusted_to_internet.id
-  # log          = true
-  # log_prefix   = "DROPPED GUEST INPUT:"
-}
-
-
-# ===============================================
-# UNTRUSTED
-# ===============================================
-# FORWARD CHAIN
-resource "routeros_ip_firewall_filter" "allow_untrusted_to_internet" {
-  comment            = "Allow Untrusted to Internet"
-  action             = "accept"
-  chain              = "forward"
-  in_interface       = local.vlans.Untrusted.name
-  out_interface_list = routeros_interface_list.wan.name
-  place_before       = routeros_ip_firewall_filter.allow_untrusted_to_services.id
-}
-resource "routeros_ip_firewall_filter" "allow_untrusted_to_services" {
-  comment       = "Allow Untrusted to Services"
-  action        = "accept"
-  chain         = "forward"
-  in_interface  = local.vlans.Untrusted.name
-  out_interface = local.vlans.Services.name
-  place_before  = routeros_ip_firewall_filter.drop_untrusted_forward.id
-}
-resource "routeros_ip_firewall_filter" "drop_untrusted_forward" {
-  comment      = "Drop all Untrusted forward"
-  action       = "drop"
-  chain        = "forward"
-  in_interface = local.vlans.Untrusted.name
-  place_before = routeros_ip_firewall_filter.allow_untrusted_dns_tcp.id
-  # log          = true
-  # log_prefix   = "DROPPED Untrusted FORWARD:"
-}
-
-# INPUT CHAIN
-resource "routeros_ip_firewall_filter" "allow_untrusted_dns_tcp" {
-  comment      = "Allow local DNS (TCP) for Untrusted"
-  action       = "accept"
-  chain        = "input"
-  protocol     = "tcp"
-  in_interface = local.vlans.Untrusted.name
-  dst_port     = "53"
-  place_before = routeros_ip_firewall_filter.allow_untrusted_dns_udp.id
-}
-resource "routeros_ip_firewall_filter" "allow_untrusted_dns_udp" {
-  comment      = "Allow local DNS (UDP) for Untrusted"
-  action       = "accept"
-  chain        = "input"
-  protocol     = "udp"
-  in_interface = local.vlans.Untrusted.name
-  dst_port     = "53"
-  place_before = routeros_ip_firewall_filter.drop_untrusted_input.id
-}
-resource "routeros_ip_firewall_filter" "drop_untrusted_input" {
-  comment      = "Drop all Untrusted input"
-  action       = "drop"
-  chain        = "input"
-  in_interface = local.vlans.Untrusted.name
-  place_before = routeros_ip_firewall_filter.allow_servers_to_internet.id
-  # log          = true
-  # log_prefix   = "DROPPED Untrusted INPUT:"
-}
-
-
-# ===============================================
-# SERVERS
-# ===============================================
-# FORWARD CHAIN
-resource "routeros_ip_firewall_filter" "allow_servers_to_internet" {
-  comment            = "Allow Servers to Internet"
-  action             = "accept"
-  chain              = "forward"
-  in_interface       = local.vlans.Management.name
-  out_interface_list = routeros_interface_list.wan.name
-  place_before       = routeros_ip_firewall_filter.drop_servers_forward.id
-}
-resource "routeros_ip_firewall_filter" "drop_servers_forward" {
-  comment      = "Drop all Servers forward"
-  action       = "drop"
-  chain        = "forward"
-  in_interface = local.vlans.Management.name
-  place_before = routeros_ip_firewall_filter.allow_servers_dns_tcp.id
-  # log          = true
-  # log_prefix   = "DROPPED Servers FORWARD:"
-}
-
-# INPUT CHAIN
-resource "routeros_ip_firewall_filter" "allow_servers_dns_tcp" {
-  comment      = "Allow local DNS (TCP) for Servers"
-  action       = "accept"
-  chain        = "input"
-  protocol     = "tcp"
-  in_interface = local.vlans.Management.name
-  dst_port     = "53"
-  place_before = routeros_ip_firewall_filter.allow_servers_dns_udp.id
-}
-resource "routeros_ip_firewall_filter" "allow_servers_dns_udp" {
-  comment      = "Allow local DNS (UDP) for Servers"
-  action       = "accept"
-  chain        = "input"
-  protocol     = "udp"
-  in_interface = local.vlans.Management.name
-  dst_port     = "53"
-  place_before = routeros_ip_firewall_filter.drop_servers_input.id
-}
-resource "routeros_ip_firewall_filter" "drop_servers_input" {
-  comment      = "Drop all Servers input"
-  action       = "drop"
-  chain        = "input"
-  in_interface = local.vlans.Management.name
-  place_before = routeros_ip_firewall_filter.allow_services_to_internet.id
-  # log          = true
-  # log_prefix   = "DROPPED Servers INPUT:"
-}
-
-
-# ===============================================
-# Services
-# ===============================================
-# FORWARD CHAIN
-resource "routeros_ip_firewall_filter" "allow_services_to_internet" {
-  comment            = "Allow Services to Internet"
-  action             = "accept"
-  chain              = "forward"
-  in_interface       = local.vlans.Services.name
-  out_interface_list = routeros_interface_list.wan.name
-  place_before       = routeros_ip_firewall_filter.drop_services_forward.id
-}
-resource "routeros_ip_firewall_filter" "allow_hass_to_tesmart" {
-  comment       = "Allow HomeAssistant to TeSmart KVM"
-  action        = "accept"
-  chain         = "forward"
-  in_interface  = local.vlans.Services.name
-  out_interface = local.vlans.Management.name
-  src_address   = local.static_dns["hass.home.mirceanton.com"].address
-  dst_address   = local.static_dns["tesmart.mgmt.h.mirceanton.com"].address
-  place_before  = routeros_ip_firewall_filter.drop_services_forward.id
-}
-resource "routeros_ip_firewall_filter" "drop_services_forward" {
-  comment      = "Drop all Services forward"
-  action       = "drop"
-  chain        = "forward"
-  in_interface = local.vlans.Services.name
-  place_before = routeros_ip_firewall_filter.allow_services_dns_tcp.id
-}
-
-# INPUT CHAIN
-resource "routeros_ip_firewall_filter" "allow_services_dns_tcp" {
-  comment      = "Allow local DNS (TCP) for Services"
-  action       = "accept"
-  chain        = "input"
-  protocol     = "tcp"
-  in_interface = local.vlans.Services.name
-  dst_port     = "53"
-  place_before = routeros_ip_firewall_filter.allow_services_dns_udp.id
-}
-resource "routeros_ip_firewall_filter" "allow_services_dns_udp" {
-  comment      = "Allow local DNS (UDP) for Services"
-  action       = "accept"
-  chain        = "input"
-  protocol     = "udp"
-  in_interface = local.vlans.Services.name
-  dst_port     = "53"
-  place_before = routeros_ip_firewall_filter.drop_services_input.id
-}
-resource "routeros_ip_firewall_filter" "drop_services_input" {
-  comment      = "Drop all Services input"
-  action       = "drop"
-  chain        = "input"
-  in_interface = local.vlans.Services.name
-  place_before = routeros_ip_firewall_filter.drop_all_forward.id
-}
-
-
-# ===============================================
-# DEFAULT DENY
-# ===============================================
-resource "routeros_ip_firewall_filter" "drop_all_forward" {
-  comment      = "Drop all forward not from Trusted"
-  action       = "drop"
-  chain        = "forward"
-  in_interface = "!${local.vlans.Trusted.name}"
-  place_before = routeros_ip_firewall_filter.drop_all_input.id
-}
-resource "routeros_ip_firewall_filter" "drop_all_input" {
-  comment      = "Drop all input not from Trusted"
-  action       = "drop"
-  chain        = "input"
-  in_interface = "!${local.vlans.Trusted.name}"
+# Move rules to correct order after creation
+resource "routeros_move_items" "firewall_rules" {
+  resource_path = "/ip/firewall/filter"
+  sequence      = [for idx in sort(keys(local.filter_rules_map)) : routeros_ip_firewall_filter.rules[idx].id]
+  depends_on    = [routeros_ip_firewall_filter.rules]
 }
