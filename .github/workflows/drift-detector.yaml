@@ -21,8 +21,40 @@ env:
   AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
 
 jobs:
-  terragrunt-drift:
+  terragrunt-plan:
     runs-on: [self-hosted, infra]
+    outputs:
+      drift_detected: ${{ steps.plan.outputs.drift_detected }}
+      plan_output: ${{ steps.plan.outputs.plan_output }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Setup mise
+        uses: jdx/mise-action@e3d7b8d67a7958d1207f6ed871e83b1ea780e7b0 # v3.3.1
+
+      - name: Terragrunt Init
+        run: terragrunt init --all -upgrade
+
+      - name: Terragrunt Plan
+        id: plan
+        run: |
+          terragrunt plan --all --detailed-exitcode -no-color 2>&1 | tee plan_output.txt
+          if [ "${PIPESTATUS[0]}" -eq 2 ]; then
+            echo "drift_detected=true" | tee "$GITHUB_OUTPUT"
+          else
+            echo "drift_detected=false" | tee "$GITHUB_OUTPUT"
+          fi
+          
+          # Store plan output for the next job
+          echo "plan_output<<EOF" >> "$GITHUB_OUTPUT"
+          cat plan_output.txt >> "$GITHUB_OUTPUT"
+          echo "EOF" >> "$GITHUB_OUTPUT"
+
+  issue-management:
+    runs-on: [self-hosted, infra]
+    needs: terragrunt-plan
+    if: always()
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -34,25 +66,11 @@ jobs:
           app-id: '${{ secrets.BOT_APP_ID }}'
           private-key: '${{ secrets.BOT_APP_PRIVATE_KEY }}'
 
-      - name: Setup mise
-        uses: jdx/mise-action@e3d7b8d67a7958d1207f6ed871e83b1ea780e7b0 # v3.3.1
-
-      - name: Terragrunt Init
-        run: terragrunt init --all -upgrade
-
-      - name: Terragrunt Plan
-        run: |
-          terragrunt plan --all --detailed-exitcode -no-color 2>&1 | tee plan_output.txt
-          if [ "${PIPESTATUS[0]}" -eq 2 ]; then
-            echo "DRIFT_DETECTED=true" | tee "$GITHUB_ENV"
-          else
-            echo "DRIFT_DETECTED=false" | tee "$GITHUB_ENV"
-          fi
-
       - name: Open Issue if Drift Detected
-        if: env.DRIFT_DETECTED == 'true'
+        if: needs.terragrunt-plan.outputs.drift_detected == 'true'
         env:
           GITHUB_TOKEN: '${{ steps.app-token.outputs.token }}'
+          PLAN_OUTPUT: '${{ needs.terragrunt-plan.outputs.plan_output }}'
         run: |
           ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
           if [ -n "$ISSUE_NUMBER" ]; then
@@ -74,7 +92,7 @@ jobs:
             echo "<summary>Click to expand drift details</summary>"
             echo ""
             echo '```'
-            cat plan_output.txt
+            echo "$PLAN_OUTPUT"
             echo '```'
             echo ""
             echo "</details>"
@@ -83,7 +101,7 @@ jobs:
           gh issue pin "$ISSUE_NUMBER"
 
       - name: Close GitHub Issue if No Drift
-        if: env.DRIFT_DETECTED == 'false'
+        if: needs.terragrunt-plan.outputs.drift_detected == 'false'
         env:
           GITHUB_TOKEN: '${{ steps.app-token.outputs.token }}'
           COMMENT: |
