@@ -62,7 +62,7 @@ inputs = {
     "ether18"      = {}
     "ether19"      = { comment = "NAS Onboard 2", untagged = local.shared_locals.vlans.Services.name }
     "ether20"      = {}
-    "ether21"      = {}
+    "ether21"      = { comment = "Guest Test Port", untagged = local.shared_locals.vlans.Guest.name }
     "ether22"      = { comment = "Mirkputer 1g", untagged = local.shared_locals.vlans.Trusted.name }
     "ether23"      = { comment = "Uplink", tagged = local.shared_locals.all_vlans }
     "ether24"      = { comment = "Odroid C4", untagged = local.shared_locals.vlans.Management.name }
