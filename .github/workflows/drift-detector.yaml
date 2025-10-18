@@ -47,9 +47,11 @@ jobs:
           fi
           
           # Store plan output for the next job
-          echo "plan_output<<EOF" >> "$GITHUB_OUTPUT"
-          cat plan_output.txt >> "$GITHUB_OUTPUT"
-          echo "EOF" >> "$GITHUB_OUTPUT"
+          {
+            echo "plan_output<<EOF"
+            cat plan_output.txt
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
 
   issue-management:
     runs-on: [self-hosted, infra]
