@@ -261,8 +261,8 @@ locals {
       action        = "accept"
       in_interface  = local.vlans.Services.name
       out_interface = local.vlans.Management.name
-      src_address   = "10.0.10.253" # HomeAssistant
-      dst_address   = "10.0.0.253" # TeSmart KVM
+      src_address   = local.static_dns["hass.home.mirceanton.com"].address
+      dst_address   = local.static_dns["tesmart.mgmt.h.mirceanton.com"].address
       order         = 2010
     }
     "drop-services-forward" = {
