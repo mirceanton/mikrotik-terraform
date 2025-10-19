@@ -261,9 +261,18 @@ locals {
       action        = "accept"
       in_interface  = local.vlans.Services.name
       out_interface = local.vlans.Management.name
-      src_address   = local.static_dns["hass.home.mirceanton.com"].address
-      dst_address   = local.static_dns["tesmart.mgmt.h.mirceanton.com"].address
+      src_address   = "10.0.10.253" # FIXME should use some sort of reference
+      dst_address   = "10.0.0.253" # FIXME should use some sort of reference
       order         = 2010
+    }
+    "allow-hass-to-smart-tv" = {
+      chain         = "forward"
+      action        = "accept"
+      in_interface  = local.vlans.Services.name
+      out_interface = local.vlans.Untrusted.name
+      src_address   = "10.0.10.253" # FIXME should use some sort of reference
+      dst_address   = "192.168.42.250" # FIXME should use some sort of reference
+      order         = 2011
     }
     "drop-services-forward" = {
       chain        = "forward"
