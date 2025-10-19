@@ -10,22 +10,21 @@ on:
 env:
   ISSUE_TITLE: "⚠️ Terragrunt Drift Detected ⚠️"
 
+  MIKROTIK_USERNAME: "${{ secrets.MIKROTIK_USERNAME }}"
+  MIKROTIK_PASSWORD: "${{ secrets.MIKROTIK_PASSWORD }}"
+  PPPOE_USERNAME: "${{ secrets.PPPOE_USERNAME }}"
+  PPPOE_PASSWORD: "${{ secrets.PPPOE_PASSWORD }}"
+  CLOUDFLARE_API_TOKEN: "${{ secrets.CLOUDFLARE_API_TOKEN }}"
+  ZEROTIER_CENTRAL_TOKEN: "${{ secrets.ZEROTIER_CENTRAL_TOKEN }}"
+  AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
+  AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+
 jobs:
   terragrunt-plan:
     runs-on: [self-hosted, infra]
     outputs:
       drift_detected: ${{ steps.plan.outputs.drift_detected }}
       plan_output: ${{ steps.plan.outputs.plan_output }}
-    environment: production
-    env:
-      MIKROTIK_USERNAME: "${{ secrets.MIKROTIK_USERNAME }}"
-      MIKROTIK_PASSWORD: "${{ secrets.MIKROTIK_PASSWORD }}"
-      PPPOE_USERNAME: "${{ secrets.PPPOE_USERNAME }}"
-      PPPOE_PASSWORD: "${{ secrets.PPPOE_PASSWORD }}"
-      CLOUDFLARE_API_TOKEN: "${{ secrets.CLOUDFLARE_API_TOKEN }}"
-      ZEROTIER_CENTRAL_TOKEN: "${{ secrets.ZEROTIER_CENTRAL_TOKEN }}"
-      AWS_ACCESS_KEY_ID: "${{ secrets.AWS_ACCESS_KEY_ID }}"
-      AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
@@ -87,10 +86,17 @@ jobs:
           fi
           
           RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          WORKFLOW_URL="${{ github.server_url }}/${{ github.repository }}/actions/workflows/terragrunt-apply.yaml"
           {
             echo "## ⚠️ **Drift detected in workflow run [#${{ github.run_number }}]($RUN_URL)**"
             echo ""
-            echo "Run \`terragrunt apply --all\` to reconcile changes."
+            echo "### 🚀 Quick Actions"
+            echo ""
+            echo "[![Run Terragrunt Apply](${{ github.server_url }}/${{ github.repository }}/actions/workflows/terragrunt-apply.yml/badge.svg)]($WORKFLOW_URL)"
+            echo ""
+            echo "**[Click here to run Terragrunt Apply workflow]($WORKFLOW_URL)** (then click 'Run workflow' button)"
+            echo ""
+            echo "Or run manually: \`terragrunt apply --all\`"
             echo ""
             echo "### Plan Output"
             echo "<details>"
