@@ -274,6 +274,15 @@ locals {
       dst_address   = "192.168.42.250" # FIXME should use some sort of reference
       order         = 2011
     }
+    "allow-hass-to-mirkputer" = {
+      chain         = "forward"
+      action        = "accept"
+      in_interface  = local.vlans.Services.name
+      out_interface = local.vlans.Trusted.name
+      src_address   = "10.0.10.253" # FIXME should use some sort of reference
+      dst_address   = "192.168.69.69" # FIXME should use some sort of reference
+      order         = 2012
+    }
     "drop-services-forward" = {
       chain        = "forward"
       action       = "drop"
