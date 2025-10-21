@@ -18,6 +18,7 @@ on:
         value: ${{ jobs.plan.outputs.plan_output }}
 
 env:
+  OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.op-service-account-token }}
   TERRAGRUNT_NON_INTERACTIVE: "true"
 
 jobs:

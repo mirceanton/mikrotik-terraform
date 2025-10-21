@@ -18,6 +18,7 @@ concurrency:
 
 env:
   TERRAGRUNT_NON_INTERACTIVE: "true"
+  OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
 jobs:
   terragrunt-apply:
