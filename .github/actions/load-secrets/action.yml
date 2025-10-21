@@ -1,0 +1,29 @@
+---
+name: Load Secrets from 1Password
+description: Load secrets from 1Password and export them as environment variables
+
+inputs:
+  op-service-account-token:
+    description: 1Password Service Account Token
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - name: Load secrets from 1Password
+      uses: 1password/load-secrets-action@v3.0.0
+      with: { export-env: true }
+      env:
+        OP_SERVICE_ACCOUNT_TOKEN: ${{ inputs.op-service-account-token }}
+
+        AWS_ACCESS_KEY_ID: op://automation/Mikrotik Terraform Backblaze B2 State/username
+        AWS_SECRET_ACCESS_KEY: op://automation/Mikrotik Terraform Backblaze B2 State/password
+
+        MIKROTIK_USERNAME: op://automation/Mikrotik/username
+        MIKROTIK_PASSWORD: op://automation/Mikrotik/password
+
+        PPPOE_USERNAME: op://automation/Digi PPPoE/username
+        PPPOE_PASSWORD: op://automation/Digi PPPoE/password
+
+        ZEROTIER_CENTRAL_TOKEN: op://automation/ZeroTier Central Token/password
+        CLOUDFLARE_API_TOKEN: op://automation/CloudFlare Token Mikrotik-Terraform/password
