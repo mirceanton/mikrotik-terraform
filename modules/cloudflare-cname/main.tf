@@ -12,5 +12,5 @@ resource "cloudflare_dns_record" "this" {
   type    = "CNAME"
   proxied = false
   ttl     = 3600
-  comment = "Terraform: Mikrotik DDNS"
+  comment = "Mikrotik DDNS - Managed by Terraform from mikrotik-terraform"
 }
