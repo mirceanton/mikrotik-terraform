@@ -1,0 +1,59 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Terragrunt Plan
+permissions: { contents: read }
+
+on:
+  workflow_call:
+    secrets:
+      op-service-account-token:
+        description: 1Password Service Account Token
+        required: true
+    outputs:
+      drift_detected:
+        description: Whether drift was detected
+        value: ${{ jobs.plan.outputs.drift_detected }}
+      plan_output:
+        description: The plan output
+        value: ${{ jobs.plan.outputs.plan_output }}
+
+env:
+  TERRAGRUNT_NON_INTERACTIVE: "true"
+
+jobs:
+  plan:
+    runs-on: [self-hosted, infra]
+    outputs:
+      drift_detected: ${{ steps.plan.outputs.drift_detected }}
+      plan_output: ${{ steps.plan.outputs.plan_output }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Setup mise
+        uses: jdx/mise-action@e3d7b8d67a7958d1207f6ed871e83b1ea780e7b0 # v3.3.1
+
+      - name: Load Secrets
+        uses: ./.github/actions/load-secrets
+        with:
+          op-service-account-token: ${{ secrets.op-service-account-token }}
+
+      - name: Terragrunt Init
+        run: terragrunt init --all -upgrade
+
+      - name: Terragrunt Plan
+        id: plan
+        run: |
+          terragrunt plan --all --detailed-exitcode -no-color 2>&1 | tee plan_output.txt
+
+          if [ "${PIPESTATUS[0]}" -eq 2 ]; then
+            echo "drift_detected=true" | tee "$GITHUB_OUTPUT"
+          else
+            echo "drift_detected=false" | tee "$GITHUB_OUTPUT"
+          fi
+
+          {
+            echo "plan_output<<EOF"
+            cat plan_output.txt
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
