@@ -44,7 +44,7 @@ jobs:
           else
             echo "drift_detected=false" | tee "$GITHUB_OUTPUT"
           fi
-          
+
           # Store plan output for the next job
           {
             echo "plan_output<<EOF"
@@ -67,14 +67,14 @@ jobs:
         uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2.1.4
         id: app-token
         with:
-          app-id: '${{ secrets.BOT_APP_ID }}'
-          private-key: '${{ secrets.BOT_APP_PRIVATE_KEY }}'
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
 
       - name: Open Issue if Drift Detected
         if: needs.terragrunt-plan.outputs.drift_detected == 'true'
         env:
-          GITHUB_TOKEN: '${{ steps.app-token.outputs.token }}'
-          PLAN_OUTPUT: '${{ needs.terragrunt-plan.outputs.plan_output }}'
+          GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
+          PLAN_OUTPUT: "${{ needs.terragrunt-plan.outputs.plan_output }}"
         run: |
           ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
           if [ -n "$ISSUE_NUMBER" ]; then
@@ -84,7 +84,7 @@ jobs:
             sleep 3 # Wait for issue to be created
             ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
           fi
-          
+
           RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
           WORKFLOW_URL="${{ github.server_url }}/${{ github.repository }}/actions/workflows/terragrunt-apply.yaml"
           {
@@ -114,7 +114,7 @@ jobs:
       - name: Close GitHub Issue if No Drift
         if: needs.terragrunt-plan.outputs.drift_detected == 'false'
         env:
-          GITHUB_TOKEN: '${{ steps.app-token.outputs.token }}'
+          GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
           COMMENT: |
             ✅ No drift detected. Closing issue automatically.
             Verified in [workflow run #${{ github.run_number }}]("${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}").
