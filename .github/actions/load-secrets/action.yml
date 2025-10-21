@@ -16,14 +16,14 @@ runs:
       env:
         OP_SERVICE_ACCOUNT_TOKEN: ${{ inputs.op-service-account-token }}
 
-        AWS_ACCESS_KEY_ID: op://automation/Mikrotik Terraform Backblaze B2 State/username
-        AWS_SECRET_ACCESS_KEY: op://automation/Mikrotik Terraform Backblaze B2 State/password
+        AWS_ACCESS_KEY_ID: op://Automation/Mikrotik Terraform Backblaze B2 State/username
+        AWS_SECRET_ACCESS_KEY: op://Automation/Mikrotik Terraform Backblaze B2 State/password
 
-        MIKROTIK_USERNAME: op://automation/Mikrotik/username
-        MIKROTIK_PASSWORD: op://automation/Mikrotik/password
+        MIKROTIK_USERNAME: op://Automation/Mikrotik/username
+        MIKROTIK_PASSWORD: op://Automation/Mikrotik/password
 
-        PPPOE_USERNAME: op://automation/Digi PPPoE/username
-        PPPOE_PASSWORD: op://automation/Digi PPPoE/password
+        PPPOE_USERNAME: op://Badoink/Digi PPPoE/username
+        PPPOE_PASSWORD: op://Badoink/Digi PPPoE/password
 
-        ZEROTIER_CENTRAL_TOKEN: op://automation/ZeroTier Central Token/password
-        CLOUDFLARE_API_TOKEN: op://automation/CloudFlare Token Mikrotik-Terraform/password
+        ZEROTIER_CENTRAL_TOKEN: op://Automation/ZeroTier Central Token/password
+        CLOUDFLARE_API_TOKEN: op://Automation/CloudFlare Token Mikrotik-Terraform/password
