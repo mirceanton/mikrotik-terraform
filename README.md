@@ -11,7 +11,7 @@ The purpose of this repository is to provide a structured and repeatable way to 
 Fundamentally speaking, there is nothing that sets this approach apart from, say, a configuration script or just backing up and importing the configuration on the device. Yet, I still decided to use Terraform for this. Why?
 
 1. **I'm weird like that** 🤓
-   
+
    As someone who works in DevOps as my main gig, manual configurations (or ClickOps, as we also call it 😉), makes me cringe and I avoid it like the plague. I like defining configuration as code whenever possible since it makes it easy to reproduce and tweak this system.
 
 2. **Skill ~~Issue~~Development** 💪🏻
@@ -42,9 +42,12 @@ I was initially planning to also add some more details about my network, like VL
 
 ```bash
 ├── .github/                # Various repo configuration/metadata files
+│   ├── actions/            # Custom GitHub actions...
+│   │   └── load-secrets/   # ...loads secrets from 1Pass as env vars
 │   └── workflows/          # GitHub workflow configurations and automation
 ├── docs/img                # Network Diagram(s)
 ├── infrastructure/         # Terragrunt configurations
+│   ├── 1password/          # 1Pass password injection
 │   ├── cloudflare/         # Cloudflare DNS automation
 │   │   ├── dependency.hcl  # Shared dependency configuration
 │   │   ├── primary/        # Primary domain CNAME records
@@ -57,6 +60,7 @@ I was initially planning to also add some more details about my network, like VL
 │       ├── switch-crs326/  # CRS326 switch configuration
 │       └── switch-hex/     # Hex switch configuration
 ├── modules/                # Reusable Terraform modules
+│   ├── 1password-item/     # Add item(s) into a given 1Pass vault
 │   ├── cloudflare-cname/   # Cloudflare CNAME record module
 │   ├── mikrotik-base/      # Base MikroTik device configuration
 │   └── mikrotik-dhcp-server/ # DHCP server configuration
@@ -70,6 +74,7 @@ I was initially planning to also add some more details about my network, like VL
 
 - [Terraform](https://www.terraform.io/) - Infrastructure as Code tool
 - [Terragrunt](https://terragrunt.gruntwork.io/) - Terraform wrapper
+- [1pass cli](https://developer.1password.com/docs/cli/) - for injecting secrets into 1Password vaults
 - [mise](https://mise.jdx.dev/) for managing dependencies
 - Access to a [BackBlaze](https://www.backblaze.com/) B2 bucket for remote state storage or any other S3 compatible service
 
@@ -92,6 +97,12 @@ export PPPOE_PASSWORD="your_pppoe_password"
 
 # Cloudflare API token (for DNS automation)
 export CLOUDFLARE_API_TOKEN="your_cloudflare_api_token"
+
+# ZeroTier Central API token (for VPN)
+export ZEROTIER_CENTRAL_TOKEN="your zerotier token here"
+
+# For injecting secrets into 1Password vaults
+export OP_SERVICE_ACCOUNT_TOKEN="onepassword token here"
 ```
 
 ### ☁️ Remote State Configuration
@@ -105,7 +116,7 @@ export AWS_ACCESS_KEY_ID="your_b2_key_id"
 export AWS_SECRET_ACCESS_KEY="your_b2_application_key"
 ```
 
-Previously, I was using local state files with [SOPS](https://github.com/getsops/sops) encryption to manage sensitive data in the state. While this approach worked, I ultimately decided to migrate to remote state storage to simplify the workflow by removing the encryption/decryption step, and also to stop polluting my commit history with redundant `chore: terraform apply` commits.  
+Previously, I was using local state files with [SOPS](https://github.com/getsops/sops) encryption to manage sensitive data in the state. While this approach worked, I ultimately decided to migrate to remote state storage to simplify the workflow by removing the encryption/decryption step, and also to stop polluting my commit history with redundant `chore: terraform apply` commits.
 This may prove to be problematic if I end up cutting my own internet access during an `apply`... but he who lives by the sword, he also dies by it 🗿
 
 ## ⚠️ Limitations
