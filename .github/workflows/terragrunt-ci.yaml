@@ -1,0 +1,64 @@
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+name: Terragrunt CI
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  pull_request:
+    branches: ["main"]
+    paths:
+      - root.hcl
+      - infrastructure/**
+      - modules/**
+
+jobs:
+  terragrunt-plan:
+    uses: ./.github/workflows/terragrunt-plan.yaml
+    secrets:
+      op-service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
+
+  comment:
+    runs-on: ubuntu-latest
+    if: always()
+    needs: terragrunt-plan
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: Setup mise
+        uses: jdx/mise-action@e3d7b8d67a7958d1207f6ed871e83b1ea780e7b0 # v3.3.1
+
+      - name: Generate Token
+        uses: actions/create-github-app-token@67018539274d69449ef7c02e8e71183d1719ab42 # v2.1.4
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Create PR comment
+        env:
+          GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
+          PLAN_OUTPUT: "${{ needs.terragrunt-plan.outputs.plan_output }}"
+          DRIFT_DETECTED: "${{ needs.terragrunt-plan.outputs.drift_detected }}"
+          STATUS: "${{ needs.terragrunt-plan.outputs.drift_detected && '⚠️ Changes detected' || '✅ No changes' }}"
+        run: |
+          {
+            echo "## 🤖 Terragrunt Plan Results"
+            echo ""
+            echo "**Status:** $STATUS"
+            echo ""
+            echo "<details>"
+            echo "<summary>Click to expand plan output</summary>"
+            echo ""
+            echo '```terraform'
+            echo "$PLAN_OUTPUT"
+            echo '```'
+            echo ""
+            echo "</details>"
+            echo ""
+            echo "---"
+            echo "*Workflow run: [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})*"
+          } > comment_body.txt
+          gh pr comment "${{ github.event.pull_request.number }}" --body-file comment_body.txt
