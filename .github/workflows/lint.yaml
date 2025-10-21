@@ -5,7 +5,6 @@ permissions: { contents: read }
 
 on:
   workflow_dispatch: {}
-  pull_request: { branches: [main] }
   push: {}
 
 jobs:
@@ -21,7 +20,7 @@ jobs:
       - name: Run actionlint
         run: mise exec -- actionlint
 
-  terraform-fmt:
+  yamllint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -29,18 +28,6 @@ jobs:
 
       - name: Setup mise
         uses: jdx/mise-action@e3d7b8d67a7958d1207f6ed871e83b1ea780e7b0 # v3.3.1
-      
-      - name: Run terraform fmt
-        run: mise exec -- terraform fmt -recursive -check
 
-  terragrunt-format:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
-
-      - name: Setup mise
-        uses: jdx/mise-action@e3d7b8d67a7958d1207f6ed871e83b1ea780e7b0 # v3.3.1
-      
-      - name: Run terragrunt fmt
-        run: mise exec -- terragrunt hcl format --check
+      - name: Run yamllint
+        run: mise exec -- yamllint . -c .yamllint.yaml
