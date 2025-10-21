@@ -1,18 +1,18 @@
 [tools]
+node = "latest"
+uv = "latest"
+
 # =================================================================================================
 # Project Tools
 # =================================================================================================
-"aqua:hashicorp/terraform" = "1.13.4"
-"aqua:gruntwork-io/terragrunt" = "0.91.1"
-"aqua:terraform-linters/tflint" = "0.59.1"
+terraform = "1.13.4"
+terragrunt = "0.91.1"
+"aqua:minio/mc" = "latest"
 
 # =================================================================================================
 # CI Tools
 # =================================================================================================
-node = "latest"
-uv = "latest"
-"aqua:rhysd/actionlint" = "latest"
-"npm:@commitlint/cli" = "latest"
-"pipx:yamllint" = "latest"
 gh = "latest"
-"aqua:minio/mc" = "latest"
+actionlint = "latest"
+yamllint = "latest"
+"npm:@commitlint/cli" = "latest"
