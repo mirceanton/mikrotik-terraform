@@ -294,10 +294,10 @@ locals {
       action        = "accept"
       in_interface  = local.vlans.Services.name
       out_interface = local.vlans.Trusted.name
-      src_address   = "10.0.10.253"   # FIXME should use some sort of reference
+      src_address   = "10.0.10.253"    # FIXME should use some sort of reference
       dst_address   = "192.168.69.255" # FIXME should use some sort of reference
-      dst_port = "9"
-      protocol = "udp"
+      dst_port      = "9"
+      protocol      = "udp"
       order         = 2012
     }
     "drop-services-forward" = {
