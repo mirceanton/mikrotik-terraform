@@ -283,12 +283,6 @@ locals {
       dst_address   = "192.168.69.69" # FIXME should use some sort of reference
       order         = 2012
     }
-    "drop-services-forward" = {
-      chain        = "forward"
-      action       = "drop"
-      in_interface = local.vlans.Services.name
-      order        = 2099
-    }
     "allow-hass-to-untrusted-wol" = {
       chain         = "forward"
       action        = "accept"
@@ -298,7 +292,7 @@ locals {
       dst_address   = "192.168.69.255" # FIXME should use some sort of reference
       dst_port      = "9"
       protocol      = "udp"
-      order         = 2012
+      order         = 2013
     }
     "drop-services-forward" = {
       chain        = "forward"
