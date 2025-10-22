@@ -283,13 +283,23 @@ locals {
       dst_address   = "192.168.69.69" # FIXME should use some sort of reference
       order         = 2012
     }
+    "allow-hass-to-untrusted-wol" = {
+      chain         = "forward"
+      action        = "accept"
+      in_interface  = local.vlans.Services.name
+      out_interface = local.vlans.Trusted.name
+      src_address   = "10.0.10.253"    # FIXME should use some sort of reference
+      dst_address   = "192.168.69.255" # FIXME should use some sort of reference
+      dst_port      = "9"
+      protocol      = "udp"
+      order         = 2013
+    }
     "drop-services-forward" = {
       chain        = "forward"
       action       = "drop"
       in_interface = local.vlans.Services.name
       order        = 2099
     }
-
     "allow-services-dns-tcp" = {
       chain        = "input"
       action       = "accept"
