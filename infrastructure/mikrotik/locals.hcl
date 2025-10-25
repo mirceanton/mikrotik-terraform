@@ -115,15 +115,17 @@ locals {
       }
     },
     "Storage" = {
-      name          = "Storage"
-      vlan_id       = 1255
-      network       = "10.255.255.0"
-      cidr_suffix   = "24"
-      gateway       = "10.255.255.1"
-      dhcp_pool     = ["10.255.255.195-10.255.255.199"]
-      dns_servers   = ["10.255.255.1"]
-      domain        = "stor.h.mirceanton.com",
-      static_leases = {}
+      name        = "Storage"
+      vlan_id     = 1255
+      network     = "10.255.255.0"
+      cidr_suffix = "24"
+      gateway     = "10.255.255.1"
+      dhcp_pool   = ["10.255.255.195-10.255.255.199"]
+      dns_servers = ["10.255.255.1"]
+      domain      = "stor.h.mirceanton.com",
+      static_leases = {
+        "10.255.255.69" = { name = "MirkPuter", mac = "00:02:C9:54:76:3C" }
+      }
     }
   }
 }
