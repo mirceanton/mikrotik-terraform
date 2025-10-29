@@ -6,8 +6,7 @@ locals {
   adlist       = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
   static_dns = {
     # Others
-    "odroidc4.mgmt.h.mirceanton.com" = { address = "10.0.0.250", type = "A", comment = "Odroid C4 GH Runners" },
-    "bmc.nas.mgmt.h.mirceanton.com"  = { address = "10.0.0.10", type = "A", comment = "TrueNAS BMC" },
+    "bmc.nas.mgmt.h.mirceanton.com" = { address = "10.0.0.10", type = "A", comment = "TrueNAS BMC" },
 
     # TrueNAS
     "nas.trst.h.mirceanton.com"  = { address = "192.168.69.245", type = "A", comment = "TrueNAS Trusted" },
@@ -110,7 +109,6 @@ locals {
         "10.0.0.21"  = { name = "PVE01", mac = "74:56:3C:9E:BF:1A" }
         "10.0.0.22"  = { name = "PVE02", mac = "74:56:3C:99:5B:CE" }
         "10.0.0.23"  = { name = "PVE03", mac = "74:56:3C:B2:E5:A8" }
-        "10.0.0.250" = { name = "Odroid C4", mac = "00:1E:06:48:6A:28" }
         "10.0.0.254" = { name = "JetKVM", mac = "44:B7:D0:E6:2F:29" }
       }
     },
