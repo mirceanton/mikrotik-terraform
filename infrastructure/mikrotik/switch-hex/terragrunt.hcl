@@ -31,10 +31,9 @@ inputs = {
   vlans = local.shared_locals.vlans
   ethernet_interfaces = {
     "ether1" = { comment = "Rack Downlink", tagged = local.shared_locals.all_vlans }
-    "ether2" = {}
+    "ether2" = { comment = "HomeAssistant", untagged = local.shared_locals.vlans.Services.name }
     "ether3" = {}
     "ether4" = { comment = "Router Uplink", tagged = local.shared_locals.all_vlans }
     "ether5" = { comment = "Smart TV", untagged = local.shared_locals.vlans.Untrusted.name }
   }
 }
-

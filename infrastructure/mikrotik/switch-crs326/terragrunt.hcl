@@ -52,7 +52,7 @@ inputs = {
     "ether8"       = { comment = "JetKVM", untagged = local.shared_locals.vlans.Management.name }
     "ether9"       = {}
     "ether10"      = {}
-    "ether11"      = { comment = "HomeAssistant", untagged = local.shared_locals.vlans.Services.name }
+    "ether11"      = {}
     "ether12"      = {}
     "ether13"      = {}
     "ether14"      = {}
