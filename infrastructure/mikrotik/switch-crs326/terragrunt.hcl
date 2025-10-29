@@ -30,43 +30,43 @@ inputs = {
 
   vlans = local.shared_locals.vlans
   ethernet_interfaces = {
-    "ether1" = { comment = "Backup NAS BMC", untagged = local.shared_locals.vlans.Management.name }
-    "ether2" = {
+    "ether1" = { comment = "NAS BMC", untagged = local.shared_locals.vlans.Management.name }
+    "ether2" = { comment = "NAS Onboard L", untagged = local.shared_locals.vlans.Management.name }
+    "ether3" = { comment = "NAS Onboard R", untagged = local.shared_locals.vlans.Services.name }
+    "ether4" = {}
+    "ether5" = {} # Reserved for future use. ?PVE01 BMC?
+    "ether6" = {
       comment  = "PVE 01 Onboard"
       untagged = local.shared_locals.vlans.Management.name
       tagged   = [for name, vlan in local.shared_locals.vlans : vlan.name if name != local.shared_locals.vlans.Management.name]
     }
-    "ether3" = {
+    "ether7" = {} # Reserved for future use. ?PVE02 BMC?
+    "ether8" = {
       comment  = "PVE 02 Onboard"
       untagged = local.shared_locals.vlans.Management.name
       tagged   = [for name, vlan in local.shared_locals.vlans : vlan.name if name != local.shared_locals.vlans.Management.name]
     }
-    "ether4" = {
+    "ether9" = {} # Reserved for future use. ?PVE03 BMC?
+    "ether10" = {
       comment  = "PVE 03 Onboard"
       untagged = local.shared_locals.vlans.Management.name
       tagged   = [for name, vlan in local.shared_locals.vlans : vlan.name if name != local.shared_locals.vlans.Management.name]
     }
-    "ether5"       = { comment = "NAS BMC", untagged = local.shared_locals.vlans.Management.name }
-    "ether6"       = {}
-    "ether7"       = { comment = "TeSmart KVM", untagged = local.shared_locals.vlans.Management.name }
-    "ether8"       = { comment = "JetKVM", untagged = local.shared_locals.vlans.Management.name }
-    "ether9"       = {}
-    "ether10"      = {}
-    "ether11"      = {}
+    "ether11"      = { comment = "Aux Node 1", untagged = local.shared_locals.vlans.Management.name }
     "ether12"      = {}
     "ether13"      = {}
     "ether14"      = {}
     "ether15"      = {}
     "ether16"      = {}
-    "ether17"      = { comment = "NAS Onboard 1", untagged = local.shared_locals.vlans.Management.name }
+    "ether17"      = {}
     "ether18"      = {}
-    "ether19"      = { comment = "NAS Onboard 2", untagged = local.shared_locals.vlans.Services.name }
+    "ether19"      = {}
     "ether20"      = {}
-    "ether21"      = {}
-    "ether22"      = { comment = "Mirkputer 1g", untagged = local.shared_locals.vlans.Trusted.name }
-    "ether23"      = { comment = "Uplink", tagged = local.shared_locals.all_vlans }
-    "ether24"      = { comment = "Odroid C4", untagged = local.shared_locals.vlans.Management.name }
+    "ether21"      = { comment = "TeSmart", untagged = local.shared_locals.vlans.Management.name }
+    "ether22"      = { comment = "BliKVM", untagged = local.shared_locals.vlans.Management.name }
+    "ether23"      = { comment = "HEX Uplink", tagged = local.shared_locals.all_vlans }
+    "ether24"      = { comment = "Mirkputer 1g", untagged = local.shared_locals.vlans.Trusted.name }
     "sfp-sfpplus1" = { comment = "CRS317", tagged = local.shared_locals.all_vlans }
-    "sfp-sfpplus2" = {}
+    "sfp-sfpplus2" = {} #! TODO: LAGG to CRS317 at some point
   }
 }
