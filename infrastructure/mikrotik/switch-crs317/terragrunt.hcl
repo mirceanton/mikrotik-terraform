@@ -42,10 +42,10 @@ inputs = {
     "sfp-sfpplus10" = {}
     "sfp-sfpplus11" = {}
     "sfp-sfpplus12" = {}
-    "sfp-sfpplus13" = { comment = "Mirkputer 10G", untagged = local.shared_locals.vlans.Storage.name, l2mtu = 9216, mtu = 9000 }
-    "sfp-sfpplus14" = {}
-    "sfp-sfpplus15" = {}
-    "sfp-sfpplus16" = { comment = "CRS326", tagged = local.shared_locals.all_vlans }
+    "sfp-sfpplus13" = {}
+    "sfp-sfpplus14" = {} #! TODO: LAGGed to CRS326 at some point
+    "sfp-sfpplus15" = { comment = "CRS326", tagged = local.shared_locals.all_vlans }
+    "sfp-sfpplus16" = { comment = "Mirkputer 10G", untagged = local.shared_locals.vlans.Storage.name, l2mtu = 9216, mtu = 9000 }
     "ether1"        = {}
   }
   bond_interfaces = {
