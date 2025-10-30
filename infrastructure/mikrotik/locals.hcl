@@ -5,9 +5,7 @@ locals {
   upstream_dns = ["1.1.1.1", "8.8.8.8"]
   adlist       = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
   static_dns = {
-    # Others
     "bmc.nas.mgmt.h.mirceanton.com" = { address = "10.0.0.10", type = "A", comment = "TrueNAS BMC" },
-
     # TrueNAS
     "nas.trst.h.mirceanton.com"  = { address = "192.168.69.245", type = "A", comment = "TrueNAS Trusted" },
     "nas.utrst.h.mirceanton.com" = { address = "192.168.42.245", type = "A", comment = "TrueNAS Untrusted" },
@@ -28,7 +26,6 @@ locals {
     "pve01.mgmt.h.mirceanton.com" = { address = "10.0.0.21", type = "A", comment = "Proxmox Node 1 Management Interface" },
     "pve02.mgmt.h.mirceanton.com" = { address = "10.0.0.22", type = "A", comment = "Proxmox Node 2 Management Interface" },
     "pve03.mgmt.h.mirceanton.com" = { address = "10.0.0.23", type = "A", comment = "Proxmox Node 3 Management Interface" },
-
     "pve01.stor.h.mirceanton.com" = { address = "10.255.255.21", type = "A", comment = "Proxmox Node 1 Storage Interface" },
     "pve02.stor.h.mirceanton.com" = { address = "10.255.255.22", type = "A", comment = "Proxmox Node 2 Storage Interface" },
     "pve03.stor.h.mirceanton.com" = { address = "10.255.255.23", type = "A", comment = "Proxmox Node 3 Storage Interface" },
@@ -104,8 +101,7 @@ locals {
         "10.0.0.3"   = { name = "CRS326", mac = "D4:01:C3:F8:46:EE" }
         "10.0.0.4"   = { name = "hex", mac = "F4:1E:57:31:05:41" }
         "10.0.0.5"   = { name = "cAP-AX", mac = "D4:01:C3:01:26:EB" }
-        "10.0.0.10"  = { name = "NAS BMC", mac = "0C:C4:7A:EF:A0:49" }
-        "10.0.0.15"  = { name = "Backup NAS BMC", mac = "3C:EC:EF:39:1B:70" }
+        "10.0.0.10"  = { name = "NAS BMC", mac = "3C:EC:EF:39:1B:70" }
         "10.0.0.21"  = { name = "PVE01", mac = "74:56:3C:9E:BF:1A" }
         "10.0.0.22"  = { name = "PVE02", mac = "74:56:3C:99:5B:CE" }
         "10.0.0.23"  = { name = "PVE03", mac = "74:56:3C:B2:E5:A8" }
