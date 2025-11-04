@@ -16,14 +16,21 @@ locals {
       connection_state = "established,related,untracked"
       order            = 110
     }
-    "truenas-asymmetric-routing-fix" = {
+    "truenas-asymmetric-routing-fix-mgmt" = {
       chain            = "forward"
       action           = "accept"
       connection_state = "invalid"
       in_interface     = local.vlans.Trusted.name
       out_interface    = local.vlans.Management.name
-      dst_address      = "10.0.0.245"
       order            = 120
+    }
+    "truenas-asymmetric-routing-fix-svc" = {
+      chain            = "forward"
+      action           = "accept"
+      connection_state = "invalid"
+      in_interface     = local.vlans.Trusted.name
+      out_interface    = local.vlans.Services.name
+      order            = 121
     }
     "drop-invalid-forward" = {
       chain            = "forward"
