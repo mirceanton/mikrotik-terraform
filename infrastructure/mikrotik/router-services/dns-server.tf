@@ -26,8 +26,9 @@ resource "routeros_ip_dns_record" "static" {
   for_each = local.static_dns
 
   name            = each.key
-  address         = each.value.address
   comment         = each.value.comment
+  address         = lookup(each.value, "address", null)
   match_subdomain = lookup(each.value, "match_subdomain", false)
+  cname           = lookup(each.value, "cname", null)
   type            = each.value.type
 }
