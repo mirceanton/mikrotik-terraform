@@ -25,8 +25,9 @@ resource "routeros_ip_dns_adlist" "dns_blocker" {
 resource "routeros_ip_dns_record" "static" {
   for_each = local.static_dns
 
-  name    = each.key
-  address = each.value.address
-  comment = each.value.comment
-  type    = each.value.type
+  name            = each.key
+  address         = each.value.address
+  comment         = each.value.comment
+  match_subdomain = lookup(each.value, "match_subdomain", false)
+  type            = each.value.type
 }
