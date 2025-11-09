@@ -32,6 +32,14 @@ locals {
       out_interface    = local.vlans.Services.name
       order            = 121
     }
+    "asymmetric-routing-fix-mgmt-to-svc" = {
+      chain            = "forward"
+      action           = "accept"
+      connection_state = "invalid"
+      in_interface     = local.vlans.Management.name
+      out_interface    = local.vlans.Services.name
+      order            = 122
+    }
     "drop-invalid-forward" = {
       chain            = "forward"
       action           = "drop"
