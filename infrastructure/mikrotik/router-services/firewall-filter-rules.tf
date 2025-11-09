@@ -16,7 +16,7 @@ locals {
       connection_state = "established,related,untracked"
       order            = 110
     }
-    "truenas-asymmetric-routing-fix-mgmt" = {
+    "asymmetric-routing-fix-trusted-to-mgmt" = {
       chain            = "forward"
       action           = "accept"
       connection_state = "invalid"
@@ -24,7 +24,7 @@ locals {
       out_interface    = local.vlans.Management.name
       order            = 120
     }
-    "truenas-asymmetric-routing-fix-svc" = {
+    "asymmetric-routing-fix-trusted-to-svc" = {
       chain            = "forward"
       action           = "accept"
       connection_state = "invalid"
