@@ -23,7 +23,7 @@ env:
 
 jobs:
   plan:
-    runs-on: [self-hosted, infra]
+    runs-on: infra-runners
     outputs:
       drift_detected: ${{ steps.plan.outputs.drift_detected }}
       plan_output: ${{ steps.plan.outputs.plan_output }}
