@@ -22,7 +22,7 @@ env:
 
 jobs:
   terragrunt-apply:
-    runs-on: [self-hosted, infra]
+    runs-on: infra-runners
     environment: homelab
     steps:
       - name: Checkout
