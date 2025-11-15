@@ -6,7 +6,7 @@ uv = "latest"
 # Project Tools
 # =================================================================================================
 terraform = "1.13"
-terragrunt = "0.93.7"
+terragrunt = "0.93.8"
 op = "2.32"
 
 pre-commit = "latest"
