@@ -22,8 +22,8 @@ locals {
     "tesmart.mgmt.h.mirceanton.com" = { address = "10.0.0.253", type = "A", comment = "TeSmart KVM" },
 
     # HomeAssistant
-    "hass.home.mirceanton.com"  = { address = "10.0.10.253", type = "A", comment = "HomeAssistant Odroid" },
     "hass.svc.h.mirceanton.com" = { address = "10.0.10.253", type = "A", comment = "HomeAssistant Odroid" },
+    "hass.home.mirceanton.com"  = { cname = "hass.svc.h.mirceanton.com", type = "CNAME", comment = "HomeAssistant Odroid" },
 
     # BomkPrinter
     "bomkprinter.utrst.h.mirceanton.com" = { address = "192.168.42.180", type = "A", comment = "Bomk Printer" },
