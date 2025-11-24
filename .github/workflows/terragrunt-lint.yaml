@@ -32,12 +32,12 @@ jobs:
       - name: Setup mise
         uses: jdx/mise-action@d16887ba50704baed7de72bd1e82e04391e4457a # v3.5.0
 
-      - name: Run terraform fmt
+      - name: Run tofu fmt
         run: |
           if [[ "${{ inputs.fix }}" == "true" ]]; then
-            mise exec -- terraform fmt -recursive
+            mise exec -- tofu fmt -recursive
           else
-            mise exec -- terraform fmt -recursive -check
+            mise exec -- tofu fmt -recursive -check
           fi
 
       - name: Run terragrunt fmt
@@ -57,6 +57,6 @@ jobs:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            git commit -m "chore: format terraform and terragrunt files"
+            git commit -m "chore: format tofu and terragrunt files"
             git push
           fi

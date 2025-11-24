@@ -1,24 +1,24 @@
-# This file is maintained automatically by "terraform init".
+# This file is maintained automatically by "tofu init".
 # Manual edits may be lost in future updates.
 
-provider "registry.terraform.io/terraform-routeros/routeros" {
-  version     = "1.91.0"
-  constraints = "1.91.0"
+provider "registry.opentofu.org/terraform-routeros/routeros" {
+  version     = "1.92.1"
+  constraints = "1.92.1"
   hashes = [
-    "h1:TRjainnO7SgM1uVVoUxHLIHG+QjVJNTRTNlDPH8VLrA=",
-    "zh:03de37f8bb5aa657eeff5d6461779d8594ccd000f63fd4c5a8098baf5ad2db2c",
-    "zh:21ad6583b8b2cf97370bf3a28ba1226553405a613468680daf265fc4e3a0f413",
-    "zh:5bcb059d922b8b6d0c09744013cad0b22e20cedbd9877a8de1a4c95d4fd10037",
-    "zh:61ef021e6bc0cc810f25687578cbd345ac3b04b7f12d25d6faee1f3e12dc85d4",
-    "zh:7039fa65507850adcbca9ccf15ecfea9aad3e82fe5ec709dd3dfcb1b4fa9bd10",
-    "zh:86766ba4e372a663971fe33cbb13afcfa930ad54da12651a1e6c5a5da0030ce8",
-    "zh:8d4eee8d9e2c15c6fd8a03943c56c8c62535c96ff79a6ab13f224c2b2cd5a95f",
-    "zh:aa1dd4d528eacda3234ed3fa3b2316d521e8161e7c8511c56b2c0d875ff833ce",
-    "zh:aaf955144221fce4d3ea4e81a0db19827098291a324fed2aea85435fb0f721b9",
-    "zh:b31fd8aa2c944764baeb0168e0972b96ca22c2fa25e5c905e6b2ceb39846166d",
-    "zh:bf9aa2d002a8ea6f7e41d46111be14f5bc393a26b505b24ed7f37012c452364e",
-    "zh:d62eb6cfc22f5b423df902a24c97c3201457e747a810b63876492ee1cb5635de",
-    "zh:dc6c698217fae6ec74346de95f8da6e2d222f6beaab565c3e79ef3587bf76878",
-    "zh:f31decd1d73073095817243a4cf11299d7d124702caaf7083614429bdb68d939",
+    "h1:GcKD9xbFTI+jrAFNyuuOausn0+ZwiCA3lLD09baUQ08=",
+    "zh:16c6a4ceb492fd4500e5471be49d0e399f861faaba5386e05204282ea36a4856",
+    "zh:549b9ae8d34c78bec284e1d287074825c7056fa5d0db22aed80e20e77f6eeaeb",
+    "zh:86cd60371c3ff9be1b7214fe0899cd21bc75ea63b06fe51ecbe4e7de073f5296",
+    "zh:8f69f073b37058dfe5bb5625a9a7f167c439c946ab18f63b6f9e153e653782bd",
+    "zh:936e3ca8dc94df3bf9c40fc5a349afc42a699ffa896220e595add7fc6dbf190e",
+    "zh:94c9b3f4b5cea8c2a9965a64b61712f583aa27972b853c429ad526d56541a3de",
+    "zh:b1949472b0fbc22abdf615067a03729b047e862a0ce8404547aac0fe1c256e20",
+    "zh:b3837ad059f82fe4d051d0ace6285fdb28bc25b011829cafc9b1f4806b6fd5c2",
+    "zh:d29c426a74838ffd9ca4444023e68bfea844c5445d35b73afb7e3d7b90bd90a4",
+    "zh:e6014a1956c9781ecb17d2be0b4eae91b17219536fc72c663e24b33d30efcf3a",
+    "zh:ec432519381c2289797f1f184aeb711a948268205f4c9f77d7bc5621188e26c3",
+    "zh:ec9141e08b73ff7087dfc3cc96cfad86b4dbd6704a5316777fbfb326b33470b9",
+    "zh:f3d747ada670c19f466fe21141230c04034ad1c7d1b1fe0461c72e131a186cbb",
+    "zh:f5d3a407286964557c2843509e92ccfa58f58355de9fd300aa447e5ae4f5ec0e",
   ]
 }

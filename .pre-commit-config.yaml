@@ -15,9 +15,9 @@ repos:
         language: system
         types: [yaml]
 
-      - id: terraform-fmt
-        name: terraform format
-        entry: mise exec -- terraform fmt -check -recursive
+      - id: tofu-fmt
+        name: tofu format
+        entry: mise exec -- tofu fmt -check -recursive
         language: system
         files: \.tf$
         pass_filenames: false

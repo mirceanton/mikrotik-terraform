@@ -1,14 +1,14 @@
-# Mikrotik - Terraform
+# Mikrotik - OpenTofu
 
 ![Thumbnail](./docs/img/thumbnail.png)
 
-This repository contains [Terraform](https://developer.hashicorp.com/terraform) automation for my entire Mikrotik-powered home network, applied and orchestrated via [Terragrunt](https://terragrunt.gruntwork.io/).
+This repository contains [OpenTofu](https://opentofu.org/) automation for my entire Mikrotik-powered home network, applied and orchestrated via [Terragrunt](https://terragrunt.gruntwork.io/).
 
 The purpose of this repository is to provide a structured and repeatable way to manage and automate the setup of my MikroTik devices using Infrastructure as Code (IaC) principles.
 
-## 🤔 Why Terraform for Network Infrastructure?
+## 🤔 Why OpenTofu for Network Infrastructure?
 
-Fundamentally speaking, there is nothing that sets this approach apart from, say, a configuration script or just backing up and importing the configuration on the device. Yet, I still decided to use Terraform for this. Why?
+Fundamentally speaking, there is nothing that sets this approach apart from, say, a configuration script or just backing up and importing the configuration on the device. Yet, I still decided to use OpenTofu for this. Why?
 
 1. **I'm weird like that** 🤓
 
@@ -16,7 +16,7 @@ Fundamentally speaking, there is nothing that sets this approach apart from, say
 
 2. **Skill ~~Issue~~Development** 💪🏻
 
-   Working on this project provides a practical, hands-on opportunity to explore advanced Terraform and Terragrunt features and patterns. Not to mention that breaking something takes my entire internet away until I fix it, and fixing it without internet may be tricker than you think. This forces me to think more carefully about the configuration before applying.
+   Working on this project provides a practical, hands-on opportunity to explore advanced OpenTofu and Terragrunt features and patterns. Not to mention that breaking something takes my entire internet away until I fix it, and fixing it without internet may be tricker than you think. This forces me to think more carefully about the configuration before applying.
 
 3. **Because I can** 🤷🏼
 
@@ -59,7 +59,7 @@ I was initially planning to also add some more details about my network, like VL
 │       ├── switch-crs317/  # CRS317 switch configuration
 │       ├── switch-crs326/  # CRS326 switch configuration
 │       └── switch-hex/     # Hex switch configuration
-├── modules/                # Reusable Terraform modules
+├── modules/                # Reusable tofu modules
 │   ├── 1password-item/     # Add item(s) into a given 1Pass vault
 │   ├── cloudflare-cname/   # Cloudflare CNAME record module
 │   ├── mikrotik-base/      # Base MikroTik device configuration
@@ -72,15 +72,15 @@ I was initially planning to also add some more details about my network, like VL
 
 ### ⚙️ Requirements
 
-- [Terraform](https://www.terraform.io/) - Infrastructure as Code tool
-- [Terragrunt](https://terragrunt.gruntwork.io/) - Terraform wrapper
+- [OpenTofu](https://opentofu.org/) - Infrastructure as Code tool (`terraform` also works)
+- [Terragrunt](https://terragrunt.gruntwork.io/) - tofu orchestrator
 - [1pass cli](https://developer.1password.com/docs/cli/) - for injecting secrets into 1Password vaults
 - [mise](https://mise.jdx.dev/) for managing dependencies
 - Access to a [BackBlaze](https://www.backblaze.com/) B2 bucket for remote state storage or any other S3 compatible service
 
 ### 🔧 Initial Device Setup
 
-Before applying any Terraform configurations, new Mikrotik devices need some minimal setup. I will not go into details here, but I did write a [blog post](https://mirceanton.com/posts/mikrotik-terraform-getting-started/) about onboarding a Mikrotik device under Terraform.
+Before applying any tofu configurations, new Mikrotik devices need some minimal setup. I will not go into details here, but I did write a [blog post](https://mirceanton.com/posts/mikrotik-terraform-getting-started/) about onboarding a Mikrotik device under Terraform.
 
 ### 🌍 Environment Setup
 
@@ -116,17 +116,17 @@ export AWS_ACCESS_KEY_ID="your_b2_key_id"
 export AWS_SECRET_ACCESS_KEY="your_b2_application_key"
 ```
 
-Previously, I was using local state files with [SOPS](https://github.com/getsops/sops) encryption to manage sensitive data in the state. While this approach worked, I ultimately decided to migrate to remote state storage to simplify the workflow by removing the encryption/decryption step, and also to stop polluting my commit history with redundant `chore: terraform apply` commits.
+Previously, I was using local state files with [SOPS](https://github.com/getsops/sops) encryption to manage sensitive data in the state. While this approach worked, I ultimately decided to migrate to remote state storage to simplify the workflow by removing the encryption/decryption step, and also to stop polluting my commit history with redundant `chore: tofu apply` commits.
 This may prove to be problematic if I end up cutting my own internet access during an `apply`... but he who lives by the sword, he also dies by it 🗿
 
 ## ⚠️ Limitations
 
 While this project aims to provide comprehensive automation for Mikrotik devices, there are some limitations:
 
-- Initial setup still requires manual configuration before Terraform can be applied
+- Initial setup still requires manual configuration before OpenTofu can be applied
 - Complex configurations sometimes require a multi-step approach rather than a single `apply`
 - The risk of cutting yourself off of the internet may be low... but it's never zero. Ask me how I know! 😉
-- Prepare to get close and intimate with `terraform state mv` if you plan to rename or move objects around. Very few things are stateless, so they can't be deleted and recreated generally.
+- Prepare to get close and intimate with `tofu state mv` if you plan to rename or move objects around. Very few things are stateless, so they can't be deleted and recreated generally.
 
 ## 🤝 Sharing & Risks
 
