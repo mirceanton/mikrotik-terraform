@@ -20,7 +20,7 @@ resource "zerotier_network" "homelab" {
   }
   route {
     target = "192.168.10.0/24" # Parent network
-    via    = "172.29.0.2" # cAP AX Parents zerotier IP
+    via    = "172.29.0.2"      # cAP AX Parents zerotier IP
   }
   route {
     target = "172.29.0.0/24" # default zerotier managed range
