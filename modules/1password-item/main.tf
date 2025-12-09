@@ -11,7 +11,6 @@ resource "onepassword_item" "items" {
 
   password_recipe {
     length  = length(each.value.password)
-    letters = true
     digits  = true
     symbols = false
   }
