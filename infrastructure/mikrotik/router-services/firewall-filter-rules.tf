@@ -378,7 +378,7 @@ locals {
 resource "routeros_ip_firewall_filter" "rules" {
   for_each = local.filter_rules_map
 
-  comment = "Managed by Terrform - ${each.value.key}"
+  comment = "Managed by Terraform - ${each.value.key}"
   chain   = each.value.chain
   action  = each.value.action
 
