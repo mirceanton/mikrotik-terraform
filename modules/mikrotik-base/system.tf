@@ -22,5 +22,5 @@ resource "routeros_system_clock" "timezone" {
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ipv6_settings
 # =================================================================================================
 resource "routeros_ipv6_settings" "disable" {
-  disable_ipv6 = "true"
+  disable_ipv6 = var.disable_ipv6
 }
