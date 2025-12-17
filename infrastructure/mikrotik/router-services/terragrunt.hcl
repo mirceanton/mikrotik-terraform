@@ -19,7 +19,7 @@ locals {
 }
 
 terraform {
-  source = "${get_repo_root()}//infrastructure/mikrotik/router-services"
+  source = find_in_parent_folders("modules/mikrotik-router-services")
 }
 
 inputs = {
