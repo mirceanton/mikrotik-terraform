@@ -20,24 +20,24 @@ locals {
       chain            = "forward"
       action           = "accept"
       connection_state = "invalid"
-      in_interface     = local.vlans.Trusted.name
-      out_interface    = local.vlans.Management.name
+      in_interface     = var.vlans.Trusted.name
+      out_interface    = var.vlans.Management.name
       order            = 120
     }
     "asymmetric-routing-fix-trusted-to-svc" = {
       chain            = "forward"
       action           = "accept"
       connection_state = "invalid"
-      in_interface     = local.vlans.Trusted.name
-      out_interface    = local.vlans.Services.name
+      in_interface     = var.vlans.Trusted.name
+      out_interface    = var.vlans.Services.name
       order            = 121
     }
     "asymmetric-routing-fix-mgmt-to-svc" = {
       chain            = "forward"
       action           = "accept"
       connection_state = "invalid"
-      in_interface     = local.vlans.Management.name
-      out_interface    = local.vlans.Services.name
+      in_interface     = var.vlans.Management.name
+      out_interface    = var.vlans.Services.name
       order            = 122
     }
     "drop-invalid-forward" = {
@@ -77,13 +77,13 @@ locals {
     "accept-management-forward" = {
       chain        = "forward"
       action       = "accept"
-      in_interface = local.vlans.Management.name
+      in_interface = var.vlans.Management.name
       order        = 1000
     }
     "accept-management-input" = {
       chain        = "input"
       action       = "accept"
-      in_interface = local.vlans.Management.name
+      in_interface = var.vlans.Management.name
       order        = 1100
     }
 
@@ -93,13 +93,13 @@ locals {
     "accept-trusted-input" = {
       chain        = "input"
       action       = "accept"
-      in_interface = local.vlans.Trusted.name
+      in_interface = var.vlans.Trusted.name
       order        = 1200
     }
     "accept-trusted-forward" = {
       chain        = "forward"
       action       = "accept"
-      in_interface = local.vlans.Trusted.name
+      in_interface = var.vlans.Trusted.name
       order        = 1300
     }
 
@@ -133,7 +133,7 @@ locals {
       chain         = "forward"
       action        = "accept"
       in_interface  = routeros_zerotier_interface.zerotier1.name
-      out_interface = local.vlans.Services.name
+      out_interface = var.vlans.Services.name
       protocol      = "tcp"
       dst_port      = "80"
       order         = 1500
@@ -142,7 +142,7 @@ locals {
       chain         = "forward"
       action        = "accept"
       in_interface  = routeros_zerotier_interface.zerotier1.name
-      out_interface = local.vlans.Services.name
+      out_interface = var.vlans.Services.name
       protocol      = "tcp"
       dst_port      = "443"
       order         = 1501
@@ -151,7 +151,7 @@ locals {
       chain         = "forward"
       action        = "accept"
       in_interface  = routeros_zerotier_interface.zerotier1.name
-      out_interface = local.vlans.Services.name
+      out_interface = var.vlans.Services.name
       protocol      = "tcp"
       dst_port      = "8123"
       order         = 1502
@@ -169,14 +169,14 @@ locals {
     "allow-guest-to-internet" = {
       chain              = "forward"
       action             = "accept"
-      in_interface       = local.vlans.Guest.name
+      in_interface       = var.vlans.Guest.name
       out_interface_list = routeros_interface_list.wan.name
       order              = 1600
     }
     "drop-guest-forward" = {
       chain        = "forward"
       action       = "drop"
-      in_interface = local.vlans.Guest.name
+      in_interface = var.vlans.Guest.name
       order        = 1699
       # log          = true
       # log_prefix   = "DROPPED GUEST FORWARD:"
@@ -184,7 +184,7 @@ locals {
     "drop-guest-input" = {
       chain        = "input"
       action       = "drop"
-      in_interface = local.vlans.Guest.name
+      in_interface = var.vlans.Guest.name
       order        = 1799
       # log          = true
       # log_prefix   = "DROPPED GUEST INPUT:"
@@ -196,15 +196,15 @@ locals {
     "allow-untrusted-to-internet" = {
       chain              = "forward"
       action             = "accept"
-      in_interface       = local.vlans.Untrusted.name
+      in_interface       = var.vlans.Untrusted.name
       out_interface_list = routeros_interface_list.wan.name
       order              = 1800
     }
     "allow-untrusted-to-services-http" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = local.vlans.Untrusted.name
-      out_interface = local.vlans.Services.name
+      in_interface  = var.vlans.Untrusted.name
+      out_interface = var.vlans.Services.name
       protocol      = "tcp"
       dst_port      = "80"
       order         = 1801
@@ -212,8 +212,8 @@ locals {
     "allow-untrusted-to-services-https" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = local.vlans.Untrusted.name
-      out_interface = local.vlans.Services.name
+      in_interface  = var.vlans.Untrusted.name
+      out_interface = var.vlans.Services.name
       protocol      = "tcp"
       dst_port      = "443"
       order         = 1802
@@ -221,8 +221,8 @@ locals {
     "allow-untrusted-to-services-hass" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = local.vlans.Untrusted.name
-      out_interface = local.vlans.Services.name
+      in_interface  = var.vlans.Untrusted.name
+      out_interface = var.vlans.Services.name
       protocol      = "tcp"
       dst_port      = "8123"
       order         = 1803
@@ -230,7 +230,7 @@ locals {
     "drop-untrusted-forward" = {
       chain        = "forward"
       action       = "drop"
-      in_interface = local.vlans.Untrusted.name
+      in_interface = var.vlans.Untrusted.name
       order        = 1899
       # log          = true
       # log_prefix   = "DROPPED Untrusted FORWARD:"
@@ -240,7 +240,7 @@ locals {
       chain        = "input"
       action       = "accept"
       protocol     = "tcp"
-      in_interface = local.vlans.Untrusted.name
+      in_interface = var.vlans.Untrusted.name
       dst_port     = "53"
       order        = 1900
     }
@@ -248,14 +248,14 @@ locals {
       chain        = "input"
       action       = "accept"
       protocol     = "udp"
-      in_interface = local.vlans.Untrusted.name
+      in_interface = var.vlans.Untrusted.name
       dst_port     = "53"
       order        = 1901
     }
     "drop-untrusted-input" = {
       chain        = "input"
       action       = "drop"
-      in_interface = local.vlans.Untrusted.name
+      in_interface = var.vlans.Untrusted.name
       order        = 1999
       # log          = true
       # log_prefix   = "DROPPED Untrusted INPUT:"
@@ -267,15 +267,15 @@ locals {
     "allow-services-to-internet" = {
       chain              = "forward"
       action             = "accept"
-      in_interface       = local.vlans.Services.name
+      in_interface       = var.vlans.Services.name
       out_interface_list = routeros_interface_list.wan.name
       order              = 2000
     }
     "allow-hass-to-tesmart" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = local.vlans.Services.name
-      out_interface = local.vlans.Management.name
+      in_interface  = var.vlans.Services.name
+      out_interface = var.vlans.Management.name
       src_address   = "10.0.10.253" # FIXME should use some sort of reference
       dst_address   = "10.0.0.253"  # FIXME should use some sort of reference
       order         = 2010
@@ -283,8 +283,8 @@ locals {
     "allow-hass-to-smart-tv" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = local.vlans.Services.name
-      out_interface = local.vlans.Untrusted.name
+      in_interface  = var.vlans.Services.name
+      out_interface = var.vlans.Untrusted.name
       src_address   = "10.0.10.253"    # FIXME should use some sort of reference
       dst_address   = "192.168.42.250" # FIXME should use some sort of reference
       order         = 2011
@@ -292,8 +292,8 @@ locals {
     "allow-hass-to-mirkputer" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = local.vlans.Services.name
-      out_interface = local.vlans.Trusted.name
+      in_interface  = var.vlans.Services.name
+      out_interface = var.vlans.Trusted.name
       src_address   = "10.0.10.253"   # FIXME should use some sort of reference
       dst_address   = "192.168.69.69" # FIXME should use some sort of reference
       order         = 2012
@@ -301,8 +301,8 @@ locals {
     "allow-hass-to-untrusted-wol" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = local.vlans.Services.name
-      out_interface = local.vlans.Trusted.name
+      in_interface  = var.vlans.Services.name
+      out_interface = var.vlans.Trusted.name
       src_address   = "10.0.10.253"    # FIXME should use some sort of reference
       dst_address   = "192.168.69.255" # FIXME should use some sort of reference
       dst_port      = "9"
@@ -312,14 +312,14 @@ locals {
     "drop-services-forward" = {
       chain        = "forward"
       action       = "drop"
-      in_interface = local.vlans.Services.name
+      in_interface = var.vlans.Services.name
       order        = 2099
     }
     "allow-services-dns-tcp" = {
       chain        = "input"
       action       = "accept"
       protocol     = "tcp"
-      in_interface = local.vlans.Services.name
+      in_interface = var.vlans.Services.name
       dst_port     = "53"
       order        = 2100
     }
@@ -327,14 +327,14 @@ locals {
       chain        = "input"
       action       = "accept"
       protocol     = "udp"
-      in_interface = local.vlans.Services.name
+      in_interface = var.vlans.Services.name
       dst_port     = "53"
       order        = 2101
     }
     "drop-services-input" = {
       chain        = "input"
       action       = "drop"
-      in_interface = local.vlans.Services.name
+      in_interface = var.vlans.Services.name
       order        = 2199
     }
 
@@ -344,13 +344,13 @@ locals {
     "drop-all-forward" = {
       chain        = "forward"
       action       = "drop"
-      in_interface = "!${local.vlans.Trusted.name}"
+      in_interface = "!${var.vlans.Trusted.name}"
       order        = 9000
     }
     "drop-all-input" = {
       chain        = "input"
       action       = "drop"
-      in_interface = "!${local.vlans.Trusted.name}"
+      in_interface = "!${var.vlans.Trusted.name}"
       order        = 9010
     }
   }
