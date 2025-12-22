@@ -42,7 +42,7 @@ jobs:
           GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
           PLAN_OUTPUT: "${{ needs.terragrunt-plan.outputs.plan_output }}"
           DRIFT_DETECTED: "${{ needs.terragrunt-plan.outputs.drift_detected }}"
-          STATUS: "${{ needs.terragrunt-plan.outputs.drift_detected && '⚠️ Changes detected' || '✅ No changes' }}"
+          STATUS: "${{ needs.terragrunt-plan.outputs.drift_detected == 'true' && '⚠️ Changes detected' || '✅ No changes' }}"
         run: |
           {
             echo "## 🤖 Terragrunt Plan Results"
