@@ -37,11 +37,11 @@ variable "vlans" {
 
 variable "static_dns" {
   type = map(object({
-    address = optional(string)
-    cname  = optional(string)
+    address         = optional(string)
+    cname           = optional(string)
     match_subdomain = optional(bool, false)
-    comment = string
-    type    = string
+    comment         = string
+    type            = string
   }))
   description = "Map of static DNS records"
 }
