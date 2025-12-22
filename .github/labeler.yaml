@@ -11,6 +11,15 @@ area/tofu:
   - changed-files:
       - any-glob-to-any-file: "*.tf"
 
+area/terragrunt:
+  - changed-files:
+      - any-glob-to-any-file: "infrastructure/**/terragrunt.hcl"
+
+area/docs:
+  - changed-files:
+      - any-glob-to-any-file: "docs/**"
+      - any-glob-to-any-file: "*.md"
+
 # =================================================================================================
 # Device Labels
 # =================================================================================================
