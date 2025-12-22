@@ -31,6 +31,7 @@ variable "vlans" {
       mac  = string
     }))
   }))
+  default     = {}
   description = "Map of VLANs to configure"
 }
 
@@ -42,6 +43,7 @@ variable "static_dns" {
     comment         = string
     type            = string
   }))
+  default     = {}
   description = "Map of static DNS records"
 }
 
