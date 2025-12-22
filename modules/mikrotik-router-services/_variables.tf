@@ -16,12 +16,33 @@ variable "digi_pppoe_username" {
 ## Network Configuration Variables
 ## ================================================================================================
 variable "vlans" {
-  type        = any
-  description = "Map of VLAN configurations"
+  type = map(object({
+    name        = string
+    vlan_id     = number
+    network     = string
+    cidr_suffix = string
+    gateway     = string
+    dhcp_pool   = list(string)
+    dns_servers = list(string)
+    domain      = string
+    mtu         = optional(number, 1500)
+    static_leases = map(object({
+      name = string
+      mac  = string
+    }))
+  }))
+  default     = {}
+  description = "Map of VLANs to configure"
 }
 
 variable "static_dns" {
-  type        = any
+  type = map(object({
+    address = optional(string)
+    cname  = optional(string)
+    match_subdomain = optional(bool, false)
+    comment = string
+    type    = string
+  }))
   description = "Map of static DNS records"
 }
 
