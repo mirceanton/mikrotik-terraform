@@ -1,5 +1,5 @@
 module "dhcp-server" {
-  for_each = local.vlans
+  for_each = var.vlans
   source   = "./modules/dhcp-server"
 
   interface_name = each.value.name
@@ -16,7 +16,7 @@ module "dhcp-server" {
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ip_address
 # =================================================================================================
 resource "routeros_ip_address" "rb5009" {
-  for_each  = local.vlans
+  for_each  = var.vlans
   address   = "${each.value.gateway}/${each.value.cidr_suffix}"
   interface = each.value.name
   network   = each.value.network

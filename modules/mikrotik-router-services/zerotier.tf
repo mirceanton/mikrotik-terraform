@@ -15,7 +15,7 @@ resource "zerotier_network" "homelab" {
   }
 
   route {
-    target = "${local.vlans.Services.network}/${local.vlans.Services.cidr_suffix}"
+    target = "${var.vlans.Services.network}/${var.vlans.Services.cidr_suffix}"
     via    = local.zerotier_rb5009_ip
   }
   route {
