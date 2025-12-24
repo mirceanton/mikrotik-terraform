@@ -106,25 +106,16 @@ locals {
       dns_servers = ["10.0.0.1"]
       domain      = "srv.h.mirceanton.com"
       static_leases = {
-        # Mikrotik Devices
         "10.0.0.2"   = { name = "CRS317", mac = "D4:01:C3:02:5D:52" }
         "10.0.0.3"   = { name = "CRS326", mac = "D4:01:C3:F8:46:EE" }
         "10.0.0.4"   = { name = "hex", mac = "F4:1E:57:31:05:41" }
         "10.0.0.5"   = { name = "cAP-AX", mac = "D4:01:C3:01:26:EB" }
-
-        # IPMI / BMC Interfaces
         "10.0.0.10"  = { name = "NAS BMC", mac = "3C:EC:EF:39:1B:70" }
-
-        # Single-Node Cluster Nodes
         "10.0.0.15"  = { name = "Automaton", mac = "70:85:C2:58:8D:31" }
         "10.0.0.16"  = { name = "Lenovo Tiny", mac = "6C:4B:90:5C:23:0F" }
-
-        # Proxmox
         "10.0.0.21"  = { name = "PVE01", mac = "74:56:3C:9E:BF:1A" }
         "10.0.0.22"  = { name = "PVE02", mac = "74:56:3C:99:5B:CE" }
         "10.0.0.23"  = { name = "PVE03", mac = "74:56:3C:B2:E5:A8" }
-
-        # KVM
         "10.0.0.254" = { name = "BliKVM", mac = "12:00:96:6F:5D:51" }
       }
     },
