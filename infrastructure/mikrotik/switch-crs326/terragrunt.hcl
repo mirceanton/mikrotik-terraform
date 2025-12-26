@@ -63,7 +63,7 @@ inputs = {
     "ether19"      = {}
     "ether20"      = {}
     "ether21"      = { comment = "TeSmart", untagged = local.shared_locals.vlans.Management.name }
-    "ether22"      = { comment = "BliKVM", untagged = local.shared_locals.vlans.Management.name }
+    "ether22"      = {}
     "ether23"      = { comment = "HEX Uplink", tagged = local.shared_locals.all_vlans }
     "ether24"      = { comment = "Mirkputer 1g", untagged = local.shared_locals.vlans.Trusted.name }
     "sfp-sfpplus1" = { comment = "CRS317", tagged = local.shared_locals.all_vlans }
