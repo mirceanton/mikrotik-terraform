@@ -52,17 +52,17 @@ inputs = {
       untagged = local.shared_locals.vlans.Management.name
       tagged   = [for name, vlan in local.shared_locals.vlans : vlan.name if name != local.shared_locals.vlans.Management.name]
     }
-    "ether11"      = { comment = "Aux Node 1", untagged = local.shared_locals.vlans.Management.name }
+    "ether11"      = {}
     "ether12"      = {}
     "ether13"      = {}
     "ether14"      = {}
     "ether15"      = {}
     "ether16"      = {}
-    "ether17"      = { comment = "Test NAS BMC", untagged = local.shared_locals.vlans.Management.name }
-    "ether18"      = { comment = "Test NAS Onboard", untagged = local.shared_locals.vlans.Management.name }
+    "ether17"      = {}
+    "ether18"      = {}
     "ether19"      = {}
     "ether20"      = {}
-    "ether21"      = { comment = "TeSmart", untagged = local.shared_locals.vlans.Management.name }
+    "ether21"      = {}
     "ether22"      = {}
     "ether23"      = { comment = "HEX Uplink", tagged = local.shared_locals.all_vlans }
     "ether24"      = { comment = "Mirkputer 1g", untagged = local.shared_locals.vlans.Trusted.name }

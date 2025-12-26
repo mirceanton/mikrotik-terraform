@@ -38,7 +38,7 @@ inputs = {
     "sfp-sfpplus6"  = { comment = "PVE02 10g 2", bridge_port = false, l2mtu = 9216, mtu = 9000 }
     "sfp-sfpplus7"  = { comment = "PVE03 10g 1", bridge_port = false, l2mtu = 9216, mtu = 9000 }
     "sfp-sfpplus8"  = { comment = "PVE03 10g 2", bridge_port = false, l2mtu = 9216, mtu = 9000 }
-    "sfp-sfpplus9"  = { comment = "Aux Node 10g", untagged = local.shared_locals.vlans.Management.name, l2mtu = 9216, mtu = 9000 }
+    "sfp-sfpplus9"  = {}
     "sfp-sfpplus10" = {}
     "sfp-sfpplus11" = {}
     "sfp-sfpplus12" = {}

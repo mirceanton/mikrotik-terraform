@@ -17,10 +17,6 @@ locals {
     "registry.home.mirceanton.com" = { cname = "registry.nas.svc.h.mirceanton.com", type = "CNAME", comment = "TrueNAS Container Registry", match_subdomain = true },
     "s3.home.mirceanton.com"       = { cname = "s3.nas.svc.h.mirceanton.com", type = "CNAME", comment = "TrueNAS S3 Storage", match_subdomain = true },
 
-    # KVM
-    "kvm.mgmt.h.mirceanton.com"     = { address = "10.0.0.254", type = "A", comment = "JetKVM Web UI" },
-    "tesmart.mgmt.h.mirceanton.com" = { address = "10.0.0.253", type = "A", comment = "TeSmart KVM" },
-
     # HomeAssistant
     "hass.svc.h.mirceanton.com" = { address = "10.0.10.253", type = "A", comment = "HomeAssistant Odroid" },
     "hass.home.mirceanton.com"  = { cname = "hass.svc.h.mirceanton.com", type = "CNAME", comment = "HomeAssistant Odroid" },
@@ -111,7 +107,6 @@ locals {
         "10.0.0.4"   = { name = "hex", mac = "F4:1E:57:31:05:41" }
         "10.0.0.5"   = { name = "cAP-AX", mac = "D4:01:C3:01:26:EB" }
         "10.0.0.10"  = { name = "NAS BMC", mac = "3C:EC:EF:39:1B:70" }
-        "10.0.0.15"  = { name = "Automaton", mac = "70:85:C2:58:8D:31" }
         "10.0.0.16"  = { name = "Lenovo Tiny", mac = "6C:4B:90:5C:23:0F" }
         "10.0.0.21"  = { name = "PVE01", mac = "74:56:3C:9E:BF:1A" }
         "10.0.0.22"  = { name = "PVE02", mac = "74:56:3C:99:5B:CE" }
