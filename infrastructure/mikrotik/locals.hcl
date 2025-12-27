@@ -17,7 +17,12 @@ locals {
     "registry.home.mirceanton.com" = { cname = "registry.nas.svc.h.mirceanton.com", type = "CNAME", comment = "TrueNAS Container Registry", match_subdomain = true },
     "s3.home.mirceanton.com"       = { cname = "s3.nas.svc.h.mirceanton.com", type = "CNAME", comment = "TrueNAS S3 Storage", match_subdomain = true },
 
-    # HomeAssistant
+    # HomeAssistant (k8s)
+    "k8s-homeassistant.mgmt.h.mirceanton.com" = { address = "10.0.0.16", type = "A", comment = "HomeAssistant-K8S API Endpoint" },
+    "homeassistant.svc.h.mirceanton.com"      = { address = "10.0.10.16", type = "A", comment = "HomeAssistant-K8S Services Endpoint" },
+    "homeassistant.home.mirceanton.com"       = { cname = "homeassistant.svc.h.mirceanton.com", type = "CNAME", comment = "HomeAssistant-K8S Services Endpoint" },
+
+    # HomeAssistant (Old)
     "hass.svc.h.mirceanton.com" = { address = "10.0.10.253", type = "A", comment = "HomeAssistant Odroid" },
     "hass.home.mirceanton.com"  = { cname = "hass.svc.h.mirceanton.com", type = "CNAME", comment = "HomeAssistant Odroid" },
 
@@ -89,6 +94,7 @@ locals {
       dns_servers = ["10.0.10.1"]
       domain      = "svc.h.mirceanton.com"
       static_leases = {
+        "10.0.10.16"  = { name = "Lenovo Tiny", mac = "6C:4B:90:5C:23:0F" }
         "10.0.10.253" = { name = "HomeAssistant", mac = "00:1E:06:42:C7:73" }
       }
     },
