@@ -19,8 +19,6 @@ locals {
 
     # HomeAssistant (k8s)
     "k8s-homeassistant.mgmt.h.mirceanton.com" = { address = "10.0.0.16", type = "A", comment = "HomeAssistant-K8S API Endpoint" },
-    "homeassistant.svc.h.mirceanton.com"      = { address = "10.0.10.16", type = "A", comment = "HomeAssistant-K8S Services Endpoint" },
-    "homeassistant.home.mirceanton.com"       = { cname = "homeassistant.svc.h.mirceanton.com", type = "CNAME", comment = "HomeAssistant-K8S Services Endpoint" },
 
     # HomeAssistant (Old)
     "hass.svc.h.mirceanton.com" = { address = "10.0.10.253", type = "A", comment = "HomeAssistant Odroid" },
