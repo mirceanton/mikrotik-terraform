@@ -117,6 +117,7 @@ locals {
         "10.0.0.21" = { name = "PVE01", mac = "74:56:3C:9E:BF:1A" }
         "10.0.0.22" = { name = "PVE02", mac = "74:56:3C:99:5B:CE" }
         "10.0.0.23" = { name = "PVE03", mac = "74:56:3C:B2:E5:A8" }
+        "10.0.0.99" = { name = "Sonoff Dongle MAX", mac = "94:54:C5:27:FC:DB" }
       }
     },
     "Storage" = {
