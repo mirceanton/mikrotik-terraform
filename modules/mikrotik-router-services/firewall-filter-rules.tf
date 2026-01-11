@@ -104,66 +104,6 @@ locals {
     }
 
     # =========================================================================
-    # ZEROTIER ZONE
-    # =========================================================================
-    "allow-zerotier-dns-tcp" = {
-      chain        = "input"
-      action       = "accept"
-      protocol     = "tcp"
-      dst_port     = "53"
-      in_interface = routeros_zerotier_interface.zerotier1.name
-      order        = 1400
-    }
-    "allow-zerotier-dns-udp" = {
-      chain        = "input"
-      action       = "accept"
-      protocol     = "udp"
-      dst_port     = "53"
-      in_interface = routeros_zerotier_interface.zerotier1.name
-      order        = 1401
-    }
-    "drop-zerotier-input" = {
-      chain        = "input"
-      action       = "drop"
-      in_interface = routeros_zerotier_interface.zerotier1.name
-      order        = 1499
-    }
-
-    "allow-zerotier-to-services-http" = {
-      chain         = "forward"
-      action        = "accept"
-      in_interface  = routeros_zerotier_interface.zerotier1.name
-      out_interface = var.vlans.Services.name
-      protocol      = "tcp"
-      dst_port      = "80"
-      order         = 1500
-    }
-    "allow-zerotier-to-services-https" = {
-      chain         = "forward"
-      action        = "accept"
-      in_interface  = routeros_zerotier_interface.zerotier1.name
-      out_interface = var.vlans.Services.name
-      protocol      = "tcp"
-      dst_port      = "443"
-      order         = 1501
-    }
-    "allow-zerotier-to-services-hass" = {
-      chain         = "forward"
-      action        = "accept"
-      in_interface  = routeros_zerotier_interface.zerotier1.name
-      out_interface = var.vlans.Services.name
-      protocol      = "tcp"
-      dst_port      = "8123"
-      order         = 1502
-    }
-    "drop-zerotier-forward" = {
-      chain        = "forward"
-      action       = "drop"
-      in_interface = routeros_zerotier_interface.zerotier1.name
-      order        = 1599
-    }
-
-    # =========================================================================
     # GUEST ZONE
     # =========================================================================
     "allow-guest-to-internet" = {

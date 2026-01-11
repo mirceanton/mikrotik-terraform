@@ -23,9 +23,8 @@ inputs = {
   mikrotik_password = get_env("MIKROTIK_PASSWORD")
   mikrotik_insecure = true
 
-  digi_pppoe_password    = get_env("PPPOE_PASSWORD")
-  digi_pppoe_username    = get_env("PPPOE_USERNAME")
-  zerotier_central_token = get_env("ZEROTIER_CENTRAL_TOKEN")
+  digi_pppoe_password = get_env("PPPOE_PASSWORD")
+  digi_pppoe_username = get_env("PPPOE_USERNAME")
 
   vlans        = local.network_config.locals.vlans
   static_dns   = local.network_config.locals.static_dns

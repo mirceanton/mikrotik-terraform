@@ -4,10 +4,6 @@ terraform {
       source  = "terraform-routeros/routeros"
       version = "1.98.0"
     }
-    zerotier = {
-      source  = "zerotier/zerotier"
-      version = "1.6.0"
-    }
   }
 }
 
@@ -35,14 +31,4 @@ provider "routeros" {
   username = var.mikrotik_username
   password = var.mikrotik_password
   insecure = var.mikrotik_insecure
-}
-
-variable "zerotier_central_token" {
-  type        = string
-  sensitive   = true
-  description = "The API token for ZeroTier Central."
-}
-
-provider "zerotier" {
-  zerotier_central_token = var.zerotier_central_token
 }

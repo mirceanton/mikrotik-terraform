@@ -98,9 +98,6 @@ export PPPOE_PASSWORD="your_pppoe_password"
 # Cloudflare API token (for DNS automation)
 export CLOUDFLARE_API_TOKEN="your_cloudflare_api_token"
 
-# ZeroTier Central API token (for VPN)
-export ZEROTIER_CENTRAL_TOKEN="your zerotier token here"
-
 # For injecting secrets into 1Password vaults
 export OP_SERVICE_ACCOUNT_TOKEN="onepassword token here"
 ```
