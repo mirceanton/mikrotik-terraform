@@ -1,18 +1,4 @@
 ## ================================================================================================
-## PPPoE Connection Variables
-## ================================================================================================
-variable "digi_pppoe_password" {
-  type        = string
-  sensitive   = true
-  description = "The PPPoE password for the Digi connection."
-}
-variable "digi_pppoe_username" {
-  type        = string
-  sensitive   = true
-  description = "The PPPoE username for the Digi connection."
-}
-
-## ================================================================================================
 ## Network Configuration Variables
 ## ================================================================================================
 variable "vlans" {
@@ -35,24 +21,7 @@ variable "vlans" {
   description = "Map of VLANs to configure"
 }
 
-variable "static_dns" {
-  type = map(object({
-    address         = optional(string)
-    cname           = optional(string)
-    match_subdomain = optional(bool, false)
-    comment         = string
-    type            = string
-  }))
-  default     = {}
-  description = "Map of static DNS records"
-}
-
-variable "upstream_dns" {
-  type        = list(string)
-  description = "List of upstream DNS servers"
-}
-
-variable "adlist" {
+variable "wan_interface" {
   type        = string
-  description = "URL to adblock list for DNS"
+  description = "Name of the WAN interface (e.g., PPPoE interface name)"
 }
