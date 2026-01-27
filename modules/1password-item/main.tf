@@ -9,12 +9,6 @@ resource "onepassword_item" "items" {
   title    = each.key
   category = each.value.category
 
-  password_recipe {
-    length  = length(each.value.password)
-    digits  = true
-    symbols = false
-  }
-
   section {
     label = "Credentials"
 
