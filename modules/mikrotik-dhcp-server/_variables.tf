@@ -36,8 +36,15 @@ variable "domain" {
 variable "static_leases" {
   description = "Map of static DHCP leases keyed by IP address"
   type = map(object({
-    mac  = string
-    name = string
+    mac               = string
+    name              = string
+    create_dns_record = optional(bool)
   }))
   default = {}
+}
+
+variable "create_dns_records" {
+  description = "Whether to create static DNS A records for each static lease"
+  type        = bool
+  default     = true
 }

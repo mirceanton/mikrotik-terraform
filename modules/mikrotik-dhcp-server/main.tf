@@ -54,3 +54,24 @@ resource "routeros_ip_dhcp_server_lease" "this" {
   mac_address = each.value.mac
   comment     = each.value.name
 }
+
+# =================================================================================================
+# Static DNS Records for DHCP Leases
+# https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ip_dns_record
+# =================================================================================================
+locals {
+  # Per-lease override takes precedence, otherwise fall back to global flag
+  leases_with_dns = {
+    for ip, lease in var.static_leases : ip => lease
+    if coalesce(lease.create_dns_record, var.create_dns_records)
+  }
+}
+
+resource "routeros_ip_dns_record" "this" {
+  for_each = local.leases_with_dns
+
+  name    = "${each.value.name}.${var.domain}"
+  address = each.key
+  type    = "A"
+  comment = "[Auto] DHCP static lease for ${each.value.name}"
+}
