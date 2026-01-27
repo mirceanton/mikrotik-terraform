@@ -19,6 +19,7 @@ locals {
 
     # Kube Clusters
     "k8s-home.mgmt.h.mirceanton.com"      = { address = "10.0.0.30", type = "A", comment = "HomeOps K8S API Endpoint" },
+    "k8s-infra.mgmt.h.mirceanton.com"      = { address = "10.0.0.15", type = "A", comment = "InfraOps K8S API Endpoint" },
     "k8s-homeassistant.mgmt.h.mirceanton.com" = { address = "10.0.0.16", type = "A", comment = "HomeAssistant-K8S API Endpoint" },
 
     # BomkPrinter
@@ -89,6 +90,7 @@ locals {
       dns_servers = ["10.0.10.1"]
       domain      = "svc.h.mirceanton.com"
       static_leases = {
+        "10.0.10.15"  = { name = "Infra-K8S", mac = "00:a0:98:26:ec:53" }
         "10.0.10.16"  = { name = "Lenovo Tiny", mac = "6C:4B:90:5C:23:0F" }
         "10.0.10.31"  = { name = "HOPS-01", mac = "BC:24:11:70:56:F4" }
         "10.0.10.32"  = { name = "HOPS-02", mac = "BC:24:11:8E:12:1C" }
@@ -111,6 +113,8 @@ locals {
         "10.0.0.5"  = { name = "cAP-AX", mac = "D4:01:C3:01:26:EB" }
 
         "10.0.0.10" = { name = "NAS BMC", mac = "3C:EC:EF:39:1B:70" }
+
+        "10.0.0.15" = { name = "Infra-K8S", mac = "00:a0:98:73:d8:d7" }
 
         "10.0.0.16" = { name = "Lenovo Tiny", mac = "6C:4B:90:5C:23:0F" }
 
@@ -135,6 +139,8 @@ locals {
       dns_servers = ["10.255.255.1"]
       domain      = "stor.h.mirceanton.com",
       static_leases = {
+        "10.255.255.15" = { name = "Infra-K8S", mac = "00:a0:98:45:ee:df" }
+
         "10.255.255.31"  = { name = "HOPS-01", mac = "BC:24:11:29:C6:82" }
         "10.255.255.32"  = { name = "HOPS-02", mac = "BC:24:11:6C:CA:40" }
         "10.255.255.33"  = { name = "HOPS-03", mac = "BC:24:11:2A:82:ED" }
