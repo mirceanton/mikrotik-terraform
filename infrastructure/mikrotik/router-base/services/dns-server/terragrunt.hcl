@@ -36,13 +36,5 @@ inputs = {
 
     # BomkPrinter CNAME
     "bomkprinter.home.mirceanton.com" = { cname = "bomkprinter.utrst.h.mirceanton.com", type = "CNAME", comment = "Bomk Printer" }
-
-    # Proxmox Cluster VIP
-    "pve.mgmt.h.mirceanton.com" = { address = "10.0.0.20", type = "A", comment = "Proxmox Cluster Management Interface" }
-
-    # Proxmox Storage
-    "pve01.stor.h.mirceanton.com" = { address = "10.255.255.21", type = "A", comment = "Proxmox Node 1 Storage Interface" }
-    "pve02.stor.h.mirceanton.com" = { address = "10.255.255.22", type = "A", comment = "Proxmox Node 2 Storage Interface" }
-    "pve03.stor.h.mirceanton.com" = { address = "10.255.255.23", type = "A", comment = "Proxmox Node 3 Storage Interface" }
   }
 }
