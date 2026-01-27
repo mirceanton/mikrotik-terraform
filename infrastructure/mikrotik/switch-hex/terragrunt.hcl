@@ -33,7 +33,7 @@ inputs = {
     "ether1" = { comment = "Rack Downlink", tagged = local.shared_locals.all_vlans }
     "ether2" = { comment = "Zigbee Dongle", untagged = local.shared_locals.vlans.Management.name }
     "ether3" = {
-      comment = "Lenovo Tiny",
+      comment  = "Lenovo Tiny",
       untagged = local.shared_locals.vlans.Management.name,
       tagged = [
         local.shared_locals.vlans.Services.name,
