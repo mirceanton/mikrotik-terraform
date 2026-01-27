@@ -18,8 +18,8 @@ locals {
     "s3.home.mirceanton.com"       = { cname = "s3.nas.svc.h.mirceanton.com", type = "CNAME", comment = "TrueNAS S3 Storage", match_subdomain = true },
 
     # Kube Clusters
-    "k8s-home.mgmt.h.mirceanton.com"          = { address = "10.0.0.30", type = "A", comment = "HomeOps K8S API Endpoint" },
-    "k8s-infra.mgmt.h.mirceanton.com"         = { address = "10.0.0.15", type = "A", comment = "InfraOps K8S API Endpoint" },
+    "k8s-home.mgmt.h.mirceanton.com"  = { address = "10.0.0.30", type = "A", comment = "HomeOps K8S API Endpoint" },
+    "k8s-infra.mgmt.h.mirceanton.com" = { address = "10.0.0.15", type = "A", comment = "InfraOps K8S API Endpoint" },
 
     # BomkPrinter
     "bomkprinter.utrst.h.mirceanton.com" = { address = "192.168.42.180", type = "A", comment = "Bomk Printer" },
