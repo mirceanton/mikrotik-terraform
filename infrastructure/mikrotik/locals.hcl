@@ -20,10 +20,6 @@ locals {
     # HomeAssistant (k8s)
     "k8s-homeassistant.mgmt.h.mirceanton.com" = { address = "10.0.0.16", type = "A", comment = "HomeAssistant-K8S API Endpoint" },
 
-    # HomeAssistant (Old)
-    "hass.svc.h.mirceanton.com" = { address = "10.0.10.253", type = "A", comment = "HomeAssistant Odroid" },
-    "hass.home.mirceanton.com"  = { cname = "hass.svc.h.mirceanton.com", type = "CNAME", comment = "HomeAssistant Odroid" },
-
     # BomkPrinter
     "bomkprinter.utrst.h.mirceanton.com" = { address = "192.168.42.180", type = "A", comment = "Bomk Printer" },
     "bomkprinter.home.mirceanton.com"    = { cname = "bomkprinter.utrst.h.mirceanton.com", type = "CNAME", comment = "Bomk Printer" },
@@ -93,7 +89,6 @@ locals {
       domain      = "svc.h.mirceanton.com"
       static_leases = {
         "10.0.10.16"  = { name = "Lenovo Tiny", mac = "6C:4B:90:5C:23:0F" }
-        "10.0.10.253" = { name = "HomeAssistant", mac = "00:1E:06:42:C7:73" }
       }
     },
     "Management" = {
