@@ -17,7 +17,8 @@ locals {
     "registry.home.mirceanton.com" = { cname = "registry.nas.svc.h.mirceanton.com", type = "CNAME", comment = "TrueNAS Container Registry", match_subdomain = true },
     "s3.home.mirceanton.com"       = { cname = "s3.nas.svc.h.mirceanton.com", type = "CNAME", comment = "TrueNAS S3 Storage", match_subdomain = true },
 
-    # HomeAssistant (k8s)
+    # Kube Clusters
+    "k8s-home.mgmt.h.mirceanton.com"      = { address = "10.0.0.30", type = "A", comment = "HomeOps K8S API Endpoint" },
     "k8s-homeassistant.mgmt.h.mirceanton.com" = { address = "10.0.0.16", type = "A", comment = "HomeAssistant-K8S API Endpoint" },
 
     # BomkPrinter
