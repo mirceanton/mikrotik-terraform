@@ -3,10 +3,10 @@
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ip_dns
 # =================================================================================================
 resource "routeros_ip_dns" "dns-server" {
-  allow_remote_requests = true
+  allow_remote_requests = var.allow_remote_requests
   servers               = var.upstream_dns
-  cache_size            = 8192
-  cache_max_ttl         = "1d"
+  cache_size            = var.cache_size
+  cache_max_ttl         = var.cache_max_ttl
 }
 
 # =================================================================================================
@@ -14,8 +14,10 @@ resource "routeros_ip_dns" "dns-server" {
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/ip_dns_adlist
 # =================================================================================================
 resource "routeros_ip_dns_adlist" "dns_blocker" {
-  url        = var.adlist
-  ssl_verify = false
+  count = var.adlist_url != null && var.adlist_url != "" ? 1 : 0
+
+  url        = var.adlist_url
+  ssl_verify = var.adlist_ssl_verify
 }
 
 # =================================================================================================

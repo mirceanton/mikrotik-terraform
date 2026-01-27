@@ -1,5 +1,10 @@
-variable "interface_name" {
-  description = "Name of the VLAN interface the DHCP server is bound to"
+variable "interface" {
+  description = "Name of the interface the DHCP server is bound to"
+  type        = string
+}
+
+variable "address" {
+  description = "IP address in CIDR notation to assign to the interface (e.g., 192.168.1.1/24)"
   type        = string
 }
 
@@ -29,7 +34,7 @@ variable "domain" {
 }
 
 variable "static_leases" {
-  description = "Map of static DHCP leases with MAC address and IP address"
+  description = "Map of static DHCP leases keyed by IP address"
   type = map(object({
     mac  = string
     name = string

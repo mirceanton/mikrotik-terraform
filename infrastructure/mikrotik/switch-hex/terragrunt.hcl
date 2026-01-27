@@ -4,7 +4,7 @@ include "root" {
 
 dependencies {
   paths = [
-    find_in_parent_folders("mikrotik/router-services")
+    find_in_parent_folders("mikrotik/router-base")
   ]
 }
 

@@ -1,4 +1,65 @@
+include "root" {
+  path = find_in_parent_folders("root.hcl")
+}
+
+include "common" {
+  path   = find_in_parent_folders("common.hcl")
+  expose = true
+}
+
+dependencies {
+  paths = [find_in_parent_folders("mikrotik/router-base")]
+}
+
 locals {
+  vlans = include.common.locals.shared_locals.vlans
+}
+
+terraform {
+  source = find_in_parent_folders("modules/mikrotik-firewall")
+}
+
+inputs = {
+  # ---------------------------------------------------------------------------
+  # Interface Lists
+  # ---------------------------------------------------------------------------
+  interface_lists = {
+    WAN = {
+      comment    = "All Public-Facing Interfaces"
+      interfaces = ["PPPoE-Digi"]
+    }
+    LAN = {
+      comment = "All Local Interfaces"
+      interfaces = concat(
+        ["bridge"],
+        [for v in local.vlans : v.name]
+      )
+    }
+  }
+
+  # ---------------------------------------------------------------------------
+  # NAT Rules
+  # ---------------------------------------------------------------------------
+  nat_rules = {
+    "masquerade-wan" = {
+      chain              = "srcnat"
+      action             = "masquerade"
+      out_interface_list = "WAN"
+      order              = 100
+    }
+    "hairpin" = {
+      comment            = "Hairpin NAT - allows LAN clients to access services via public IP"
+      chain              = "srcnat"
+      action             = "masquerade"
+      in_interface_list  = "LAN"
+      out_interface_list = "LAN"
+      order              = 200
+    }
+  }
+
+  # ---------------------------------------------------------------------------
+  # Filter Rules
+  # ---------------------------------------------------------------------------
   filter_rules = {
     # =========================================================================
     # GLOBAL RULES - Forward Chain
@@ -20,24 +81,24 @@ locals {
       chain            = "forward"
       action           = "accept"
       connection_state = "invalid"
-      in_interface     = var.vlans.Trusted.name
-      out_interface    = var.vlans.Management.name
+      in_interface     = local.vlans.Trusted.name
+      out_interface    = local.vlans.Management.name
       order            = 120
     }
     "asymmetric-routing-fix-trusted-to-svc" = {
       chain            = "forward"
       action           = "accept"
       connection_state = "invalid"
-      in_interface     = var.vlans.Trusted.name
-      out_interface    = var.vlans.Services.name
+      in_interface     = local.vlans.Trusted.name
+      out_interface    = local.vlans.Services.name
       order            = 121
     }
     "asymmetric-routing-fix-mgmt-to-svc" = {
       chain            = "forward"
       action           = "accept"
       connection_state = "invalid"
-      in_interface     = var.vlans.Management.name
-      out_interface    = var.vlans.Services.name
+      in_interface     = local.vlans.Management.name
+      out_interface    = local.vlans.Services.name
       order            = 122
     }
     "drop-invalid-forward" = {
@@ -45,8 +106,6 @@ locals {
       action           = "drop"
       connection_state = "invalid"
       order            = 130
-      # log              = true
-      # log_prefix       = "DROPPED INVALID:"
     }
 
     # =========================================================================
@@ -77,13 +136,13 @@ locals {
     "accept-management-forward" = {
       chain        = "forward"
       action       = "accept"
-      in_interface = var.vlans.Management.name
+      in_interface = local.vlans.Management.name
       order        = 1000
     }
     "accept-management-input" = {
       chain        = "input"
       action       = "accept"
-      in_interface = var.vlans.Management.name
+      in_interface = local.vlans.Management.name
       order        = 1100
     }
 
@@ -93,13 +152,13 @@ locals {
     "accept-trusted-input" = {
       chain        = "input"
       action       = "accept"
-      in_interface = var.vlans.Trusted.name
+      in_interface = local.vlans.Trusted.name
       order        = 1200
     }
     "accept-trusted-forward" = {
       chain        = "forward"
       action       = "accept"
-      in_interface = var.vlans.Trusted.name
+      in_interface = local.vlans.Trusted.name
       order        = 1300
     }
 
@@ -109,25 +168,21 @@ locals {
     "allow-guest-to-internet" = {
       chain              = "forward"
       action             = "accept"
-      in_interface       = var.vlans.Guest.name
-      out_interface_list = routeros_interface_list.wan.name
+      in_interface       = local.vlans.Guest.name
+      out_interface_list = "WAN"
       order              = 1600
     }
     "drop-guest-forward" = {
       chain        = "forward"
       action       = "drop"
-      in_interface = var.vlans.Guest.name
+      in_interface = local.vlans.Guest.name
       order        = 1699
-      # log          = true
-      # log_prefix   = "DROPPED GUEST FORWARD:"
     }
     "drop-guest-input" = {
       chain        = "input"
       action       = "drop"
-      in_interface = var.vlans.Guest.name
+      in_interface = local.vlans.Guest.name
       order        = 1799
-      # log          = true
-      # log_prefix   = "DROPPED GUEST INPUT:"
     }
 
     # =========================================================================
@@ -136,15 +191,15 @@ locals {
     "allow-untrusted-to-internet" = {
       chain              = "forward"
       action             = "accept"
-      in_interface       = var.vlans.Untrusted.name
-      out_interface_list = routeros_interface_list.wan.name
+      in_interface       = local.vlans.Untrusted.name
+      out_interface_list = "WAN"
       order              = 1800
     }
     "allow-untrusted-to-services-http" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = var.vlans.Untrusted.name
-      out_interface = var.vlans.Services.name
+      in_interface  = local.vlans.Untrusted.name
+      out_interface = local.vlans.Services.name
       protocol      = "tcp"
       dst_port      = "80"
       order         = 1801
@@ -152,8 +207,8 @@ locals {
     "allow-untrusted-to-services-https" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = var.vlans.Untrusted.name
-      out_interface = var.vlans.Services.name
+      in_interface  = local.vlans.Untrusted.name
+      out_interface = local.vlans.Services.name
       protocol      = "tcp"
       dst_port      = "443"
       order         = 1802
@@ -161,8 +216,8 @@ locals {
     "allow-untrusted-to-services-hass" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = var.vlans.Untrusted.name
-      out_interface = var.vlans.Services.name
+      in_interface  = local.vlans.Untrusted.name
+      out_interface = local.vlans.Services.name
       protocol      = "tcp"
       dst_port      = "8123"
       order         = 1803
@@ -170,17 +225,14 @@ locals {
     "drop-untrusted-forward" = {
       chain        = "forward"
       action       = "drop"
-      in_interface = var.vlans.Untrusted.name
+      in_interface = local.vlans.Untrusted.name
       order        = 1899
-      # log          = true
-      # log_prefix   = "DROPPED Untrusted FORWARD:"
     }
-
     "allow-untrusted-dns-tcp" = {
       chain        = "input"
       action       = "accept"
       protocol     = "tcp"
-      in_interface = var.vlans.Untrusted.name
+      in_interface = local.vlans.Untrusted.name
       dst_port     = "53"
       order        = 1900
     }
@@ -188,17 +240,15 @@ locals {
       chain        = "input"
       action       = "accept"
       protocol     = "udp"
-      in_interface = var.vlans.Untrusted.name
+      in_interface = local.vlans.Untrusted.name
       dst_port     = "53"
       order        = 1901
     }
     "drop-untrusted-input" = {
       chain        = "input"
       action       = "drop"
-      in_interface = var.vlans.Untrusted.name
+      in_interface = local.vlans.Untrusted.name
       order        = 1999
-      # log          = true
-      # log_prefix   = "DROPPED Untrusted INPUT:"
     }
 
     # =========================================================================
@@ -207,44 +257,44 @@ locals {
     "allow-services-to-internet" = {
       chain              = "forward"
       action             = "accept"
-      in_interface       = var.vlans.Services.name
-      out_interface_list = routeros_interface_list.wan.name
+      in_interface       = local.vlans.Services.name
+      out_interface_list = "WAN"
       order              = 2000
     }
     "allow-hass-to-tesmart" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = var.vlans.Services.name
-      out_interface = var.vlans.Management.name
-      src_address   = "10.0.10.253" # FIXME should use some sort of reference
-      dst_address   = "10.0.0.253"  # FIXME should use some sort of reference
+      in_interface  = local.vlans.Services.name
+      out_interface = local.vlans.Management.name
+      src_address   = "10.0.10.253"
+      dst_address   = "10.0.0.253"
       order         = 2010
     }
     "allow-hass-to-smart-tv" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = var.vlans.Services.name
-      out_interface = var.vlans.Untrusted.name
-      src_address   = "10.0.10.253"    # FIXME should use some sort of reference
-      dst_address   = "192.168.42.250" # FIXME should use some sort of reference
+      in_interface  = local.vlans.Services.name
+      out_interface = local.vlans.Untrusted.name
+      src_address   = "10.0.10.253"
+      dst_address   = "192.168.42.250"
       order         = 2011
     }
     "allow-hass-to-mirkputer" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = var.vlans.Services.name
-      out_interface = var.vlans.Trusted.name
-      src_address   = "10.0.10.253"   # FIXME should use some sort of reference
-      dst_address   = "192.168.69.69" # FIXME should use some sort of reference
+      in_interface  = local.vlans.Services.name
+      out_interface = local.vlans.Trusted.name
+      src_address   = "10.0.10.253"
+      dst_address   = "192.168.69.69"
       order         = 2012
     }
     "allow-hass-to-untrusted-wol" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = var.vlans.Services.name
-      out_interface = var.vlans.Trusted.name
-      src_address   = "10.0.10.253"    # FIXME should use some sort of reference
-      dst_address   = "192.168.69.255" # FIXME should use some sort of reference
+      in_interface  = local.vlans.Services.name
+      out_interface = local.vlans.Trusted.name
+      src_address   = "10.0.10.253"
+      dst_address   = "192.168.69.255"
       dst_port      = "9"
       protocol      = "udp"
       order         = 2013
@@ -252,14 +302,14 @@ locals {
     "drop-services-forward" = {
       chain        = "forward"
       action       = "drop"
-      in_interface = var.vlans.Services.name
+      in_interface = local.vlans.Services.name
       order        = 2099
     }
     "allow-services-dns-tcp" = {
       chain        = "input"
       action       = "accept"
       protocol     = "tcp"
-      in_interface = var.vlans.Services.name
+      in_interface = local.vlans.Services.name
       dst_port     = "53"
       order        = 2100
     }
@@ -267,14 +317,14 @@ locals {
       chain        = "input"
       action       = "accept"
       protocol     = "udp"
-      in_interface = var.vlans.Services.name
+      in_interface = local.vlans.Services.name
       dst_port     = "53"
       order        = 2101
     }
     "drop-services-input" = {
       chain        = "input"
       action       = "drop"
-      in_interface = var.vlans.Services.name
+      in_interface = local.vlans.Services.name
       order        = 2199
     }
 
@@ -284,66 +334,14 @@ locals {
     "drop-all-forward" = {
       chain        = "forward"
       action       = "drop"
-      in_interface = "!${var.vlans.Trusted.name}"
+      in_interface = "!${local.vlans.Trusted.name}"
       order        = 9000
     }
     "drop-all-input" = {
       chain        = "input"
       action       = "drop"
-      in_interface = "!${var.vlans.Trusted.name}"
+      in_interface = "!${local.vlans.Trusted.name}"
       order        = 9010
     }
   }
-
-  # Convert to ordered list for move_items
-  # Create entries with sort keys based on order field
-  filter_rules_ordered = [
-    for k, v in local.filter_rules : merge(v, {
-      key      = k
-      sort_key = format("%04d-%s", v.order, k)
-    })
-  ]
-
-  # Create a map with lexicographically sortable keys for for_each
-  # Map keys are always iterated in lexicographical order
-  filter_rules_map = {
-    for rule in local.filter_rules_ordered :
-    rule.sort_key => rule
-  }
-}
-
-# =================================================================================================
-# Firewall Filter Rules
-# =================================================================================================
-resource "routeros_ip_firewall_filter" "rules" {
-  for_each = local.filter_rules_map
-
-  comment = "Managed by Terraform - ${each.value.key}"
-  chain   = each.value.chain
-  action  = each.value.action
-
-  # Optional fields - only set if present in rule definition
-  connection_state   = lookup(each.value, "connection_state", null)
-  in_interface       = lookup(each.value, "in_interface", null)
-  out_interface      = lookup(each.value, "out_interface", null)
-  in_interface_list  = lookup(each.value, "in_interface_list", null)
-  out_interface_list = lookup(each.value, "out_interface_list", null)
-  protocol           = lookup(each.value, "protocol", null)
-  dst_port           = lookup(each.value, "dst_port", null)
-  src_port           = lookup(each.value, "src_port", null)
-  src_address        = lookup(each.value, "src_address", null)
-  dst_address        = lookup(each.value, "dst_address", null)
-  jump_target        = lookup(each.value, "jump_target", null)
-  hw_offload         = lookup(each.value, "hw_offload", null)
-
-  lifecycle {
-    create_before_destroy = true
-  }
-}
-
-# Move rules to correct order after creation
-resource "routeros_move_items" "firewall_rules" {
-  resource_path = "/ip/firewall/filter"
-  sequence      = [for idx in sort(keys(local.filter_rules_map)) : routeros_ip_firewall_filter.rules[idx].id]
-  depends_on    = [routeros_ip_firewall_filter.rules]
 }
