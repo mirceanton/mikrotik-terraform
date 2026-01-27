@@ -90,7 +90,6 @@ locals {
       domain      = "svc.h.mirceanton.com"
       static_leases = {
         "10.0.10.15" = { name = "Infra-K8S", mac = "00:a0:98:26:ec:53" }
-        "10.0.10.16" = { name = "Lenovo Tiny", mac = "6C:4B:90:5C:23:0F" }
         "10.0.10.31" = { name = "HOPS-01", mac = "BC:24:11:70:56:F4" }
         "10.0.10.32" = { name = "HOPS-02", mac = "BC:24:11:8E:12:1C" }
         "10.0.10.33" = { name = "HOPS-03", mac = "BC:24:11:FE:21:FA" }
@@ -114,8 +113,6 @@ locals {
         "10.0.0.10" = { name = "NAS BMC", mac = "3C:EC:EF:39:1B:70" }
 
         "10.0.0.15" = { name = "Infra-K8S", mac = "00:a0:98:73:d8:d7" }
-
-        "10.0.0.16" = { name = "Lenovo Tiny", mac = "6C:4B:90:5C:23:0F" }
 
         "10.0.0.21" = { name = "PVE01", mac = "74:56:3C:9E:BF:1A" }
         "10.0.0.22" = { name = "PVE02", mac = "74:56:3C:99:5B:CE" }
