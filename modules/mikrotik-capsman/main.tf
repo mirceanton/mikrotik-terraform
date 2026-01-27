@@ -68,7 +68,6 @@ resource "routeros_wifi_channel" "this" {
 # https://registry.terraform.io/providers/terraform-routeros/routeros/latest/docs/resources/wifi_security
 #
 # Creates a security profile for each WiFi network.
-# Uses provided passphrase if specified, otherwise generates a random 32-character string.
 # =================================================================================================
 locals {
   # Networks that need a generated passphrase (none provided)
@@ -79,15 +78,16 @@ locals {
   # Resolve final passphrase for each network
   wifi_passphrases = {
     for k, v in var.wifi_networks : k => (
-      v.passphrase != null ? v.passphrase : random_string.wifi_passphrase[k].result
+      v.passphrase != null ? v.passphrase : random_pet.wifi_passphrase[k].id
     )
   }
 }
 
-resource "random_string" "wifi_passphrase" {
+resource "random_pet" "wifi_passphrase" {
   for_each = local.networks_needing_passphrase
 
-  length = 32
+  length    = 4
+  separator = "-"
 }
 
 resource "routeros_wifi_security" "this" {
