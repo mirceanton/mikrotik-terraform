@@ -25,9 +25,9 @@ inputs = {
   domain      = "svc.h.mirceanton.com"
 
   static_leases = {
-    "10.0.10.15" = { name = "Infra-K8S", mac = "00:a0:98:26:ec:53" }
-    "10.0.10.31" = { name = "HOPS-01", mac = "BC:24:11:70:56:F4" }
-    "10.0.10.32" = { name = "HOPS-02", mac = "BC:24:11:8E:12:1C" }
-    "10.0.10.33" = { name = "HOPS-03", mac = "BC:24:11:FE:21:FA" }
+    "10.0.10.15" = { name = "k8s-infra", mac = "00:a0:98:26:ec:53" }
+    "10.0.10.31" = { name = "hops-01", mac = "BC:24:11:70:56:F4" }
+    "10.0.10.32" = { name = "hops-02", mac = "BC:24:11:8E:12:1C" }
+    "10.0.10.33" = { name = "hops-03", mac = "BC:24:11:FE:21:FA" }
   }
 }

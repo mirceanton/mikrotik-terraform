@@ -25,7 +25,7 @@ inputs = {
   domain      = "trst.h.mirceanton.com"
 
   static_leases = {
-    "192.168.69.69" = { name = "MirkPuter", mac = "74:56:3C:B7:9B:D8" }
-    "192.168.69.68" = { name = "BomkPuter", mac = "24:4B:FE:52:D0:65" }
+    "192.168.69.69" = { name = "mirkputer", mac = "74:56:3C:B7:9B:D8" }
+    "192.168.69.68" = { name = "bomkputer", mac = "24:4B:FE:52:D0:65" }
   }
 }
