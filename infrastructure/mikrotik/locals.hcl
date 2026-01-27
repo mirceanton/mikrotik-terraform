@@ -89,6 +89,9 @@ locals {
       domain      = "svc.h.mirceanton.com"
       static_leases = {
         "10.0.10.16"  = { name = "Lenovo Tiny", mac = "6C:4B:90:5C:23:0F" }
+        "10.0.10.31"  = { name = "HOPS-01", mac = "BC:24:11:70:56:F4" }
+        "10.0.10.32"  = { name = "HOPS-02", mac = "BC:24:11:8E:12:1C" }
+        "10.0.10.33"  = { name = "HOPS-03", mac = "BC:24:11:FE:21:FA" }
       }
     },
     "Management" = {
@@ -105,11 +108,19 @@ locals {
         "10.0.0.3"  = { name = "CRS326", mac = "D4:01:C3:F8:46:EE" }
         "10.0.0.4"  = { name = "hex", mac = "F4:1E:57:31:05:41" }
         "10.0.0.5"  = { name = "cAP-AX", mac = "D4:01:C3:01:26:EB" }
+
         "10.0.0.10" = { name = "NAS BMC", mac = "3C:EC:EF:39:1B:70" }
+
         "10.0.0.16" = { name = "Lenovo Tiny", mac = "6C:4B:90:5C:23:0F" }
+
         "10.0.0.21" = { name = "PVE01", mac = "74:56:3C:9E:BF:1A" }
         "10.0.0.22" = { name = "PVE02", mac = "74:56:3C:99:5B:CE" }
         "10.0.0.23" = { name = "PVE03", mac = "74:56:3C:B2:E5:A8" }
+
+        "10.0.0.31"  = { name = "HOPS-01", mac = "BC:24:11:CB:48:88" }
+        "10.0.0.32"  = { name = "HOPS-02", mac = "BC:24:11:1E:FA:52" }
+        "10.0.0.33"  = { name = "HOPS-03", mac = "BC:24:11:EA:C5:58" }
+
         "10.0.0.99" = { name = "Sonoff Dongle MAX", mac = "94:54:C5:27:FC:DB" }
       }
     },
@@ -123,6 +134,10 @@ locals {
       dns_servers = ["10.255.255.1"]
       domain      = "stor.h.mirceanton.com",
       static_leases = {
+        "10.255.255.31"  = { name = "HOPS-01", mac = "BC:24:11:29:C6:82" }
+        "10.255.255.32"  = { name = "HOPS-02", mac = "BC:24:11:6C:CA:40" }
+        "10.255.255.33"  = { name = "HOPS-03", mac = "BC:24:11:2A:82:ED" }
+
         "10.255.255.69" = { name = "MirkPuter", mac = "00:02:C9:54:76:3C" }
       }
     }
