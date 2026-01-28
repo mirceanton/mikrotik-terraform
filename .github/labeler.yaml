@@ -25,8 +25,7 @@ area/docs:
 # =================================================================================================
 device/rb5009:
   - changed-files:
-      - any-glob-to-any-file: "infrastructure/mikrotik/router-base/**"
-      - any-glob-to-any-file: "infrastructure/mikrotik/router-services/**"
+      - any-glob-to-any-file: "infrastructure/mikrotik/router-rb5009/**"
 
 device/crs326:
   - changed-files:

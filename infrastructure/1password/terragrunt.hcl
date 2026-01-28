@@ -3,7 +3,7 @@ include "root" {
 }
 
 dependency "capsman" {
-  config_path = find_in_parent_folders("mikrotik/router-base/services/capsman")
+  config_path = find_in_parent_folders("mikrotik/router-rb5009/services/capsman")
 }
 
 terraform {
