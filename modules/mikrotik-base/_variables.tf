@@ -113,8 +113,30 @@ variable "vlans" {
 
 
 # =================================================================================================
-# Interface Configuration
+# User Groups Configuration
 # =================================================================================================
+variable "user_groups" {
+  type = map(object({
+    policies = list(string)
+    comment  = optional(string, "")
+  }))
+  default     = {}
+  description = "Map of user groups to create with policies and comments"
+}
+
+# =================================================================================================
+# User Configuration
+# =================================================================================================
+variable "users" {
+  type = map(object({
+    group    = string
+    password = optional(string)
+    comment  = optional(string, "")
+    address  = optional(string, "")
+  }))
+  default     = {}
+  description = "Map of users to create with their groups and optional passwords"
+}
 variable "ethernet_interfaces" {
   type = map(object({
     comment     = optional(string, "")
