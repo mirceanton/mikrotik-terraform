@@ -24,7 +24,7 @@ inputs = {
   mikrotik_insecure = true
 
   certificate_common_name = local.mikrotik_hostname
-  hostname                = "CRS317"
+  hostname                = upper(split("-", get_terragrunt_dir())[2])
   timezone                = local.shared_locals.timezone
   ntp_servers             = [local.shared_locals.cloudflare_ntp]
 

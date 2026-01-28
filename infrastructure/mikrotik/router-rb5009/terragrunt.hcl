@@ -13,7 +13,7 @@ terraform {
 
 inputs = {
   certificate_common_name = include.common.locals.mikrotik_hostname
-  hostname                = "Router"
+  hostname                = upper(split("-", get_terragrunt_dir())[2])
   timezone                = include.common.locals.shared_locals.timezone
   ntp_servers             = [include.common.locals.shared_locals.cloudflare_ntp]
 
