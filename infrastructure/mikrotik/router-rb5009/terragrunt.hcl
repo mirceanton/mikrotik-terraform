@@ -39,12 +39,20 @@ inputs = {
        policies = ["api", "read"]
        comment  = "Metrics collection group"
      }
+     "external-dns" = {
+       policies = ["read", "write", "api", "rest-api"]
+       comment  = "External DNS group"
+     }
    }
 
    users = {
      metrics = {
        group   = "metrics"
        comment = "Prometheus metrics user"
+     }
+     "external-dns" = {
+       group   = "external-dns"
+       comment = "External DNS user"
      }
    }
  }
