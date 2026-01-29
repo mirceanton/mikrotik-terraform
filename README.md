@@ -53,7 +53,7 @@ I was initially planning to also add some more details about my network, like VL
 │   │   ├── primary/        # Primary domain CNAME records
 │   │   └── secondary/      # Secondary domain CNAME records
 │   └── mikrotik/           # MikroTik device configurations
-│       ├── locals.hcl      # Shared local variables (VLANs, DNS, etc.)
+│       ├── globals.hcl      # Shared local variables (VLANs, DNS, etc.)
 │       ├── router-rb5009/  # RB5009 router configuration
 │       ├── switch-crs317/  # CRS317 switch configuration
 │       ├── switch-crs326/  # CRS326 switch configuration

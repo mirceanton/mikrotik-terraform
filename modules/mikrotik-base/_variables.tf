@@ -93,50 +93,14 @@ variable "bridge_mtu" {
 # =================================================================================================
 variable "vlans" {
   type = map(object({
-    name        = string
-    vlan_id     = number
-    network     = string
-    cidr_suffix = string
-    gateway     = string
-    dhcp_pool   = list(string)
-    dns_servers = list(string)
-    domain      = string
-    mtu         = optional(number, 1500)
-    static_leases = map(object({
-      name = string
-      mac  = string
-    }))
+    name    = string
+    vlan_id = number
+    mtu     = optional(number, 1500)
   }))
   default     = {}
   description = "Map of VLANs to configure"
 }
 
-
-# =================================================================================================
-# User Groups Configuration
-# =================================================================================================
-variable "user_groups" {
-  type = map(object({
-    policies = list(string)
-    comment  = optional(string, "")
-  }))
-  default     = {}
-  description = "Map of user groups to create with policies and comments"
-}
-
-# =================================================================================================
-# User Configuration
-# =================================================================================================
-variable "users" {
-  type = map(object({
-    group    = string
-    password = optional(string)
-    comment  = optional(string, "")
-    address  = optional(string, "")
-  }))
-  default     = {}
-  description = "Map of users to create with their groups and optional passwords"
-}
 variable "ethernet_interfaces" {
   type = map(object({
     comment     = optional(string, "")
@@ -166,4 +130,27 @@ variable "bond_interfaces" {
   }))
   default     = {}
   description = "Map of bond interfaces to configure"
+}
+
+# =================================================================================================
+# User and Groups Configuration
+# =================================================================================================
+variable "user_groups" {
+  type = map(object({
+    policies = list(string)
+    comment  = optional(string, "")
+  }))
+  default     = {}
+  description = "Map of user groups to create with policies and comments"
+}
+
+variable "users" {
+  type = map(object({
+    group    = string
+    password = optional(string)
+    comment  = optional(string, "")
+    address  = optional(string, "")
+  }))
+  default     = {}
+  description = "Map of users to create with their groups and optional passwords"
 }

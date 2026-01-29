@@ -10,7 +10,7 @@ dependencies {
 
 locals {
   mikrotik_hostname = "10.0.0.4"
-  shared_locals     = read_terragrunt_config(find_in_parent_folders("locals.hcl")).locals
+  mikrotik_globals     = read_terragrunt_config(find_in_parent_folders("globals.hcl")).locals
 }
 
 terraform {
@@ -25,16 +25,16 @@ inputs = {
 
   certificate_common_name = local.mikrotik_hostname
   hostname                = "HEX"
-  timezone                = local.shared_locals.timezone
-  ntp_servers             = [local.shared_locals.cloudflare_ntp]
+  timezone                = local.mikrotik_globals.timezone
+  ntp_servers             = [local.mikrotik_globals.cloudflare_ntp]
 
-  vlans = local.shared_locals.vlans
+  vlans = local.mikrotik_globals.vlans
    ethernet_interfaces = {
-     "ether1" = { comment = "Rack Downlink", tagged = local.shared_locals.all_vlans }
-     "ether2" = { comment = "Zigbee Dongle", untagged = local.shared_locals.vlans.Management.name }
+     "ether1" = { comment = "Rack Downlink", tagged = local.mikrotik_globals.all_vlans }
+     "ether2" = { comment = "Zigbee Dongle", untagged = local.mikrotik_globals.vlans.Management.name }
      "ether3" = {}
-     "ether4" = { comment = "Router Uplink", tagged = local.shared_locals.all_vlans }
-     "ether5" = { comment = "Smart TV", untagged = local.shared_locals.vlans.Untrusted.name }
+     "ether4" = { comment = "Router Uplink", tagged = local.mikrotik_globals.all_vlans }
+     "ether5" = { comment = "Smart TV", untagged = local.mikrotik_globals.vlans.Untrusted.name }
    }
 
    user_groups = {

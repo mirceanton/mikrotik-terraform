@@ -12,7 +12,7 @@ dependencies {
 }
 
 locals {
-  vlans = include.common.locals.shared_locals.vlans
+  vlans = include.common.locals.mikrotik_globals.vlans
 }
 
 terraform {

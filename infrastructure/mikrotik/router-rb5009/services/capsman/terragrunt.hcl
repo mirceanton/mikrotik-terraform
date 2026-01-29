@@ -24,13 +24,13 @@ inputs = {
     guest = {
       ssid             = "badoink-guest"
       band             = "2ghz-ax"
-      vlan_id          = include.common.locals.shared_locals.vlans.Guest.vlan_id
+      vlan_id          = include.common.locals.mikrotik_globals.vlans.Guest.vlan_id
       client_isolation = true
     }
     home = {
       ssid    = "badoink"
       band    = "5ghz-ax"
-      vlan_id = include.common.locals.shared_locals.vlans.Untrusted.vlan_id
+      vlan_id = include.common.locals.mikrotik_globals.vlans.Untrusted.vlan_id
     }
   }
 }
