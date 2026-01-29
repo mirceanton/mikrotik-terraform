@@ -1,14 +1,8 @@
-include "root" {
-  path = find_in_parent_folders("root.hcl")
-}
-
-include "common" {
-  path   = find_in_parent_folders("common.hcl")
-  expose = true
-}
+include "root" { path = find_in_parent_folders("root.hcl") }
+include "provider" { path = find_in_parent_folders("provider.hcl") }
 
 dependencies {
-  paths = [find_in_parent_folders("mikrotik/router-rb5009/services/firewall")]
+  paths = [find_in_parent_folders("services/firewall")]
 }
 
 terraform {
@@ -19,6 +13,6 @@ inputs = {
   interface = "ether1"
   name      = "PPPoE-Digi"
   comment   = "Digi PPPoE Client"
-  username  = get_env("PPPOE_USERNAME")
-  password  = get_env("PPPOE_PASSWORD")
+  username  = get_env("PPPOE_USERNAME") #TODO: Fetch from 1Password
+  password  = get_env("PPPOE_PASSWORD") #TODO: Fetch from 1Password
 }

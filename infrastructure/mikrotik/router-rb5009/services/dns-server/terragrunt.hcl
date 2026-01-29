@@ -1,14 +1,8 @@
-include "root" {
-  path = find_in_parent_folders("root.hcl")
-}
-
-include "common" {
-  path   = find_in_parent_folders("common.hcl")
-  expose = true
-}
+include "root" { path = find_in_parent_folders("root.hcl") }
+include "provider" { path = find_in_parent_folders("provider.hcl") }
 
 dependencies {
-  paths = [find_in_parent_folders("mikrotik/router-rb5009/services/pppoe-client")]
+  paths = [find_in_parent_folders("services/pppoe-client")]
 }
 
 terraform {

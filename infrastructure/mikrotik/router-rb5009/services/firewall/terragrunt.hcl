@@ -1,18 +1,12 @@
-include "root" {
-  path = find_in_parent_folders("root.hcl")
-}
-
-include "common" {
-  path   = find_in_parent_folders("common.hcl")
-  expose = true
-}
+include "root" { path = find_in_parent_folders("root.hcl") }
+include "provider" { path = find_in_parent_folders("provider.hcl") }
 
 dependencies {
   paths = [find_in_parent_folders("mikrotik/router-rb5009")]
 }
 
 locals {
-  vlans = include.common.locals.shared_locals.vlans
+  mikrotik_globals = read_terragrunt_config(find_in_parent_folders("globals.hcl")).locals
 }
 
 terraform {
@@ -20,9 +14,6 @@ terraform {
 }
 
 inputs = {
-  # ---------------------------------------------------------------------------
-  # Interface Lists
-  # ---------------------------------------------------------------------------
   interface_lists = {
     WAN = {
       comment    = "All Public-Facing Interfaces"
@@ -32,14 +23,11 @@ inputs = {
       comment = "All Local Interfaces"
       interfaces = concat(
         ["bridge"],
-        [for v in local.vlans : v.name]
+        [for v in local.mikrotik_globals.vlans : v.name]
       )
     }
   }
 
-  # ---------------------------------------------------------------------------
-  # NAT Rules
-  # ---------------------------------------------------------------------------
   nat_rules = {
     "masquerade-wan" = {
       chain              = "srcnat"
@@ -57,9 +45,6 @@ inputs = {
     }
   }
 
-  # ---------------------------------------------------------------------------
-  # Filter Rules
-  # ---------------------------------------------------------------------------
   filter_rules = {
     # =========================================================================
     # GLOBAL RULES - Forward Chain
@@ -81,24 +66,24 @@ inputs = {
       chain            = "forward"
       action           = "accept"
       connection_state = "invalid"
-      in_interface     = local.vlans.Trusted.name
-      out_interface    = local.vlans.Management.name
+      in_interface     = local.mikrotik_globals.vlans.Trusted.name
+      out_interface    = local.mikrotik_globals.vlans.Management.name
       order            = 120
     }
     "asymmetric-routing-fix-trusted-to-svc" = {
       chain            = "forward"
       action           = "accept"
       connection_state = "invalid"
-      in_interface     = local.vlans.Trusted.name
-      out_interface    = local.vlans.Services.name
+      in_interface     = local.mikrotik_globals.vlans.Trusted.name
+      out_interface    = local.mikrotik_globals.vlans.Services.name
       order            = 121
     }
     "asymmetric-routing-fix-mgmt-to-svc" = {
       chain            = "forward"
       action           = "accept"
       connection_state = "invalid"
-      in_interface     = local.vlans.Management.name
-      out_interface    = local.vlans.Services.name
+      in_interface     = local.mikrotik_globals.vlans.Management.name
+      out_interface    = local.mikrotik_globals.vlans.Services.name
       order            = 122
     }
     "drop-invalid-forward" = {
@@ -136,13 +121,13 @@ inputs = {
     "accept-management-forward" = {
       chain        = "forward"
       action       = "accept"
-      in_interface = local.vlans.Management.name
+      in_interface = local.mikrotik_globals.vlans.Management.name
       order        = 1000
     }
     "accept-management-input" = {
       chain        = "input"
       action       = "accept"
-      in_interface = local.vlans.Management.name
+      in_interface = local.mikrotik_globals.vlans.Management.name
       order        = 1100
     }
 
@@ -152,13 +137,13 @@ inputs = {
     "accept-trusted-input" = {
       chain        = "input"
       action       = "accept"
-      in_interface = local.vlans.Trusted.name
+      in_interface = local.mikrotik_globals.vlans.Trusted.name
       order        = 1200
     }
     "accept-trusted-forward" = {
       chain        = "forward"
       action       = "accept"
-      in_interface = local.vlans.Trusted.name
+      in_interface = local.mikrotik_globals.vlans.Trusted.name
       order        = 1300
     }
 
@@ -168,20 +153,20 @@ inputs = {
     "allow-guest-to-internet" = {
       chain              = "forward"
       action             = "accept"
-      in_interface       = local.vlans.Guest.name
+      in_interface       = local.mikrotik_globals.vlans.Guest.name
       out_interface_list = "WAN"
       order              = 1600
     }
     "drop-guest-forward" = {
       chain        = "forward"
       action       = "drop"
-      in_interface = local.vlans.Guest.name
+      in_interface = local.mikrotik_globals.vlans.Guest.name
       order        = 1699
     }
     "drop-guest-input" = {
       chain        = "input"
       action       = "drop"
-      in_interface = local.vlans.Guest.name
+      in_interface = local.mikrotik_globals.vlans.Guest.name
       order        = 1799
     }
 
@@ -191,15 +176,15 @@ inputs = {
     "allow-untrusted-to-internet" = {
       chain              = "forward"
       action             = "accept"
-      in_interface       = local.vlans.Untrusted.name
+      in_interface       = local.mikrotik_globals.vlans.Untrusted.name
       out_interface_list = "WAN"
       order              = 1800
     }
     "allow-untrusted-to-services-http" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = local.vlans.Untrusted.name
-      out_interface = local.vlans.Services.name
+      in_interface  = local.mikrotik_globals.vlans.Untrusted.name
+      out_interface = local.mikrotik_globals.vlans.Services.name
       protocol      = "tcp"
       dst_port      = "80"
       order         = 1801
@@ -207,8 +192,8 @@ inputs = {
     "allow-untrusted-to-services-https" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = local.vlans.Untrusted.name
-      out_interface = local.vlans.Services.name
+      in_interface  = local.mikrotik_globals.vlans.Untrusted.name
+      out_interface = local.mikrotik_globals.vlans.Services.name
       protocol      = "tcp"
       dst_port      = "443"
       order         = 1802
@@ -216,8 +201,8 @@ inputs = {
     "allow-untrusted-to-services-hass" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = local.vlans.Untrusted.name
-      out_interface = local.vlans.Services.name
+      in_interface  = local.mikrotik_globals.vlans.Untrusted.name
+      out_interface = local.mikrotik_globals.vlans.Services.name
       protocol      = "tcp"
       dst_port      = "8123"
       order         = 1803
@@ -225,14 +210,14 @@ inputs = {
     "drop-untrusted-forward" = {
       chain        = "forward"
       action       = "drop"
-      in_interface = local.vlans.Untrusted.name
+      in_interface = local.mikrotik_globals.vlans.Untrusted.name
       order        = 1899
     }
     "allow-untrusted-dns-tcp" = {
       chain        = "input"
       action       = "accept"
       protocol     = "tcp"
-      in_interface = local.vlans.Untrusted.name
+      in_interface = local.mikrotik_globals.vlans.Untrusted.name
       dst_port     = "53"
       order        = 1900
     }
@@ -240,14 +225,14 @@ inputs = {
       chain        = "input"
       action       = "accept"
       protocol     = "udp"
-      in_interface = local.vlans.Untrusted.name
+      in_interface = local.mikrotik_globals.vlans.Untrusted.name
       dst_port     = "53"
       order        = 1901
     }
     "drop-untrusted-input" = {
       chain        = "input"
       action       = "drop"
-      in_interface = local.vlans.Untrusted.name
+      in_interface = local.mikrotik_globals.vlans.Untrusted.name
       order        = 1999
     }
 
@@ -257,15 +242,15 @@ inputs = {
     "allow-services-to-internet" = {
       chain              = "forward"
       action             = "accept"
-      in_interface       = local.vlans.Services.name
+      in_interface       = local.mikrotik_globals.vlans.Services.name
       out_interface_list = "WAN"
       order              = 2000
     }
     "allow-hass-to-tesmart" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = local.vlans.Services.name
-      out_interface = local.vlans.Management.name
+      in_interface  = local.mikrotik_globals.vlans.Services.name
+      out_interface = local.mikrotik_globals.vlans.Management.name
       src_address   = "10.0.10.253"
       dst_address   = "10.0.0.253"
       order         = 2010
@@ -273,8 +258,8 @@ inputs = {
     "allow-hass-to-smart-tv" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = local.vlans.Services.name
-      out_interface = local.vlans.Untrusted.name
+      in_interface  = local.mikrotik_globals.vlans.Services.name
+      out_interface = local.mikrotik_globals.vlans.Untrusted.name
       src_address   = "10.0.10.253"
       dst_address   = "192.168.42.250"
       order         = 2011
@@ -282,8 +267,8 @@ inputs = {
     "allow-hass-to-mirkputer" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = local.vlans.Services.name
-      out_interface = local.vlans.Trusted.name
+      in_interface  = local.mikrotik_globals.vlans.Services.name
+      out_interface = local.mikrotik_globals.vlans.Trusted.name
       src_address   = "10.0.10.253"
       dst_address   = "192.168.69.69"
       order         = 2012
@@ -291,8 +276,8 @@ inputs = {
     "allow-hass-to-untrusted-wol" = {
       chain         = "forward"
       action        = "accept"
-      in_interface  = local.vlans.Services.name
-      out_interface = local.vlans.Trusted.name
+      in_interface  = local.mikrotik_globals.vlans.Services.name
+      out_interface = local.mikrotik_globals.vlans.Trusted.name
       src_address   = "10.0.10.253"
       dst_address   = "192.168.69.255"
       dst_port      = "9"
@@ -302,14 +287,14 @@ inputs = {
     "drop-services-forward" = {
       chain        = "forward"
       action       = "drop"
-      in_interface = local.vlans.Services.name
+      in_interface = local.mikrotik_globals.vlans.Services.name
       order        = 2099
     }
     "allow-services-dns-tcp" = {
       chain        = "input"
       action       = "accept"
       protocol     = "tcp"
-      in_interface = local.vlans.Services.name
+      in_interface = local.mikrotik_globals.vlans.Services.name
       dst_port     = "53"
       order        = 2100
     }
@@ -317,14 +302,14 @@ inputs = {
       chain        = "input"
       action       = "accept"
       protocol     = "udp"
-      in_interface = local.vlans.Services.name
+      in_interface = local.mikrotik_globals.vlans.Services.name
       dst_port     = "53"
       order        = 2101
     }
     "drop-services-input" = {
       chain        = "input"
       action       = "drop"
-      in_interface = local.vlans.Services.name
+      in_interface = local.mikrotik_globals.vlans.Services.name
       order        = 2199
     }
 
@@ -334,13 +319,13 @@ inputs = {
     "drop-all-forward" = {
       chain        = "forward"
       action       = "drop"
-      in_interface = "!${local.vlans.Trusted.name}"
+      in_interface = "!${local.mikrotik_globals.vlans.Trusted.name}"
       order        = 9000
     }
     "drop-all-input" = {
       chain        = "input"
       action       = "drop"
-      in_interface = "!${local.vlans.Trusted.name}"
+      in_interface = "!${local.mikrotik_globals.vlans.Trusted.name}"
       order        = 9010
     }
   }
