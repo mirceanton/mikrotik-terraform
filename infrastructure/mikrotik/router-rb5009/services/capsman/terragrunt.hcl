@@ -27,9 +27,9 @@ inputs = {
       vlan_id = include.common.locals.shared_locals.vlans.Untrusted.vlan_id
     }
     home-2ghz = {
-      ssid             = "badoink-2ghz"
-      band             = "2ghz-ax"
-      vlan_id          = include.common.locals.shared_locals.vlans.Untrusted.vlan_id
+      ssid    = "badoink-2ghz"
+      band    = "2ghz-ax"
+      vlan_id = include.common.locals.shared_locals.vlans.Untrusted.vlan_id
     }
 
     guest = {

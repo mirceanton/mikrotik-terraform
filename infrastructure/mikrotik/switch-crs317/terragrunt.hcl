@@ -48,40 +48,40 @@ inputs = {
     "sfp-sfpplus16" = { comment = "Mirkputer 10G", untagged = local.shared_locals.vlans.Storage.name, l2mtu = 9216, mtu = 9000 }
     "ether1"        = {}
   }
-   bond_interfaces = {
-     "bond1" = {
-       comment = "NAS", mtu = 9000
-       slaves  = ["sfp-sfpplus1", "sfp-sfpplus2"]
-       tagged  = [for name, vlan in local.shared_locals.vlans : vlan.name if name != local.shared_locals.vlans.Management.name]
-     }
-     "bond2" = {
-       comment  = "PVE01", mtu = 9000
-       slaves   = ["sfp-sfpplus3", "sfp-sfpplus4"]
-       untagged = local.shared_locals.vlans.Storage.name
-     }
-     "bond3" = {
-       comment  = "PVE02", mtu = 9000
-       slaves   = ["sfp-sfpplus5", "sfp-sfpplus6"]
-       untagged = local.shared_locals.vlans.Storage.name
-     }
-     "bond4" = {
-       comment  = "PVE03", mtu = 9000
-       slaves   = ["sfp-sfpplus7", "sfp-sfpplus8"]
-       untagged = local.shared_locals.vlans.Storage.name
-     }
-   }
+  bond_interfaces = {
+    "bond1" = {
+      comment = "NAS", mtu = 9000
+      slaves  = ["sfp-sfpplus1", "sfp-sfpplus2"]
+      tagged  = [for name, vlan in local.shared_locals.vlans : vlan.name if name != local.shared_locals.vlans.Management.name]
+    }
+    "bond2" = {
+      comment  = "PVE01", mtu = 9000
+      slaves   = ["sfp-sfpplus3", "sfp-sfpplus4"]
+      untagged = local.shared_locals.vlans.Storage.name
+    }
+    "bond3" = {
+      comment  = "PVE02", mtu = 9000
+      slaves   = ["sfp-sfpplus5", "sfp-sfpplus6"]
+      untagged = local.shared_locals.vlans.Storage.name
+    }
+    "bond4" = {
+      comment  = "PVE03", mtu = 9000
+      slaves   = ["sfp-sfpplus7", "sfp-sfpplus8"]
+      untagged = local.shared_locals.vlans.Storage.name
+    }
+  }
 
-   user_groups = {
-     metrics = {
-       policies = ["api", "read"]
-       comment  = "Metrics collection group"
-     }
-   }
+  user_groups = {
+    metrics = {
+      policies = ["api", "read"]
+      comment  = "Metrics collection group"
+    }
+  }
 
-   users = {
-     metrics = {
-       group   = "metrics"
-       comment = "Prometheus metrics user"
-     }
-   }
- }
+  users = {
+    metrics = {
+      group   = "metrics"
+      comment = "Prometheus metrics user"
+    }
+  }
+}
