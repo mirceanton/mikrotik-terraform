@@ -40,12 +40,12 @@ jobs:
           op-service-account-token: ${{ secrets.op-service-account-token }}
 
       - name: Terragrunt Init
-        run: terragrunt init --all -upgrade
+        run: terragrunt run --all -- init -upgrade
 
       - name: Terragrunt Plan
         id: plan
         run: |
-          terragrunt plan --all --detailed-exitcode -no-color 2>&1 | tee plan_output.txt
+          terragrunt run --all -- plan --detailed-exitcode -no-color 2>&1 | tee plan_output.txt
 
           if [ "${PIPESTATUS[0]}" -eq 2 ]; then
             echo "drift_detected=true" | tee "$GITHUB_OUTPUT"

@@ -37,7 +37,7 @@ jobs:
           op-service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
       - name: Terragrunt Init
-        run: terragrunt init --all -upgrade
+        run: terragrunt run --all -- init -upgrade
 
       - name: Terragrunt Apply
-        run: terragrunt apply --all -auto-approve -no-color
+        run: terragrunt run --all -- apply -auto-approve
