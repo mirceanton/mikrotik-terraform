@@ -39,40 +39,47 @@ I was initially planning to also add some more details about my network, like VL
 ## 📁 Project Structure
 
 ```bash
-├── .github/                # Various repo configuration/metadata files
-│   ├── actions/            # Custom GitHub actions...
-│   │   └── load-secrets/   # ...loads secrets from 1Pass as env vars
-│   └── workflows/          # GitHub workflow configurations and automation
-├── docs/img                # Network Diagram(s)
-├── infrastructure/         # Terragrunt configurations
-│   ├── 1password/          # 1Pass password injection
-│   └── mikrotik/           # MikroTik device configurations
-│       ├── globals.hcl      # Shared local variables (VLANs, DNS, etc.)
-│       ├── router-rb5009/  # RB5009 router configuration
-│       ├── switch-crs317/  # CRS317 switch configuration
-│       ├── switch-crs326/  # CRS326 switch configuration
-│       └── switch-hex/     # Hex switch configuration
-├── modules/                # Reusable tofu modules
-│   ├── 1password-item/     # Add item(s) into a given 1Pass vault
-│   ├── mikrotik-base/      # Base MikroTik device configuration
-│   └── mikrotik-dhcp-server/ # DHCP server configuration
-├── root.hcl               # Root Terragrunt configuration (remote state)
-└── README.md              # This file, lol
+├── .github/                    # Various repo configuration/metadata files
+│   ├── actions/                # Custom GitHub actions
+│   │   └── load-secrets/       # Loads secrets from 1Pass as env vars
+│   └── workflows/              # GitHub workflow configurations
+├── docs/img/                   # Network Diagram(s)
+├── infrastructure/             # Terragrunt configurations
+│   ├── 1password/              # 1Pass credential injection
+│   └── mikrotik/               # MikroTik device configurations
+│       ├── globals.hcl         # Shared variables (VLANs, timezone, NTP, users/groups)
+│       ├── router-rb5009/      # RB5009 router configuration
+│       │   └── services/       # Router services (capsman, dhcp, dns, firewall, pppoe)
+│       ├── switch-crs317/      # CRS317 switch configuration
+│       ├── switch-crs326/      # CRS326 switch configuration
+│       └── switch-hex/         # Hex switch configuration
+├── modules/                    # Reusable OpenTofu modules
+│   ├── 1password-item/         # Add item(s) into a given 1Pass vault
+│   ├── mikrotik-base/          # Base MikroTik device configuration
+│   ├── mikrotik-capsman/       # CAPsMAN wireless controller
+│   ├── mikrotik-dhcp-server/   # DHCP server configuration
+│   ├── mikrotik-dns-server/    # DNS server with adlist support
+│   ├── mikrotik-firewall/      # Firewall rules and NAT
+│   └── mikrotik-pppoe-client/  # PPPoE client for ISP connection
+├── root.hcl                    # Root Terragrunt configuration (remote state)
+└── README.md                   # This file
 ```
 
 ## 🚀 Getting Started
 
 ### ⚙️ Requirements
 
+- [mise](https://mise.jdx.dev/) for managing all dependencies (recommended)
 - [OpenTofu](https://opentofu.org/) - Infrastructure as Code tool (`terraform` also works)
-- [Terragrunt](https://terragrunt.gruntwork.io/) - tofu orchestrator
-- [1pass cli](https://developer.1password.com/docs/cli/) - for injecting secrets into 1Password vaults
-- [mise](https://mise.jdx.dev/) for managing dependencies
-- Access to a [BackBlaze](https://www.backblaze.com/) B2 bucket for remote state storage or any other S3 compatible service
+- [Terragrunt](https://terragrunt.gruntwork.io/) - OpenTofu orchestrator
+- [1Password CLI](https://developer.1password.com/docs/cli/) - for injecting secrets
+- Access to a [BackBlaze](https://www.backblaze.com/) B2 bucket for remote state storage (or any S3-compatible service)
+
+All tools can be installed automatically via `mise install` using the included `.mise.toml`.
 
 ### 🔧 Initial Device Setup
 
-Before applying any tofu configurations, new Mikrotik devices need some minimal setup. I will not go into details here, but I did write a [blog post](https://mirceanton.com/posts/mikrotik-terraform-getting-started/) about onboarding a Mikrotik device under Terraform.
+Before applying any OpenTofu configurations, new Mikrotik devices need some minimal setup. I will not go into details here, but I did write a [blog post](https://mirceanton.com/posts/mikrotik-terraform-getting-started/) about onboarding a Mikrotik device under Terraform.
 
 ### 🌍 Environment Setup
 
