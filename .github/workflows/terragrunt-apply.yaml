@@ -17,7 +17,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  TERRAGRUNT_NON_INTERACTIVE: "true"
+  TG_NON_INTERACTIVE: "true"
   OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
 
 jobs:

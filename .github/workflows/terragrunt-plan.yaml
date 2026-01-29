@@ -19,7 +19,7 @@ on:
 
 env:
   OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.op-service-account-token }}
-  TERRAGRUNT_NON_INTERACTIVE: "true"
+  TG_NON_INTERACTIVE: "true"
 
 jobs:
   plan:
