@@ -24,5 +24,3 @@ runs:
 
         PPPOE_USERNAME: op://Badoink/Digi PPPoE/username
         PPPOE_PASSWORD: op://Badoink/Digi PPPoE/password
-
-        CLOUDFLARE_API_TOKEN: op://Automation/CloudFlare Token Mikrotik-Terraform/password

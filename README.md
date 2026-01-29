@@ -34,8 +34,6 @@ This project provides automated deployment and management for the following devi
 - **CRS326 switch** -> Main Rack Switch
 - **Hex switch** -> Living Room Switch (no AP functionality used here)
 
-It also automates some external services, such as DNS records in [CloudFlare](https://www.cloudflare.com/).
-
 I was initially planning to also add some more details about my network, like VLAN setup and wireless networks and whatnot, but then I realised I can't really be bothered to also update those whenever I change something, so if you're curious, feel free to look at the code!
 
 ## 📁 Project Structure
@@ -48,10 +46,6 @@ I was initially planning to also add some more details about my network, like VL
 ├── docs/img                # Network Diagram(s)
 ├── infrastructure/         # Terragrunt configurations
 │   ├── 1password/          # 1Pass password injection
-│   ├── cloudflare/         # Cloudflare DNS automation
-│   │   ├── dependency.hcl  # Shared dependency configuration
-│   │   ├── primary/        # Primary domain CNAME records
-│   │   └── secondary/      # Secondary domain CNAME records
 │   └── mikrotik/           # MikroTik device configurations
 │       ├── globals.hcl      # Shared local variables (VLANs, DNS, etc.)
 │       ├── router-rb5009/  # RB5009 router configuration
@@ -60,7 +54,6 @@ I was initially planning to also add some more details about my network, like VL
 │       └── switch-hex/     # Hex switch configuration
 ├── modules/                # Reusable tofu modules
 │   ├── 1password-item/     # Add item(s) into a given 1Pass vault
-│   ├── cloudflare-cname/   # Cloudflare CNAME record module
 │   ├── mikrotik-base/      # Base MikroTik device configuration
 │   └── mikrotik-dhcp-server/ # DHCP server configuration
 ├── root.hcl               # Root Terragrunt configuration (remote state)
@@ -93,9 +86,6 @@ export MIKROTIK_PASSWORD="your_password"
 # ISP credentials (for PPPoE)
 export PPPOE_USERNAME="your_pppoe_username"
 export PPPOE_PASSWORD="your_pppoe_password"
-
-# Cloudflare API token (for DNS automation)
-export CLOUDFLARE_API_TOKEN="your_cloudflare_api_token"
 
 # For injecting secrets into 1Password vaults
 export OP_SERVICE_ACCOUNT_TOKEN="onepassword token here"
