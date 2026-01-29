@@ -136,7 +136,7 @@ variable "bond_interfaces" {
 # =================================================================================================
 # User and Groups Configuration
 # =================================================================================================
-variable "user_groups" {
+variable "groups" {
   type = map(object({
     policies = list(string)
     comment  = optional(string, "")

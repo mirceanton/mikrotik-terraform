@@ -17,10 +17,12 @@ terraform {
 }
 
 inputs = {
-  certificate_common_name = include.provider.locals.mikrotik_hostname
   hostname                = upper(split("-", basename(get_terragrunt_dir()))[1])
+  certificate_common_name = include.provider.locals.mikrotik_hostname
   timezone                = local.mikrotik_globals.timezone
   ntp_servers             = [local.mikrotik_globals.cloudflare_ntp]
+  users                   = local.mikrotik_globals.default_users
+  groups                  = local.mikrotik_globals.default_groups
 
   vlans = local.mikrotik_globals.vlans
   ethernet_interfaces = {
@@ -29,19 +31,5 @@ inputs = {
     "ether3" = {}
     "ether4" = { comment = "Router Uplink", tagged = local.mikrotik_globals.all_vlans }
     "ether5" = { comment = "Smart TV", untagged = local.mikrotik_globals.vlans.Untrusted.name }
-  }
-
-  user_groups = {
-    metrics = {
-      policies = ["api", "read"]
-      comment  = "Metrics collection group"
-    }
-  }
-
-  users = {
-    metrics = {
-      group   = "metrics"
-      comment = "Prometheus metrics user"
-    }
   }
 }

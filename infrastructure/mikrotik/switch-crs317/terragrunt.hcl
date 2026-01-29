@@ -14,10 +14,12 @@ locals {
 
 terraform { source = find_in_parent_folders("modules/mikrotik-base") }
 inputs = {
-  certificate_common_name = include.provider.locals.mikrotik_hostname
   hostname                = upper(split("-", basename(get_terragrunt_dir()))[1])
+  certificate_common_name = include.provider.locals.mikrotik_hostname
   timezone                = local.mikrotik_globals.timezone
   ntp_servers             = [local.mikrotik_globals.cloudflare_ntp]
+  users                   = local.mikrotik_globals.default_users
+  groups                  = local.mikrotik_globals.default_groups
 
   vlans = local.mikrotik_globals.vlans
   ethernet_interfaces = {
@@ -59,20 +61,6 @@ inputs = {
       comment  = "PVE03", mtu = 9000
       slaves   = ["sfp-sfpplus7", "sfp-sfpplus8"]
       untagged = local.mikrotik_globals.vlans.Storage.name
-    }
-  }
-
-  user_groups = {
-    metrics = {
-      policies = ["api", "read"]
-      comment  = "Metrics collection group"
-    }
-  }
-
-  users = {
-    metrics = {
-      group   = "metrics"
-      comment = "Prometheus metrics user"
     }
   }
 }

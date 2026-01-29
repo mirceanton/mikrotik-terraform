@@ -2,7 +2,7 @@
 # User Groups
 # =================================================================================================
 resource "routeros_system_user_group" "groups" {
-  for_each = var.user_groups
+  for_each = var.groups
 
   name    = each.key
   policy  = each.value.policies

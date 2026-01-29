@@ -10,10 +10,22 @@ locals {
 
 terraform { source = find_in_parent_folders("modules/mikrotik-base") }
 inputs = {
-  certificate_common_name = include.provider.locals.mikrotik_hostname
   hostname                = upper(split("-", basename(get_terragrunt_dir()))[1])
+  certificate_common_name = include.provider.locals.mikrotik_hostname
   timezone                = local.mikrotik_globals.timezone
   ntp_servers             = [local.mikrotik_globals.cloudflare_ntp]
+  users = merge(local.mikrotik_globals.default_users, {
+    external-dns = {
+      group   = "external-dns"
+      comment = "External DNS user"
+    }
+  })
+  groups = merge(local.mikrotik_globals.default_groups, {
+    external-dns = {
+      policies = ["read", "write", "api", "rest-api"]
+      comment  = "External DNS group"
+    }
+  })
 
   vlans = local.mikrotik_globals.vlans
   ethernet_interfaces = {
@@ -32,7 +44,7 @@ inputs = {
     "sfp-sfpplus1" = {}
   }
 
-  user_groups = {
+  groups = {
     metrics = {
       policies = ["api", "read"]
       comment  = "Metrics collection group"
