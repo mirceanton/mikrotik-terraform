@@ -21,16 +21,22 @@ inputs = {
   upgrade_policy     = "none"
 
   wifi_networks = {
+    home = {
+      ssid    = "badoink-5ghz"
+      band    = "5ghz-ax"
+      vlan_id = include.common.locals.shared_locals.vlans.Untrusted.vlan_id
+    }
+    home-2ghz = {
+      ssid             = "badoink-2ghz"
+      band             = "2ghz-ax"
+      vlan_id          = include.common.locals.shared_locals.vlans.Untrusted.vlan_id
+    }
+
     guest = {
       ssid             = "badoink-guest"
       band             = "2ghz-ax"
       vlan_id          = include.common.locals.shared_locals.vlans.Guest.vlan_id
       client_isolation = true
-    }
-    home = {
-      ssid    = "badoink"
-      band    = "5ghz-ax"
-      vlan_id = include.common.locals.shared_locals.vlans.Untrusted.vlan_id
     }
   }
 }
