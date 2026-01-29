@@ -15,7 +15,7 @@ locals {
 terraform { source = find_in_parent_folders("modules/mikrotik-base") }
 inputs = {
   certificate_common_name = include.provider.locals.mikrotik_hostname
-  hostname                = upper(split("-", get_terragrunt_dir())[2])
+  hostname                = upper(split("-", basename(get_terragrunt_dir()))[1])
   timezone                = local.mikrotik_globals.timezone
   ntp_servers             = [local.mikrotik_globals.cloudflare_ntp]
 
