@@ -24,18 +24,17 @@ inputs = {
     "10.0.0.4" = { name = "hex", mac = "F4:1E:57:31:05:41" }
     "10.0.0.5" = { name = "cap-ax", mac = "D4:01:C3:01:26:EB" }
 
-    "10.0.0.10" = { name = "bmc-nas", mac = "3C:EC:EF:39:1B:70" }
-
-    "10.0.0.15" = { name = "k8s-infra", mac = "00:a0:98:73:d8:d7" }
+    "10.0.0.10" = { name = "bmc-homeprod", mac = "3C:EC:EF:39:1B:70" }
+    "10.0.0.15" = { name = "homeprod", mac = "3c:ec:ef:20:be:42" }
 
     "10.0.0.21" = { name = "pve01", mac = "74:56:3c:9e:bf:1a" }
     "10.0.0.22" = { name = "pve02", mac = "74:56:3c:99:5b:ce" }
     "10.0.0.23" = { name = "pve03", mac = "74:56:3c:b2:e5:a8" }
 
-    "10.0.0.31" = { name = "hops-01", mac = "BC:24:11:CB:48:88" }
-    "10.0.0.32" = { name = "hops-02", mac = "BC:24:11:1E:FA:52" }
-    "10.0.0.33" = { name = "hops-03", mac = "BC:24:11:EA:C5:58" }
+    "10.0.0.30" = { name = "homeops", mac = "BC:24:11:75:B6:FF" }
 
     "10.0.0.99" = { name = "sonoff-dongle-max", mac = "94:54:C5:27:FC:DB" }
+
+    "10.0.0.245" = { name = "nas", mac = "BC:24:11:C6:12:86" }
   }
 }
