@@ -16,7 +16,7 @@ terraform {
 inputs = {
   country            = "Romania"
   capsman_interfaces = ["all"]
-  upgrade_policy     = "none"
+  upgrade_policy     = "require-same-version"
 
   channel_settings = {
     "5ghz-ax" = {
