@@ -1,14 +1,14 @@
-# Mikrotik - Terraform
+# Mikrotik - OpenTofu
 
 [![Thumbnail](docs/img/thumbnail.png)](docs/img/thumbnail.png)
 
-This repository contains [Terraform](https://developer.hashicorp.com/terraform) automation for my entire Mikrotik-powered home network, applied and orchestrated via [Terragrunt](https://terragrunt.gruntwork.io/).
+This repository contains [OpenTofu](https://opentofu.org/) automation for my entire Mikrotik-powered home network, applied and orchestrated via [Terragrunt](https://terragrunt.gruntwork.io/).
 
 The purpose of this repository is to provide a structured and repeatable way to manage and automate the setup of my MikroTik devices using Infrastructure as Code (IaC) principles.
 
-## 🤔 Why Terraform for Network Infrastructure?
+## 🤔 Why OpenTofu for Network Infrastructure?
 
-Fundamentally speaking, there is nothing that sets this approach apart from, say, a configuration script or just backing up and importing the configuration on the device. Yet, I still decided to use Terraform for this. Why?
+Fundamentally speaking, there is nothing that sets this approach apart from, say, a configuration script or just backing up and importing the configuration on the device. Yet, I still decided to use OpenTofu for this. Why?
 
 1. **I'm weird like that** 🤓
 
@@ -16,7 +16,7 @@ Fundamentally speaking, there is nothing that sets this approach apart from, say
 
 2. **Skill ~~Issue~~Development** 💪🏻
 
-   Working on this project provides a practical, hands-on opportunity to explore advanced Terraform and Terragrunt features and patterns. Not to mention that breaking something takes my entire internet away until I fix it, and fixing it without internet may be tricker than you think. This forces me to think more carefully about the configuration before applying.
+   Working on this project provides a practical, hands-on opportunity to explore advanced OpenTofu and Terragrunt features and patterns. Not to mention that breaking something takes my entire internet away until I fix it, and fixing it without internet may be tricker than you think. This forces me to think more carefully about the configuration before applying.
 
 3. **Because I can** 🤷🏼
 
@@ -34,13 +34,11 @@ This project provides automated deployment and management for the following devi
 - **CRS326 switch** -> Main Rack Switch
 - **Hex switch** -> Living Room Switch (no AP functionality used here)
 
-It also automates some external services, such as DNS records in [CloudFlare](https://www.cloudflare.com/).
-
 I was initially planning to also add some more details about my network, like VLAN setup and wireless networks and whatnot, but then I realised I can't really be bothered to also update those whenever I change something, so if you're curious, feel free to look at the code!
 
 ## 📁 Project Structure
 
-```
+```bash
 ├── .github/                # Various repo configuration/metadata files
 │   ├── actions/            # Custom GitHub actions...
 │   │   └── load-secrets/   # ...loads secrets from 1Pass as env vars
@@ -48,22 +46,21 @@ I was initially planning to also add some more details about my network, like VL
 ├── docs/img                # Network Diagram(s)
 ├── infrastructure/         # Terragrunt configurations
 │   ├── 1password/          # 1Pass password injection
-│   ├── cloudflare/         # Cloudflare DNS automation
-│   │   ├── dependency.hcl  # Shared dependency configuration
-│   │   ├── primary/        # Primary domain CNAME records
-│   │   └── secondary/      # Secondary domain CNAME records
 │   └── mikrotik/           # MikroTik device configurations
-│       ├── locals.hcl      # Shared local variables (VLANs, DNS, etc.)
-│       ├── router-base/    # RB5009 router base configuration
-│       ├── router-services # Router services (DHCP, DNS, VPN, etc.)
+│       ├── globals.hcl     # Shared global variables (VLANs, DNS, users, etc.)
+│       ├── router-rb5009/  # RB5009 router base configuration
+│       │   └── services/   # Router services (DHCP, DNS, firewall, etc.)
 │       ├── switch-crs317/  # CRS317 switch configuration
 │       ├── switch-crs326/  # CRS326 switch configuration
 │       └── switch-hex/     # Hex switch configuration
-├── modules/                # Reusable Terraform modules
+├── modules/                # Reusable tofu modules
 │   ├── 1password-item/     # Add item(s) into a given 1Pass vault
-│   ├── cloudflare-cname/   # Cloudflare CNAME record module
 │   ├── mikrotik-base/      # Base MikroTik device configuration
-│   └── mikrotik-dhcp-server/ # DHCP server configuration
+│   ├── mikrotik-capsman/   # CAPsMAN wireless controller configuration
+│   ├── mikrotik-dhcp-server/ # DHCP server configuration
+│   ├── mikrotik-dns-server/  # DNS server configuration
+│   ├── mikrotik-firewall/    # Firewall rules configuration
+│   └── mikrotik-pppoe-client/ # PPPoE client configuration
 ├── root.hcl               # Root Terragrunt configuration (remote state)
 └── README.md              # This file, lol
 ```
@@ -72,15 +69,15 @@ I was initially planning to also add some more details about my network, like VL
 
 ### ⚙️ Requirements
 
-- [Terraform](https://www.terraform.io/) - Infrastructure as Code tool
-- [Terragrunt](https://terragrunt.gruntwork.io/) - Terraform wrapper
+- [OpenTofu](https://opentofu.org/) - Infrastructure as Code tool (`terraform` also works)
+- [Terragrunt](https://terragrunt.gruntwork.io/) - OpenTofu/Terraform orchestrator
 - [1pass cli](https://developer.1password.com/docs/cli/) - for injecting secrets into 1Password vaults
 - [mise](https://mise.jdx.dev/) for managing dependencies
 - Access to a [BackBlaze](https://www.backblaze.com/) B2 bucket for remote state storage or any other S3 compatible service
 
 ### 🔧 Initial Device Setup
 
-Before applying any Terraform configurations, new Mikrotik devices need some minimal setup. I will not go into details here, but I did write a [blog post](https://mirceanton.com/posts/mikrotik-terraform-getting-started/) about onboarding a Mikrotik device under Terraform.
+Before applying any OpenTofu configurations, new Mikrotik devices need some minimal setup. I will not go into details here, but I did write a [blog post](https://mirceanton.com/posts/mikrotik-terraform-getting-started/) about onboarding a Mikrotik device under Terraform.
 
 ### 🌍 Environment Setup
 
@@ -94,12 +91,6 @@ export MIKROTIK_PASSWORD="your_password"
 # ISP credentials (for PPPoE)
 export PPPOE_USERNAME="your_pppoe_username"
 export PPPOE_PASSWORD="your_pppoe_password"
-
-# Cloudflare API token (for DNS automation)
-export CLOUDFLARE_API_TOKEN="your_cloudflare_api_token"
-
-# ZeroTier Central API token (for VPN)
-export ZEROTIER_CENTRAL_TOKEN="your zerotier token here"
 
 # For injecting secrets into 1Password vaults
 export OP_SERVICE_ACCOUNT_TOKEN="onepassword token here"
@@ -123,10 +114,10 @@ This may prove to be problematic if I end up cutting my own internet access duri
 
 While this project aims to provide comprehensive automation for Mikrotik devices, there are some limitations:
 
-- Initial setup still requires manual configuration before Terraform can be applied
+- Initial setup still requires manual configuration before OpenTofu can be applied
 - Complex configurations sometimes require a multi-step approach rather than a single `apply`
 - The risk of cutting yourself off of the internet may be low... but it's never zero. Ask me how I know! 😉
-- Prepare to get close and intimate with `terraform state mv` if you plan to rename or move objects around. Very few things are stateless, so they can't be deleted and recreated generally.
+- Prepare to get close and intimate with `tofu state mv` if you plan to rename or move objects around. Very few things are stateless, so they can't be deleted and recreated generally.
 
 ## 🤝 Sharing & Risks
 
@@ -155,4 +146,3 @@ If you want to dive deeper into this project, check out these resources:
 ## ⚖️ License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
