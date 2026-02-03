@@ -18,6 +18,17 @@ inputs = {
   capsman_interfaces = ["all"]
   upgrade_policy     = "none"
 
+  channel_settings = {
+    "5ghz-ax" = {
+      skip_dfs_channels = "all"
+      frequency         = ["5180", "5200", "5220", "5240"] # UNII-1: Channels 36, 40, 44, 48 (non-DFS)
+    }
+    "2ghz-ax" = {
+      frequency = ["2437"] # Channel 6
+      width     = "20mhz"
+    }
+  }
+
   wifi_networks = {
     home-5ghz = {
       ssid    = "badoink-5ghz"
