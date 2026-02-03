@@ -22,13 +22,43 @@ variable "require_peer_certificate" {
   default     = false
 }
 
+variable "channel_settings" {
+  description = <<-EOT
+    Per-band channel configuration overrides for fine-tuning radio behavior.
+
+    Example:
+    {
+      "5ghz-ax" = {
+        skip_dfs_channels = "all"  # Avoid DFS channels entirely
+        width             = "80mhz"
+      }
+    }
+  EOT
+  type = map(object({
+    frequency         = optional(list(string))
+    skip_dfs_channels = optional(string)
+    width             = optional(string)
+    reselect_interval = optional(string)
+    reselect_time     = optional(string)
+  }))
+  default = {}
+
+  validation {
+    condition = alltrue([
+      for k, v in var.channel_settings :
+      v.skip_dfs_channels == null || contains(["disabled", "10min-cac", "all"], v.skip_dfs_channels)
+    ])
+    error_message = "skip_dfs_channels must be one of: disabled, 10min-cac, all"
+  }
+}
+
 variable "wifi_networks" {
   description = <<-EOT
     Map of WiFi networks to configure. Each network creates a security profile,
     datapath (for VLAN tagging), configuration, and provisioning rule.
-    
+
     The map key is used as a unique identifier for the network resources.
-    
+
     Example:
     {
       guest = {

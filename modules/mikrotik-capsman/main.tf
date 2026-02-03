@@ -58,8 +58,13 @@ locals {
 resource "routeros_wifi_channel" "this" {
   for_each = local.unique_bands
 
-  name = local.band_to_channel_name[each.value]
-  band = each.value
+  name              = local.band_to_channel_name[each.value]
+  band              = each.value
+  frequency         = try(var.channel_settings[each.value].frequency, null)
+  skip_dfs_channels = try(var.channel_settings[each.value].skip_dfs_channels, null)
+  width             = try(var.channel_settings[each.value].width, null)
+  reselect_interval = try(var.channel_settings[each.value].reselect_interval, null)
+  reselect_time     = try(var.channel_settings[each.value].reselect_time, null)
 }
 
 
