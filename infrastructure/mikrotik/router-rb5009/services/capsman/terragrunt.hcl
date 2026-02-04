@@ -22,6 +22,7 @@ inputs = {
     "5ghz-ax" = {
       skip_dfs_channels = "all"
       frequency         = ["5180", "5200", "5220", "5240"] # UNII-1: Channels 36, 40, 44, 48 (non-DFS)
+      width             = "20mhz"
     }
     "2ghz-ax" = {
       frequency = ["2437"] # Channel 6
