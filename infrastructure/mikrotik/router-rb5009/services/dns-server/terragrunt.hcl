@@ -14,11 +14,7 @@ inputs = {
   adlist_url   = "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"
 
   static_dns = {
-    # TrueNAS Service Records
-    "registry.home.mirceanton.com" = { cname = "registry.nas.svc.h.mirceanton.com", type = "CNAME", comment = "TrueNAS Container Registry", match_subdomain = true }
-    "s3.home.mirceanton.com"       = { cname = "s3.nas.svc.h.mirceanton.com", type = "CNAME", comment = "TrueNAS S3 Storage", match_subdomain = true }
-
-    # BomkPrinter CNAME
+    "k8s-home.mgmt.h.mirceanton.com"  = { address = "10.0.0.30", type = "A", comment = "HomeOps K8S API Endpoint" }
     "bomkprinter.home.mirceanton.com" = { cname = "bomkprinter.utrst.h.mirceanton.com", type = "CNAME", comment = "Bomk Printer" }
   }
 }
