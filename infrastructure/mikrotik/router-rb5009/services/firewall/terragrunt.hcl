@@ -198,15 +198,6 @@ inputs = {
       dst_port      = "443"
       order         = 1802
     }
-    "allow-untrusted-to-services-hass" = {
-      chain         = "forward"
-      action        = "accept"
-      in_interface  = local.mikrotik_globals.vlans.Untrusted.name
-      out_interface = local.mikrotik_globals.vlans.Services.name
-      protocol      = "tcp"
-      dst_port      = "8123"
-      order         = 1803
-    }
     "drop-untrusted-forward" = {
       chain        = "forward"
       action       = "drop"
@@ -246,44 +237,6 @@ inputs = {
       out_interface_list = "WAN"
       order              = 2000
     }
-    "allow-hass-to-tesmart" = {
-      chain         = "forward"
-      action        = "accept"
-      in_interface  = local.mikrotik_globals.vlans.Services.name
-      out_interface = local.mikrotik_globals.vlans.Management.name
-      src_address   = "10.0.10.253"
-      dst_address   = "10.0.0.253"
-      order         = 2010
-    }
-    "allow-hass-to-smart-tv" = {
-      chain         = "forward"
-      action        = "accept"
-      in_interface  = local.mikrotik_globals.vlans.Services.name
-      out_interface = local.mikrotik_globals.vlans.Untrusted.name
-      src_address   = "10.0.10.253"
-      dst_address   = "192.168.42.250"
-      order         = 2011
-    }
-    "allow-hass-to-mirkputer" = {
-      chain         = "forward"
-      action        = "accept"
-      in_interface  = local.mikrotik_globals.vlans.Services.name
-      out_interface = local.mikrotik_globals.vlans.Trusted.name
-      src_address   = "10.0.10.253"
-      dst_address   = "192.168.69.69"
-      order         = 2012
-    }
-    "allow-hass-to-untrusted-wol" = {
-      chain         = "forward"
-      action        = "accept"
-      in_interface  = local.mikrotik_globals.vlans.Services.name
-      out_interface = local.mikrotik_globals.vlans.Trusted.name
-      src_address   = "10.0.10.253"
-      dst_address   = "192.168.69.255"
-      dst_port      = "9"
-      protocol      = "udp"
-      order         = 2013
-    }
     "drop-services-forward" = {
       chain        = "forward"
       action       = "drop"
@@ -311,6 +264,38 @@ inputs = {
       action       = "drop"
       in_interface = local.mikrotik_globals.vlans.Services.name
       order        = 2199
+    }
+
+    # =========================================================================
+    # STORAGE ZONE
+    # =========================================================================
+    "drop-storage-forward" = {
+      chain        = "forward"
+      action       = "drop"
+      in_interface = local.mikrotik_globals.vlans.Storage.name
+      order        = 2299
+    }
+    "allow-storage-dns-tcp" = {
+      chain        = "input"
+      action       = "accept"
+      protocol     = "tcp"
+      in_interface = local.mikrotik_globals.vlans.Storage.name
+      dst_port     = "53"
+      order        = 2300
+    }
+    "allow-storage-dns-udp" = {
+      chain        = "input"
+      action       = "accept"
+      protocol     = "udp"
+      in_interface = local.mikrotik_globals.vlans.Storage.name
+      dst_port     = "53"
+      order        = 2301
+    }
+    "drop-storage-input" = {
+      chain        = "input"
+      action       = "drop"
+      in_interface = local.mikrotik_globals.vlans.Storage.name
+      order        = 2399
     }
 
     # =========================================================================
