@@ -24,6 +24,8 @@ inputs = {
     "10.0.0.4" = { name = "hex", mac = "F4:1E:57:31:05:41" }
     "10.0.0.5" = { name = "cap-ax", mac = "D4:01:C3:01:26:EB" }
 
+    # BMCs and KVMs
+    "10.0.0.9"  = { name = "jetkvm", mac = "44:B7:D0:E6:2F:29" }
     "10.0.0.10" = { name = "bmc-homeprod", mac = "3C:EC:EF:39:1B:70" }
     "10.0.0.15" = { name = "homeprod", mac = "3c:ec:ef:20:be:42" }
 
