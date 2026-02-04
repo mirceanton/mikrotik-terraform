@@ -30,7 +30,7 @@ inputs = {
     "10.255.255.33" = { name = "hops-03", mac = "BC:24:11:D7:3A:E7" }
 
     # Other Devices
-    "10.255.255.69" = { name = "mirkputer", mac = "00:02:C9:54:76:3C" }
+    "10.255.255.69"  = { name = "mirkputer", mac = "00:02:C9:54:76:3C" }
     "10.255.255.245" = { name = "nas", mac = "BC:24:11:77:C7:24" }
   }
 }
