@@ -15,11 +15,10 @@ inputs = {
   network     = "10.0.10.0/24"
   gateway     = null
   dhcp_pool   = ["10.0.10.195-10.0.10.199"]
-  dns_servers = ["10.0.10.1"]
+  dns_servers = []
   domain      = "svc.h.mirceanton.com"
 
   static_leases = {
-    "10.0.10.30"  = { name = "homeops", mac = "BC:24:11:DF:7E:28" }
     "10.0.10.245" = { name = "nas", mac = "BC:24:11:DA:9A:E4" }
   }
 }
