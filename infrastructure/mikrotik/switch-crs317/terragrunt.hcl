@@ -48,19 +48,22 @@ inputs = {
       tagged  = local.mikrotik_globals.all_but_management_vlans
     }
     "bond2" = {
-      comment  = "PVE01", mtu = 9000
-      slaves   = ["sfp-sfpplus3", "sfp-sfpplus4"]
-      untagged = local.mikrotik_globals.vlans.Storage.name
+      comment              = "PVE01", mtu = 9000
+      slaves               = ["sfp-sfpplus3", "sfp-sfpplus4"]
+      transmit_hash_policy = "layer-3-and-4"
+      tagged               = local.mikrotik_globals.all_but_management_vlans
     }
     "bond3" = {
-      comment  = "PVE02", mtu = 9000
-      slaves   = ["sfp-sfpplus5", "sfp-sfpplus6"]
-      untagged = local.mikrotik_globals.vlans.Storage.name
+      comment              = "PVE02", mtu = 9000
+      slaves               = ["sfp-sfpplus5", "sfp-sfpplus6"]
+      transmit_hash_policy = "layer-3-and-4"
+      tagged               = local.mikrotik_globals.all_but_management_vlans
     }
     "bond4" = {
-      comment  = "PVE03", mtu = 9000
-      slaves   = ["sfp-sfpplus7", "sfp-sfpplus8"]
-      untagged = local.mikrotik_globals.vlans.Storage.name
+      comment              = "PVE03", mtu = 9000
+      slaves               = ["sfp-sfpplus7", "sfp-sfpplus8"]
+      transmit_hash_policy = "layer-3-and-4"
+      tagged               = local.mikrotik_globals.all_but_management_vlans
     }
   }
 }
