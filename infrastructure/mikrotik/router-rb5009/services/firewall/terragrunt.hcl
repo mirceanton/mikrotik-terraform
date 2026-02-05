@@ -102,11 +102,44 @@ inputs = {
       dst_address = "127.0.0.1"
       order       = 200
     }
-    "allow-input-icmp" = {
-      chain    = "input"
-      action   = "accept"
-      protocol = "icmp"
-      order    = 210
+    "allow-LAN-icmp" = {
+      chain             = "input"
+      action            = "accept"
+      protocol          = "icmp"
+      in_interface_list = "LAN"
+      order             = 210
+    }
+    "allow-LAN-dhcp-67" = {
+      chain             = "input"
+      action            = "accept"
+      protocol          = "udp"
+      dst_port          = "67"
+      in_interface_list = "LAN"
+      order             = 211
+    }
+    "allow-LAN-dhcp-68" = {
+      chain             = "input"
+      action            = "accept"
+      protocol          = "udp"
+      dst_port          = "68"
+      in_interface_list = "LAN"
+      order             = 212
+    }
+    "allow-LAN-dns-tcp" = {
+      chain             = "input"
+      action            = "accept"
+      protocol          = "tcp"
+      dst_port          = "53"
+      in_interface_list = "LAN"
+      order             = 213
+    }
+    "allow-LAN-dns-udp" = {
+      chain             = "input"
+      action            = "accept"
+      protocol          = "udp"
+      dst_port          = "53"
+      in_interface_list = "LAN"
+      order             = 214
     }
     "accept-router-established-related-untracked" = {
       chain            = "input"
@@ -204,22 +237,6 @@ inputs = {
       in_interface = local.mikrotik_globals.vlans.Untrusted.name
       order        = 1899
     }
-    "allow-untrusted-dns-tcp" = {
-      chain        = "input"
-      action       = "accept"
-      protocol     = "tcp"
-      in_interface = local.mikrotik_globals.vlans.Untrusted.name
-      dst_port     = "53"
-      order        = 1900
-    }
-    "allow-untrusted-dns-udp" = {
-      chain        = "input"
-      action       = "accept"
-      protocol     = "udp"
-      in_interface = local.mikrotik_globals.vlans.Untrusted.name
-      dst_port     = "53"
-      order        = 1901
-    }
     "drop-untrusted-input" = {
       chain        = "input"
       action       = "drop"
@@ -243,22 +260,6 @@ inputs = {
       in_interface = local.mikrotik_globals.vlans.Services.name
       order        = 2099
     }
-    "allow-services-dns-tcp" = {
-      chain        = "input"
-      action       = "accept"
-      protocol     = "tcp"
-      in_interface = local.mikrotik_globals.vlans.Services.name
-      dst_port     = "53"
-      order        = 2100
-    }
-    "allow-services-dns-udp" = {
-      chain        = "input"
-      action       = "accept"
-      protocol     = "udp"
-      in_interface = local.mikrotik_globals.vlans.Services.name
-      dst_port     = "53"
-      order        = 2101
-    }
     "drop-services-input" = {
       chain        = "input"
       action       = "drop"
@@ -274,22 +275,6 @@ inputs = {
       action       = "drop"
       in_interface = local.mikrotik_globals.vlans.Storage.name
       order        = 2299
-    }
-    "allow-storage-dns-tcp" = {
-      chain        = "input"
-      action       = "accept"
-      protocol     = "tcp"
-      in_interface = local.mikrotik_globals.vlans.Storage.name
-      dst_port     = "53"
-      order        = 2300
-    }
-    "allow-storage-dns-udp" = {
-      chain        = "input"
-      action       = "accept"
-      protocol     = "udp"
-      in_interface = local.mikrotik_globals.vlans.Storage.name
-      dst_port     = "53"
-      order        = 2301
     }
     "drop-storage-input" = {
       chain        = "input"
