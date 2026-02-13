@@ -15,7 +15,7 @@ inputs = {
   network     = "10.0.10.0/24"
   gateway     = null
   dhcp_pool   = ["10.0.10.195-10.0.10.199"]
-  dns_servers = []
+  dns_servers = ["10.0.10.1"]
   domain      = "svc.h.mirceanton.com"
 
   static_leases = {
