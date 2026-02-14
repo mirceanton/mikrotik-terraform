@@ -6,6 +6,8 @@ permissions:
   pull-requests: write
 
 on:
+  workflow_dispatch: {}
+  schedule: [{ cron: "0 0/2 * * *" }] # Every 2 hours
   pull_request:
     branches: ["main"]
     paths:
@@ -15,22 +17,51 @@ on:
 
 jobs:
   terragrunt-plan:
-    uses: ./.github/workflows/terragrunt-plan.yaml
-    secrets:
-      op-service-account-token: ${{ secrets.OP_SERVICE_ACCOUNT_TOKEN }}
-      op-connect-host: ${{ secrets.OP_CONNECT_HOST }}
-      op-connect-token: ${{ secrets.OP_CONNECT_TOKEN }}
-
-  comment:
-    runs-on: ubuntu-latest
-    if: always()
-    needs: terragrunt-plan
+    runs-on: infra-runners
+    outputs:
+      drift_detected: ${{ steps.plan.outputs.drift_detected }}
+      plan_output: ${{ steps.plan.outputs.plan_output }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup mise
         uses: jdx/mise-action@6d1e696aa24c1aa1bcc1adea0212707c71ab78a8 # v3.6.1
+        with: { cache: false }
+
+      - name: Load Secrets
+        uses: ./.github/actions/load-secrets
+        with:
+          op-connect-host: ${{ secrets.op-connect-host }}
+          op-connect-token: ${{ secrets.op-connect-token }}
+
+      - name: Terragrunt Init
+        run: terragrunt run --all -- init -upgrade
+
+      - name: Terragrunt Plan
+        id: plan
+        run: |
+          terragrunt run --all --no-color -- plan --detailed-exitcode 2>&1 | tee plan_output.txt
+
+          if [ "${PIPESTATUS[0]}" -eq 2 ]; then
+            echo "drift_detected=true" | tee "$GITHUB_OUTPUT"
+          else
+            echo "drift_detected=false" | tee "$GITHUB_OUTPUT"
+          fi
+
+          {
+            echo "plan_output<<EOF"
+            cat plan_output.txt
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+  comment-pr:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    needs: terragrunt-plan
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Generate Token
         uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
@@ -64,3 +95,76 @@ jobs:
             echo "*Workflow run: [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})*"
           } > comment_body.txt
           gh pr comment "${{ github.event.pull_request.number }}" --body-file comment_body.txt
+
+  issue-management:
+    runs-on: ubuntu-latest
+    needs: terragrunt-plan
+    if: github.event_name == 'schedule'
+    env:
+      ISSUE_TITLE: "⚠️ Terragrunt Drift Detected ⚠️"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Generate Token
+        uses: actions/create-github-app-token@29824e69f54612133e76f7eaac726eef6c875baf # v2.2.1
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Open Issue if Drift Detected
+        if: needs.terragrunt-plan.outputs.drift_detected == 'true'
+        env:
+          GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
+          PLAN_OUTPUT: "${{ needs.terragrunt-plan.outputs.plan_output }}"
+        run: |
+          ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
+          if [ -n "$ISSUE_NUMBER" ]; then
+            gh issue reopen "$ISSUE_NUMBER"
+          else
+            gh issue create --title "$ISSUE_TITLE" --body ""
+            sleep 3 # Wait for issue to be created
+            ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
+          fi
+
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          WORKFLOW_URL="${{ github.server_url }}/${{ github.repository }}/actions/workflows/terragrunt-apply.yaml"
+          {
+            echo "## ⚠️ **Drift detected in workflow run [#${{ github.run_number }}]($RUN_URL)**"
+            echo ""
+            echo "### 🚀 Quick Actions"
+            echo ""
+            echo "[![Run Terragrunt Apply](${{ github.server_url }}/${{ github.repository }}/actions/workflows/terragrunt-apply.yml/badge.svg)]($WORKFLOW_URL)"
+            echo ""
+            echo "**[Click here to run Terragrunt Apply workflow]($WORKFLOW_URL)** (then click 'Run workflow' button)"
+            echo ""
+            echo "Or run manually: \`terragrunt apply --all\`"
+            echo ""
+            echo "### Plan Output"
+            echo "<details>"
+            echo "<summary>Click to expand drift details</summary>"
+            echo ""
+            echo '```'
+            echo "$PLAN_OUTPUT"
+            echo '```'
+            echo ""
+            echo "</details>"
+          } > issue_body.txt
+          gh issue edit "$ISSUE_NUMBER" --body-file issue_body.txt
+          gh issue pin "$ISSUE_NUMBER"
+
+      - name: Close GitHub Issue if No Drift
+        if: needs.terragrunt-plan.outputs.drift_detected == 'false'
+        env:
+          GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
+          COMMENT: |
+            ✅ No drift detected. Closing issue automatically.
+            Verified in [workflow run #${{ github.run_number }}]("${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}").
+        run: |
+          ISSUE_NUMBER=$(gh issue list --state "open" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
+          echo "ISSUE_NUMBER is '$ISSUE_NUMBER'"
+          if [ -n "$ISSUE_NUMBER" ]; then
+            gh issue close "$ISSUE_NUMBER" --comment "$COMMENT"
+            gh issue unpin "$ISSUE_NUMBER"
+          fi

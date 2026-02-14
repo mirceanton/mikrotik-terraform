@@ -1,0 +1,46 @@
+---
+version: "3"
+
+tasks:
+  default:
+    desc: Run all linters.
+    alias: ["fix", "all"]
+    cmds:
+      - task: actions
+      - task: yaml
+      - task: tofu
+      - task: terragrunt
+      - task: tofu-validate-all
+
+  check:
+    desc: Check all files for linting issues without modifying them
+    cmds:
+      - task: actions
+      - task lint:yaml -- -lint
+      - task lint:tofu -- -check
+      - task: tofu-validate-all
+      - task: terragrunt
+
+  actions: actionlint {{.CLI_ARGS}}
+  yaml: yamlfmt {{.CLI_ARGS}} **/*.yaml
+  tofu: tofu fmt -recursive {{.CLI_ARGS}}
+  terragrunt: terragrunt hcl format
+
+  tofu-validate-all:
+    desc: Run tofu init and validate for all subdirs under modules/
+    cmds:
+      - for:
+          var: DIRS
+        task: tofu-validate-one
+        vars:
+          DIR: "{{.ITEM}}"
+    vars:
+      DIRS:
+        sh: find ./modules -mindepth 1 -maxdepth 1 -type d
+
+  tofu-validate-one:
+    internal: true
+    dir: "{{.DIR}}"
+    cmds:
+      - tofu init -upgrade
+      - tofu validate

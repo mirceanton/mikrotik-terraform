@@ -1,0 +1,10 @@
+---
+version: '3'
+
+includes:
+  lint: .taskfiles/lint.yaml
+
+tasks:
+  default:
+    silent: true
+    cmd: task -l
