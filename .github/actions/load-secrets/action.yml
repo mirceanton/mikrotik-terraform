@@ -6,13 +6,22 @@ inputs:
   op-service-account-token:
     description: 1Password Service Account Token
     required: true
+  op-connect-host:
+    description: 1Password Connect Host
+    required: true
+  op-connect-token:
+    description: 1Password Connect Token
+    required: true
 
 runs:
   using: composite
   steps:
     - name: Load secrets from 1Password
       uses: 1password/load-secrets-action@8d0d610af187e78a2772c2d18d627f4c52d3fbfb # v3.1.0
-      with: { export-env: true }
+      with:
+        export-env: true
+        connect-host: ${{ inputs.op-connect-host }}
+        connect-token: ${{ inputs.op-connect-token }}
       env:
         OP_SERVICE_ACCOUNT_TOKEN: ${{ inputs.op-service-account-token }}
 

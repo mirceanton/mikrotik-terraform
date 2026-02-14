@@ -9,6 +9,12 @@ on:
       op-service-account-token:
         description: 1Password Service Account Token
         required: true
+      op-connect-host:
+        description: 1Password Connect Host
+        required: true
+      op-connect-token:
+        description: 1Password Connect Token
+        required: true
     outputs:
       drift_detected:
         description: Whether drift was detected
@@ -38,6 +44,8 @@ jobs:
         uses: ./.github/actions/load-secrets
         with:
           op-service-account-token: ${{ secrets.op-service-account-token }}
+          op-connect-host: ${{ secrets.op-connect-host }}
+          op-connect-token: ${{ secrets.op-connect-token }}
 
       - name: Terragrunt Init
         run: terragrunt run --all -- init -upgrade
