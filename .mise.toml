@@ -6,7 +6,7 @@ uv = "latest"
 # Project Tools
 # =================================================================================================
 opentofu = "latest"
-terragrunt = "latest"
+terragrunt = "0.97.0"
 op = "latest"
 
 pre-commit = "latest"

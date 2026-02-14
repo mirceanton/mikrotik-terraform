@@ -1,0 +1,8 @@
+{
+    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+    "extends": [ "github>mirceanton/renovate-config//default.json5" ],
+
+    // I use latest whenever possible.
+    // If a tool is pinned to a specific version, it's usually because of a breaking change in a newer version.
+    "mise": { "enabled": false }
+}
