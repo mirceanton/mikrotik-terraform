@@ -14,7 +14,7 @@ runs:
   using: composite
   steps:
     - name: Configure 1Password Connect
-      uses: 1password/load-secrets-action/configure@v2
+      uses: 1password/load-secrets-action/configure@581a835fb51b8e7ec56b71cf2ffddd7e68bb25e0 # v2
       with:
         connect-host: ${{ inputs.op-connect-host }}
         connect-token: ${{ inputs.op-connect-token }}
