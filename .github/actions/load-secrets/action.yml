@@ -3,9 +3,6 @@ name: Load Secrets from 1Password
 description: Load secrets from 1Password and export them as environment variables
 
 inputs:
-  op-service-account-token:
-    description: 1Password Service Account Token
-    required: true
   op-connect-host:
     description: 1Password Connect Host
     required: true

@@ -44,7 +44,6 @@ jobs:
       - name: Load Secrets
         uses: ./.github/actions/load-secrets
         with:
-          op-service-account-token: ${{ secrets.op-service-account-token }}
           op-connect-host: ${{ secrets.op-connect-host }}
           op-connect-token: ${{ secrets.op-connect-token }}
 
