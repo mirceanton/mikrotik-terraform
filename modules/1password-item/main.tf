@@ -1,9 +1,14 @@
-locals {
-  vaults = toset([for item in var.items : item.vault])
+terraform {
+  required_providers {
+    onepassword = {
+      source  = "1Password/onepassword"
+      version = "3.2.1"
+    }
+  }
 }
 
 data "onepassword_vault" "vaults" {
-  for_each = local.vaults
+  for_each = toset([for item in var.items : item.vault])
   name     = each.value
 }
 

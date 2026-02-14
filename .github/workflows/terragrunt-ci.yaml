@@ -37,9 +37,15 @@ jobs:
 
       - name: Terragrunt Init
         run: terragrunt run --all -- init -upgrade
+        env:
+          OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
+          OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
 
       - name: Terragrunt Plan
         id: plan
+        env:
+          OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
+          OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
         run: |
           terragrunt run --all --no-color -- plan --detailed-exitcode 2>&1 | tee plan_output.txt
 
