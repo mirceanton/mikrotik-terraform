@@ -2,3 +2,5 @@
 .terragrunt-cache/
 backend.tf
 .envrc
+
+modules/**/.terraform.lock.hcl

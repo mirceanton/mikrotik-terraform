@@ -40,6 +40,12 @@ jobs:
 
       - name: Terragrunt Init
         run: terragrunt run --all -- init -upgrade
+        env:
+          OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
+          OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
 
       - name: Terragrunt Apply
         run: terragrunt run --all -- apply -auto-approve
+        env:
+          OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
+          OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
