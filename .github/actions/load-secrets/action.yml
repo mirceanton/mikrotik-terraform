@@ -16,12 +16,15 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: Load secrets from 1Password
-      uses: 1password/load-secrets-action@8d0d610af187e78a2772c2d18d627f4c52d3fbfb # v3.1.0
+    - name: Configure 1Password Connect
+      uses: 1password/load-secrets-action/configure@v2
       with:
-        export-env: true
         connect-host: ${{ inputs.op-connect-host }}
         connect-token: ${{ inputs.op-connect-token }}
+
+    - name: Load secrets
+      uses: 1password/load-secrets-action@8d0d610af187e78a2772c2d18d627f4c52d3fbfb # v3.1.0
+      with: {export-env: true}
       env:
         OP_SERVICE_ACCOUNT_TOKEN: ${{ inputs.op-service-account-token }}
 
