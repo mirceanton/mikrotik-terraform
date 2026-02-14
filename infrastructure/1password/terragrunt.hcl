@@ -27,8 +27,6 @@ terraform {
 }
 
 inputs = {
-  op_service_account_token = get_env("OP_SERVICE_ACCOUNT_TOKEN")
-
   items = merge(
     {
       "WiFi - Badoink 5Ghz" = {
