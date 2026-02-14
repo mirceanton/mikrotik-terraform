@@ -33,7 +33,7 @@ inputs = {
     "sfp-sfpplus8"  = { comment = "PVE03 10g 2", bridge_port = false, l2mtu = 9216, mtu = 9000 }
     "sfp-sfpplus9"  = {}
     "sfp-sfpplus10" = {}
-    "sfp-sfpplus11" = { comment = "Test" }
+    "sfp-sfpplus11" = {}
     "sfp-sfpplus12" = {}
     "sfp-sfpplus13" = {}
     "sfp-sfpplus14" = {} #! TODO: LAGGed to CRS326 at some point
