@@ -53,7 +53,7 @@ jobs:
       - name: Terragrunt Plan
         id: plan
         run: |
-          terragrunt run --all -- plan --detailed-exitcode -no-color 2>&1 | tee plan_output.txt
+          terragrunt run --all --no-color -- plan --detailed-exitcode 2>&1 | tee plan_output.txt
 
           if [ "${PIPESTATUS[0]}" -eq 2 ]; then
             echo "drift_detected=true" | tee "$GITHUB_OUTPUT"
