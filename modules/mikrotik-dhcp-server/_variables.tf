@@ -3,6 +3,24 @@ variable "interface" {
   type        = string
 }
 
+variable "client_mac_limit" {
+  description = "Maximum number of MAC addresses allowed per client"
+  type        = number
+  default     = 1
+}
+
+variable "conflict_detection" {
+  description = "Whether to enable conflict detection for DHCP leases"
+  type        = bool
+  default     = false
+}
+
+variable "dynamic_lease_identifiers" {
+  description = "Dynamic lease identifier."
+  type        = string
+  default     = "client-mac,client-id"
+}
+
 variable "address" {
   description = "IP address in CIDR notation to assign to the interface (e.g., 192.168.1.1/24)"
   type        = string
