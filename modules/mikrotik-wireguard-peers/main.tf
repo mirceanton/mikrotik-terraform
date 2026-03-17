@@ -1,6 +1,6 @@
 resource "routeros_wireguard_keys" "peers" {
   for_each = var.peers
-  number = 1
+  number   = 1
 }
 
 resource "routeros_interface_wireguard_peer" "this" {
