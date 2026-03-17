@@ -141,6 +141,14 @@ inputs = {
       in_interface_list = "LAN"
       order             = 214
     }
+    "accept-wireguard-port" = {
+      chain             = "input"
+      action            = "accept"
+      protocol          = "udp"
+      dst_port          = "13231"
+      in_interface_list = "WAN"
+      order             = 215
+    }
     "accept-router-established-related-untracked" = {
       chain            = "input"
       action           = "accept"
@@ -162,6 +170,52 @@ inputs = {
       action       = "accept"
       in_interface = local.mikrotik_globals.vlans.Management.name
       order        = 1100
+    }
+
+    # =========================================================================
+    # WIREGUARD ZONE
+    # =========================================================================
+    "accept-wireguard-dns-tcp" = {
+      chain        = "input"
+      action       = "accept"
+      protocol     = "tcp"
+      dst_port     = "53"
+      in_interface = "wg1"
+      order        = 1150
+    }
+    "accept-wireguard-dns-udp" = {
+      chain        = "input"
+      action       = "accept"
+      protocol     = "udp"
+      dst_port     = "53"
+      in_interface = "wg1"
+      order        = 1151
+    }
+    "accept-wireguard-icmp" = {
+      chain        = "input"
+      action       = "accept"
+      protocol     = "icmp"
+      in_interface = "wg1"
+      order        = 1152
+    }
+    "drop-wireguard-input" = {
+      chain        = "input"
+      action       = "drop"
+      in_interface = "wg1"
+      order        = 1153
+    }
+    "accept-wireguard-to-services" = {
+      chain         = "forward"
+      action        = "accept"
+      in_interface  = "wg1"
+      out_interface = local.mikrotik_globals.vlans.Services.name
+      order         = 1350
+    }
+    "drop-wireguard-forward" = {
+      chain        = "forward"
+      action       = "drop"
+      in_interface = "wg1"
+      order        = 1399
     }
 
     # =========================================================================
