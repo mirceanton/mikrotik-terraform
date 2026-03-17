@@ -2,17 +2,17 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.opentofu.org/1password/onepassword" {
-  version     = "3.2.0"
-  constraints = "3.2.0"
+  version     = "3.3.0"
+  constraints = "3.3.0"
   hashes = [
-    "h1:2UvjglG2OCNps5HKl2ceGmQHPlD/UF5xre4ku1Fipd4=",
-    "zh:0a186c9764fa21f65648f8d68734a6e039e93628ec7824886d9924a05ca5864b",
-    "zh:38705af15b91994159f3d59c2d1e7693cf39ae08a631956e47d9819de93d7a03",
-    "zh:4a4b5d5d1bac3688d8c25add1b1c693b2cb4056c518d71d280e4c1bc2d4487d2",
+    "h1:GmVSVh9pwOrVYtDh/NM548lVcP8ecMtA+161OLTVrCY=",
+    "zh:3c509085d5885b820396506098b29a49f43675b078bf38ea104deb4b703e2761",
+    "zh:3db536f481d11cc254f0581aacc6fca24398d1c76e065e48411eff514c4dea56",
+    "zh:67a8ca1f7540ea2458c38fd9f3659bbdb952c604641d98d4a51e7cb2056defe6",
+    "zh:6e4389d74aa51ea30c6000c2d01813fca622080b0a746c6dffdef0def205d4b3",
+    "zh:72cbdb26129ca897ea681cbfade7de58ab642894159fb8fc2b4bdc0ebbc6b166",
     "zh:890df766e9b839623b1f0437355032a3c006226a6c200cd911e15ee1a9014e9f",
-    "zh:919ce8be03cb220e0ae62b6e88a713a1f7525ca443b21c30595576420ce88d1f",
-    "zh:a5877b0af5eff9fb84e95c38dd0869a9bffd358c94aad3dad8b55b8e2c7abea6",
-    "zh:d84514a6890aca09dac9adbfdb70287861d5fc27e14a3481bdce061e5e4c8134",
-    "zh:ea57a94140137544ead986a1b42fea460f32d6fb0e167e95dde2f67fbb4bcace",
+    "zh:a5d6d26039fde8935f0ec17e488a022d40bbac5063d3ca79400ae424af34d3c2",
+    "zh:b1f15ea47e73bd7cb285d368fbb5c26610bd866a403c8ded5809c702420388bf",
   ]
 }
