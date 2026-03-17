@@ -1,0 +1,3 @@
+locals {
+  domain = "mirceaanton.com"
+}
