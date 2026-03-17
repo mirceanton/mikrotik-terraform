@@ -209,6 +209,7 @@ inputs = {
       action        = "accept"
       in_interface  = "wg1"
       out_interface = local.mikrotik_globals.vlans.Services.name
+      dst_address   = "10.0.10.250" # Kubernetes GW Endpoint
       order         = 1350
     }
     "drop-wireguard-forward" = {
