@@ -17,5 +17,9 @@ inputs = {
       allowed_address = ["172.16.69.11/32"]
       comment         = "Mirkphone"
     }
+    "soarephone" = {
+      allowed_address = ["172.16.69.12/32"]
+      comment= "Cristi Soare Mobil"
+    }
   }
 }
