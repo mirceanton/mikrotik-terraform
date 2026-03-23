@@ -135,13 +135,13 @@ jobs:
           fi
 
           RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          WORKFLOW_URL="${{ github.server_url }}/${{ github.repository }}/actions/workflows/terragrunt-apply.yaml"
+          WORKFLOW_URL="${{ github.server_url }}/${{ github.repository }}/actions/workflows/terragrunt-cd.yaml"
           {
             echo "## ⚠️ **Drift detected in workflow run [#${{ github.run_number }}]($RUN_URL)**"
             echo ""
             echo "### 🚀 Quick Actions"
             echo ""
-            echo "[![Run Terragrunt Apply](${{ github.server_url }}/${{ github.repository }}/actions/workflows/terragrunt-apply.yml/badge.svg)]($WORKFLOW_URL)"
+            echo "[![Run Terragrunt Apply](${{ github.server_url }}/${{ github.repository }}/actions/workflows/terragrunt-cd.yaml/badge.svg)]($WORKFLOW_URL)"
             echo ""
             echo "**[Click here to run Terragrunt Apply workflow]($WORKFLOW_URL)** (then click 'Run workflow' button)"
             echo ""
