@@ -13,7 +13,7 @@ terraform {
 }
 
 inputs = {
-  name    = "vpn"
+  name      = "vpn"
   zone_name = include.zone.locals.domain
-  target  = dependency.cloud.outputs.dns_name
+  target    = dependency.cloud.outputs.dns_name
 }

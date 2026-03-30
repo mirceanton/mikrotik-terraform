@@ -19,7 +19,7 @@ inputs = {
     }
     "soarephone" = {
       allowed_address = ["172.16.69.12/32"]
-      comment= "Cristi Soare Mobil"
+      comment         = "Cristi Soare Mobil"
     }
   }
 }
