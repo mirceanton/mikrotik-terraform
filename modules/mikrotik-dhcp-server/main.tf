@@ -71,8 +71,9 @@ locals {
 resource "routeros_ip_dns_record" "this" {
   for_each = local.leases_with_dns
 
-  name    = "${each.value.name}.${var.domain}"
-  address = each.key
-  type    = "A"
-  comment = "[Auto] DHCP static lease for ${each.value.name}"
+  name             = "${each.value.name}.${var.domain}"
+  address          = each.key
+  type             = "A"
+  comment          = "[Auto] DHCP static lease for ${each.value.name}"
+  match_subdomain  = each.value.match_subdomain
 }

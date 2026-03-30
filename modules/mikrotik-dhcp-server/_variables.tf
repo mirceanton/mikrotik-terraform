@@ -58,6 +58,7 @@ variable "static_leases" {
     mac               = string
     name              = string
     create_dns_record = optional(bool)
+    match_subdomain   = optional(bool)
   }))
   default = {}
 }
