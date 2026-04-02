@@ -8,6 +8,7 @@ uv = "latest"
 opentofu = "latest"
 terragrunt = "0.97.0"
 op = "latest"
+awscli = "latest"
 
 # =================================================================================================
 # CI Tools
