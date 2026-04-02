@@ -13,17 +13,8 @@ inputs = {
   interface = dependency.wireguard_server.outputs.name
 
   peers = {
-    "mirkphone" = {
-      allowed_address = ["172.16.69.11/32"]
-      comment         = "Mirkphone"
-    }
-    "soarephone" = {
-      allowed_address = ["172.16.69.12/32"]
-      comment         = "Cristi Soare Mobil"
-    }
-    "vladputer" = {
-      allowed_address = ["172.16.69.13/32"]
-      comment         = "Vlad Computer"
-    }
+    "mirkphone"  = { allowed_address = ["172.16.69.11/32"], comment = "Mirkphone" }
+    "soarephone" = { allowed_address = ["172.16.69.12/32"], comment = "Cristi Soare Mobil" }
+    "vladputer"  = { allowed_address = ["172.16.69.13/32"], comment = "Vlad Computer" }
   }
 }
