@@ -23,11 +23,11 @@ dependency "router-rb5009" {
 }
 
 dependency "wireguard-server" {
-  config_path = find_in_parent_folders("mikrotik/router-rb5009/services/wireguard-server")
+  config_path = find_in_parent_folders("mikrotik/router-rb5009/services/wireguard/server")
 }
 
 dependency "wireguard-peers" {
-  config_path = find_in_parent_folders("mikrotik/router-rb5009/services/wireguard-peers")
+  config_path = find_in_parent_folders("mikrotik/router-rb5009/services/wireguard/peers")
 }
 
 terraform {

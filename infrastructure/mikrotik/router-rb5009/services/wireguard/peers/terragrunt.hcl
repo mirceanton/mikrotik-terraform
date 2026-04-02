@@ -2,7 +2,7 @@ include "root" { path = find_in_parent_folders("root.hcl") }
 include "provider" { path = find_in_parent_folders("provider.hcl") }
 
 dependency "wireguard_server" {
-  config_path = find_in_parent_folders("services/wireguard-server")
+  config_path = find_in_parent_folders("wireguard/server")
 }
 
 terraform {
