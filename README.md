@@ -49,18 +49,22 @@ I was initially planning to also add some more details about my network, like VL
 │   └── mikrotik/           # MikroTik device configurations
 │       ├── globals.hcl     # Shared global variables (VLANs, DNS, users, etc.)
 │       ├── router-rb5009/  # RB5009 router base configuration
-│       │   └── services/   # Router services (DHCP, DNS, firewall, etc.)
+│       │   └── services/   # Router services
 │       ├── switch-crs317/  # CRS317 switch configuration
 │       ├── switch-crs326/  # CRS326 switch configuration
 │       └── switch-hex/     # Hex switch configuration
 ├── modules/                # Reusable tofu modules
-│   ├── 1password-item/     # Add item(s) into a given 1Pass vault
-│   ├── mikrotik-base/      # Base MikroTik device configuration
-│   ├── mikrotik-capsman/   # CAPsMAN wireless controller configuration
-│   ├── mikrotik-dhcp-server/ # DHCP server configuration
-│   ├── mikrotik-dns-server/  # DNS server configuration
-│   ├── mikrotik-firewall/    # Firewall rules configuration
-│   └── mikrotik-pppoe-client/ # PPPoE client configuration
+│   ├── 1password-item/         # Add item(s) into a given 1Pass vault
+│   ├── cloudflare-cname/       # Cloudflare CNAME record management
+│   ├── mikrotik-base/          # Base MikroTik device configuration
+│   ├── mikrotik-capsman/       # CAPsMAN wireless controller configuration
+│   ├── mikrotik-cloud/         # MikroTik cloud integration
+│   ├── mikrotik-dhcp-server/   # DHCP server configuration
+│   ├── mikrotik-dns-server/    # DNS server configuration
+│   ├── mikrotik-firewall/      # Firewall rules configuration
+│   ├── mikrotik-pppoe-client/  # PPPoE client configuration
+│   ├── mikrotik-wireguard-peers/  # WireGuard peer management
+│   └── mikrotik-wireguard-server/ # WireGuard server configuration
 ├── root.hcl               # Root Terragrunt configuration (remote state)
 └── README.md              # This file, lol
 ```
