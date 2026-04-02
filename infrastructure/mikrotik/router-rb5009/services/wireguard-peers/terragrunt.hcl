@@ -21,5 +21,9 @@ inputs = {
       allowed_address = ["172.16.69.12/32"]
       comment         = "Cristi Soare Mobil"
     }
+    "vladputer" = {
+      allowed_address = ["172.16.69.13/32"]
+      comment         = "Vlad Computer"
+    }
   }
 }
