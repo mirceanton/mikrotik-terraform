@@ -20,9 +20,8 @@ output "peers" {
   sensitive   = true
   value = {
     for k, v in routeros_wireguard_keys.peers : k => {
-      public_key    = v.keys[0].public
-      private_key   = v.keys[0].private
-      preshared_key = v.keys[0].preshared
+      public_key  = v.keys[0].public
+      private_key = v.keys[0].private
     }
   }
 }
