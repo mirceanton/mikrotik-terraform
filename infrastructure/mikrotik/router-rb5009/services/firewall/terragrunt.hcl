@@ -204,13 +204,21 @@ inputs = {
       in_interface = "wg1"
       order        = 1153
     }
-    "accept-wireguard-to-services" = {
+    "accept-wireguard-to-kube-services" = {
       chain         = "forward"
       action        = "accept"
       in_interface  = "wg1"
       out_interface = local.mikrotik_globals.vlans.Services.name
-      # dst_address   = "10.0.10.250" # Kubernetes GW Endpoint
+      dst_address   = "10.0.10.250" # Kubernetes GW Endpoint
       order         = 1350
+    }
+    "accept-wireguard-to-nas-services" = {
+      chain         = "forward"
+      action        = "accept"
+      in_interface  = "wg1"
+      out_interface = local.mikrotik_globals.vlans.Services.name
+      dst_address   = "10.0.10.245" # NAS Endpoint
+      order         = 1351
     }
     "drop-wireguard-forward" = {
       chain        = "forward"
