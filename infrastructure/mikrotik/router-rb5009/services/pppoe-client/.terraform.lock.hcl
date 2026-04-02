@@ -5,6 +5,7 @@ provider "registry.opentofu.org/terraform-routeros/routeros" {
   version     = "1.99.1"
   constraints = "1.99.1"
   hashes = [
+    "h1:DweIuEd2oFIBgsc8oAsPR/X4ioHmXBH0UsSMJGtp0uc=",
     "h1:slX5FrpPj7cboNLs4mb8UULrEqO18Q41SleUc2SaaXg=",
     "zh:1d94c6bfa50af17b02608b9dc050767aaaf665bb03fd6ef5dcb0ed20153d0349",
     "zh:224f0a7828291e9535769706a1fae30c10fd15cd3fdcb8094fdffcb83f91671b",
