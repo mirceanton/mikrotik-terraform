@@ -23,13 +23,12 @@ runs:
       uses: 1password/load-secrets-action@92467eb28f72e8255933372f1e0707c567ce2259 # v4.0.0
       with: {export-env: true}
       env:
-        AWS_ACCESS_KEY_ID: op://Automation/Mikrotik Terraform Backblaze B2 State/username
-        AWS_SECRET_ACCESS_KEY: op://Automation/Mikrotik Terraform Backblaze B2 State/password
-
-        MIKROTIK_USERNAME: op://Automation/Mikrotik/username
-        MIKROTIK_PASSWORD: op://Automation/Mikrotik/password
+        AWS_ACCESS_KEY_ID: op://Mikrotik-Terraform/Backblaze B2 State/username
+        AWS_SECRET_ACCESS_KEY: op://Mikrotik-Terraform/Backblaze B2 State/password
+        CLOUDFLARE_API_TOKEN: op://Mikrotik-Terraform/Cloudflare DNS Token/password
+        MIKROTIK_USERNAME: op://Mikrotik-Terraform/Mikrotik/username
+        MIKROTIK_PASSWORD: op://Mikrotik-Terraform/Mikrotik/password
 
         PPPOE_USERNAME: op://Badoink/Digi PPPoE/username
         PPPOE_PASSWORD: op://Badoink/Digi PPPoE/password
 
-        CLOUDFLARE_API_TOKEN: op://Automation/Mikrotik Terraform Cloudflare Token/password
