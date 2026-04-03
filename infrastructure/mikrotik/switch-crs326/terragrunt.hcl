@@ -24,6 +24,8 @@ inputs = {
   users                   = local.mikrotik_globals.default_users
   groups                  = local.mikrotik_globals.default_groups
 
+  mac_server_interfaces = "Management"
+
   vlans = local.mikrotik_globals.vlans
   ethernet_interfaces = {
     "ether1" = { comment = "NAS BMC", untagged = local.mikrotik_globals.vlans.Management.name }

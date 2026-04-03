@@ -27,6 +27,8 @@ inputs = {
     }
   })
 
+  mac_server_interfaces = "Management"
+
   vlans = local.mikrotik_globals.vlans
   ethernet_interfaces = {
     "ether1" = { comment = "Digi Uplink", bridge_port = false }

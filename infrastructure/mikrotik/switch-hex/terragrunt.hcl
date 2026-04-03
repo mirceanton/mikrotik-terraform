@@ -24,6 +24,8 @@ inputs = {
   users                   = local.mikrotik_globals.default_users
   groups                  = local.mikrotik_globals.default_groups
 
+  mac_server_interfaces = "Management"
+
   vlans = local.mikrotik_globals.vlans
   ethernet_interfaces = {
     "ether1" = { comment = "Rack Downlink", tagged = local.mikrotik_globals.all_vlans }

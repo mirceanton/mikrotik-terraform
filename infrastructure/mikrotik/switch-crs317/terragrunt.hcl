@@ -21,6 +21,8 @@ inputs = {
   users                   = local.mikrotik_globals.default_users
   groups                  = local.mikrotik_globals.default_groups
 
+  mac_server_interfaces = "Management"
+
   vlans = local.mikrotik_globals.vlans
   ethernet_interfaces = {
     "sfp-sfpplus1"  = { comment = "NAS 10g 1", bridge_port = false, l2mtu = 9216, mtu = 9000 }
