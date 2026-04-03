@@ -24,7 +24,7 @@ inputs = {
   users                   = local.mikrotik_globals.default_users
   groups                  = local.mikrotik_globals.default_groups
 
-  mac_server_interfaces = "Management"
+  mac_server_interfaces = "none"
 
   vlans = local.mikrotik_globals.vlans
   ethernet_interfaces = {

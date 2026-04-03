@@ -27,7 +27,7 @@ inputs = {
     }
   })
 
-  mac_server_interfaces = "Management"
+  mac_server_interfaces = "none"
 
   vlans = local.mikrotik_globals.vlans
   ethernet_interfaces = {
