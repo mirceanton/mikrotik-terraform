@@ -6,7 +6,7 @@ uv = "latest"
 # Project Tools
 # =================================================================================================
 opentofu = "latest"
-terragrunt = "0.97.0"
+terragrunt = "latest"
 op = "latest"
 awscli = "latest"
 
