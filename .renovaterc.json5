@@ -1,5 +1,4 @@
 {
     "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [ "github>mirceanton/renovate-config//default.json5" ],
-    "terragrunt": { "enabled": false } // local modules
+    "extends": [ "github>mirceanton/renovate-config//default.json5" ]
 }

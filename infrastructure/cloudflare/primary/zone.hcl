@@ -1,3 +1,0 @@
-locals {
-  domain = "mirceanton.com"
-}

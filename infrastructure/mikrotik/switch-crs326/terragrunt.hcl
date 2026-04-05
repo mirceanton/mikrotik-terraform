@@ -13,16 +13,21 @@ locals {
 }
 
 terraform {
-  source = find_in_parent_folders("modules/mikrotik-base")
+  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/base?ref=v0.1.2"
 }
 
 inputs = {
-  hostname                = upper(split("-", basename(get_terragrunt_dir()))[1])
-  certificate_common_name = include.provider.locals.mikrotik_hostname
-  timezone                = local.mikrotik_globals.timezone
-  ntp_servers             = [local.mikrotik_globals.cloudflare_ntp]
-  users                   = local.mikrotik_globals.default_users
-  groups                  = local.mikrotik_globals.default_groups
+  hostname                 = upper(split("-", basename(get_terragrunt_dir()))[1])
+  certificate_common_name  = include.provider.locals.mikrotik_hostname
+  certificate_country      = "RO"
+  certificate_locality     = "BUC"
+  certificate_organization = "MIRCEANTON"
+  certificate_unit         = "HOME"
+  disable_ipv6             = true
+  timezone                 = local.mikrotik_globals.timezone
+  ntp_servers              = [local.mikrotik_globals.cloudflare_ntp]
+  users                    = local.mikrotik_globals.default_users
+  groups                   = local.mikrotik_globals.default_groups
 
   mac_server_interfaces = "none"
 

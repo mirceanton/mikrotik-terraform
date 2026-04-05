@@ -8,12 +8,19 @@ locals {
   mikrotik_globals = read_terragrunt_config(find_in_parent_folders("globals.hcl")).locals
 }
 
-terraform { source = find_in_parent_folders("modules/mikrotik-base") }
+terraform {
+  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/base?ref=v0.1.2"
+}
 inputs = {
-  hostname                = upper(split("-", basename(get_terragrunt_dir()))[1])
-  certificate_common_name = include.provider.locals.mikrotik_hostname
-  timezone                = local.mikrotik_globals.timezone
-  ntp_servers             = [local.mikrotik_globals.cloudflare_ntp]
+  hostname                 = upper(split("-", basename(get_terragrunt_dir()))[1])
+  certificate_common_name  = include.provider.locals.mikrotik_hostname
+  certificate_country      = "RO"
+  certificate_locality     = "BUC"
+  certificate_organization = "MIRCEANTON"
+  certificate_unit         = "HOME"
+  disable_ipv6             = true
+  timezone                 = local.mikrotik_globals.timezone
+  ntp_servers              = [local.mikrotik_globals.cloudflare_ntp]
   users = merge(local.mikrotik_globals.default_users, {
     external-dns = {
       group   = "external-dns"
@@ -44,27 +51,5 @@ inputs = {
       tagged   = [local.mikrotik_globals.vlans.Untrusted.name, local.mikrotik_globals.vlans.Guest.name]
     }
     "sfp-sfpplus1" = {}
-  }
-
-  groups = {
-    metrics = {
-      policies = ["api", "read"]
-      comment  = "Metrics collection group"
-    }
-    "external-dns" = {
-      policies = ["read", "write", "api", "rest-api"]
-      comment  = "External DNS group"
-    }
-  }
-
-  users = {
-    metrics = {
-      group   = "metrics"
-      comment = "Prometheus metrics user"
-    }
-    "external-dns" = {
-      group   = "external-dns"
-      comment = "External DNS user"
-    }
   }
 }

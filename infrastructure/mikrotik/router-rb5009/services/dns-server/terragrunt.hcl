@@ -6,7 +6,7 @@ dependencies {
 }
 
 terraform {
-  source = find_in_parent_folders("modules/mikrotik-dns-server")
+  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/dns-server?ref=v0.1.2"
 }
 
 inputs = {
