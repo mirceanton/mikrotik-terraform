@@ -20,7 +20,6 @@ jobs:
     runs-on: infra-runners
     outputs:
       drift_detected: ${{ steps.plan.outputs.drift_detected }}
-      plan_output: ${{ steps.plan.outputs.plan_output }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -55,11 +54,12 @@ jobs:
             echo "drift_detected=false" | tee "$GITHUB_OUTPUT"
           fi
 
-          {
-            echo "plan_output<<EOF"
-            cat plan_output.txt
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+      - name: Upload Plan Output
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: plan-output
+          path: plan_output.txt
+          retention-days: 1
 
   comment-pr:
     runs-on: ubuntu-latest
@@ -68,6 +68,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Download Plan Output
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
+        with: { name: plan-output }
 
       - name: Generate Token
         uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
@@ -79,8 +83,6 @@ jobs:
       - name: Create PR comment
         env:
           GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
-          PLAN_OUTPUT: "${{ needs.terragrunt-plan.outputs.plan_output }}"
-          DRIFT_DETECTED: "${{ needs.terragrunt-plan.outputs.drift_detected }}"
           STATUS: "${{ needs.terragrunt-plan.outputs.drift_detected == 'true' && '⚠️ Changes detected' || '✅ No changes' }}"
         run: |
           {
@@ -92,7 +94,7 @@ jobs:
             echo "<summary>Click to expand plan output</summary>"
             echo ""
             echo '```terraform'
-            echo "$PLAN_OUTPUT"
+            cat plan_output.txt
             echo '```'
             echo ""
             echo "</details>"
@@ -112,6 +114,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
+      - name: Download Plan Output
+        uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
+        with: { name: plan-output }
+
       - name: Generate Token
         uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
         id: app-token
@@ -123,7 +129,6 @@ jobs:
         if: needs.terragrunt-plan.outputs.drift_detected == 'true'
         env:
           GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
-          PLAN_OUTPUT: "${{ needs.terragrunt-plan.outputs.plan_output }}"
         run: |
           ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
           if [ -n "$ISSUE_NUMBER" ]; then
@@ -143,16 +148,12 @@ jobs:
             echo ""
             echo "[![Run Terragrunt Apply](${{ github.server_url }}/${{ github.repository }}/actions/workflows/terragrunt-cd.yaml/badge.svg)]($WORKFLOW_URL)"
             echo ""
-            echo "**[Click here to run Terragrunt Apply workflow]($WORKFLOW_URL)** (then click 'Run workflow' button)"
-            echo ""
-            echo "Or run manually: \`terragrunt apply --all\`"
-            echo ""
             echo "### Plan Output"
             echo "<details>"
             echo "<summary>Click to expand drift details</summary>"
             echo ""
             echo '```'
-            echo "$PLAN_OUTPUT"
+            cat plan_output.txt
             echo '```'
             echo ""
             echo "</details>"
