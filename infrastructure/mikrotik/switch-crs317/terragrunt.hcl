@@ -24,9 +24,9 @@ inputs = {
   certificate_unit         = "HOME"
   disable_ipv6             = true
   timezone                 = local.mikrotik_globals.timezone
-  ntp_servers             = [local.mikrotik_globals.cloudflare_ntp]
-  users                   = local.mikrotik_globals.default_users
-  groups                  = local.mikrotik_globals.default_groups
+  ntp_servers              = [local.mikrotik_globals.cloudflare_ntp]
+  users                    = local.mikrotik_globals.default_users
+  groups                   = local.mikrotik_globals.default_groups
 
   mac_server_interfaces = "none"
 
