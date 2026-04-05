@@ -6,7 +6,7 @@ dependencies {
 }
 
 terraform {
-  source = find_in_parent_folders("modules/mikrotik-pppoe-client")
+  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/pppoe-client?ref=v0.1.2"
 }
 
 inputs = {

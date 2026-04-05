@@ -10,7 +10,7 @@ locals {
 }
 
 terraform {
-  source = find_in_parent_folders("modules/mikrotik-firewall")
+  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/firewall?ref=v0.1.2"
 }
 
 inputs = {
