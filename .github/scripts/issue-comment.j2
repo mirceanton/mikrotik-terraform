@@ -1,0 +1,39 @@
+## ⚠️ Drift detected in workflow run [#{{ env.RUN_NUMBER }}]({{ env.RUN_URL }})
+
+### 🚀 Quick Actions
+
+[![Run Terragrunt Apply]({{ env.WORKFLOW_URL }}/badge.svg)]({{ env.WORKFLOW_URL }})
+
+**[Click here to run Terragrunt Apply workflow]({{ env.WORKFLOW_URL }})** (then click 'Run workflow' button)
+
+Or run manually: `terragrunt apply --all`
+
+### Plan Output
+
+{% if not units %}
+```
+{{ raw_output }}
+```
+{% else %}
+| Unit | Status | +Add | ~Change | -Destroy |
+|------|:------:|-----:|--------:|---------:|
+{% for unit in units %}
+| `{{ unit.display_name }}` | {{ unit.status }} | {{ unit.add }} | {{ unit.change }} | {{ unit.destroy }} |
+{% endfor %}
+
+{% for unit in units %}
+#### `{{ unit.display_name }}`
+
+{{ unit.status_line }}
+
+<details>
+<summary>Plan output</summary>
+
+```hcl
+{{ unit.plan_output }}
+```
+
+</details>
+
+{% endfor %}
+{% endif %}

@@ -1,0 +1,29 @@
+## 🤖 Terragrunt Plan Results
+
+{% if not units %}
+```
+{{ raw_output }}
+```
+{% else %}
+| Unit | Status | +Add | ~Change | -Destroy |
+|------|:------:|-----:|--------:|---------:|
+{% for unit in units %}
+| `{{ unit.display_name }}` | {{ unit.status }} | {{ unit.add }} | {{ unit.change }} | {{ unit.destroy }} |
+{% endfor %}
+
+{% for unit in units %}
+### `{{ unit.display_name }}`
+
+{{ unit.status_line }}
+
+<details>
+<summary>Plan output</summary>
+
+```hcl
+{{ unit.plan_output }}
+```
+
+</details>
+
+{% endfor %}
+{% endif %}

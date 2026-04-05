@@ -69,6 +69,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
+      - name: Setup mise
+        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+        with: { cache: false }
+
       - name: Download Plan Output
         uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
         with: { name: plan-output }
@@ -83,25 +87,8 @@ jobs:
       - name: Create PR comment
         env:
           GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
-          STATUS: "${{ needs.terragrunt-plan.outputs.drift_detected == 'true' && '⚠️ Changes detected' || '✅ No changes' }}"
         run: |
-          {
-            echo "## 🤖 Terragrunt Plan Results"
-            echo ""
-            echo "**Status:** $STATUS"
-            echo ""
-            echo "<details>"
-            echo "<summary>Click to expand plan output</summary>"
-            echo ""
-            echo '```terraform'
-            cat plan_output.txt
-            echo '```'
-            echo ""
-            echo "</details>"
-            echo ""
-            echo "---"
-            echo "*Workflow run: [#${{ github.run_number }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})*"
-          } > comment_body.txt
+          uv run .github/scripts/generate-plan-comment.py plan_output.txt comment_body.txt
           gh pr comment "${{ github.event.pull_request.number }}" --body-file comment_body.txt
 
   issue-management:
@@ -113,6 +100,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup mise
+        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+        with: { cache: false }
 
       - name: Download Plan Output
         uses: actions/download-artifact@95815c38cf2ff2164869cbab79da8d1f422bc89e # v4.2.1
@@ -129,6 +120,9 @@ jobs:
         if: needs.terragrunt-plan.outputs.drift_detected == 'true'
         env:
           GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
+          RUN_NUMBER: "${{ github.run_number }}"
+          RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          WORKFLOW_URL: "${{ github.server_url }}/${{ github.repository }}/actions/workflows/terragrunt-cd.yaml"
         run: |
           ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
           if [ -n "$ISSUE_NUMBER" ]; then
@@ -139,25 +133,7 @@ jobs:
             ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
           fi
 
-          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          WORKFLOW_URL="${{ github.server_url }}/${{ github.repository }}/actions/workflows/terragrunt-cd.yaml"
-          {
-            echo "## ⚠️ **Drift detected in workflow run [#${{ github.run_number }}]($RUN_URL)**"
-            echo ""
-            echo "### 🚀 Quick Actions"
-            echo ""
-            echo "[![Run Terragrunt Apply](${{ github.server_url }}/${{ github.repository }}/actions/workflows/terragrunt-cd.yaml/badge.svg)]($WORKFLOW_URL)"
-            echo ""
-            echo "### Plan Output"
-            echo "<details>"
-            echo "<summary>Click to expand drift details</summary>"
-            echo ""
-            echo '```'
-            cat plan_output.txt
-            echo '```'
-            echo ""
-            echo "</details>"
-          } > issue_body.txt
+          uv run .github/scripts/generate-plan-comment.py plan_output.txt issue_body.txt issue-comment.j2
           gh issue edit "$ISSUE_NUMBER" --body-file issue_body.txt
           gh issue pin "$ISSUE_NUMBER"
 
