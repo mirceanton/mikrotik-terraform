@@ -22,6 +22,7 @@ Or run manually: `terragrunt apply --all`
 {% endfor %}
 
 {% for unit in units %}
+{% if unit.status != "✅" %}
 #### `{{ unit.display_name }}`
 
 {{ unit.status_line }}
@@ -35,5 +36,6 @@ Or run manually: `terragrunt apply --all`
 
 </details>
 
+{% endif %}
 {% endfor %}
 {% endif %}

@@ -12,6 +12,7 @@
 {% endfor %}
 
 {% for unit in units %}
+{% if unit.status != "✅" %}
 ### `{{ unit.display_name }}`
 
 {{ unit.status_line }}
@@ -25,5 +26,6 @@
 
 </details>
 
+{% endif %}
 {% endfor %}
 {% endif %}
