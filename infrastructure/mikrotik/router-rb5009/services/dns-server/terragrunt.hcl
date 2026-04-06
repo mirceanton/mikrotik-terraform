@@ -15,8 +15,5 @@ inputs = {
 
   static_dns = {
     "bomkprinter.home.mirceanton.com" = { cname = "bomkprinter.utrst.h.mirceanton.com", type = "CNAME", comment = "Bomk Printer" }
-
-    # Docker Services running on TrueNAS Scale
-    "nas.svc.h.mirceanton.com" = { cname = "nas.svc.h.mirceanton.com", type = "CNAME", comment = "TrueNAS Services", match_subdomain = true }
   }
 }
