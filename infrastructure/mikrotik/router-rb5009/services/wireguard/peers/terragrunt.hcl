@@ -6,7 +6,7 @@ dependency "wireguard_server" {
 }
 
 terraform {
-  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/wireguard-peers?ref=v0.1.2"
+  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/wireguard-peers?ref=v0.1.3"
 }
 
 inputs = {

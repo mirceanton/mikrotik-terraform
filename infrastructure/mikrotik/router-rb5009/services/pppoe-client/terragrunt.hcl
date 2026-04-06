@@ -6,7 +6,7 @@ dependencies {
 }
 
 terraform {
-  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/pppoe-client?ref=v0.1.2"
+  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/pppoe-client?ref=v0.1.3"
 }
 
 inputs = {
