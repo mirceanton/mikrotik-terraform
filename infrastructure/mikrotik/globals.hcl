@@ -20,10 +20,10 @@ locals {
   # Default Groups and Users
   # =============================================================================================== 
   default_groups = {
-    metrics = { policies = ["api", "read"], comment  = "Metrics collection group" }
+    metrics = { policies = ["api", "read"], comment = "Metrics collection group" }
   }
   default_users = {
-    metrics = { group   = "metrics", comment = "Prometheus metrics user" }
+    metrics = { group = "metrics", comment = "Prometheus metrics user" }
   }
 
   # ===============================================================================================
