@@ -1,9 +1,6 @@
 include "root" { path = find_in_parent_folders("root.hcl") }
 include "provider" { path = find_in_parent_folders("provider.hcl") }
-
-dependencies {
-  paths = [find_in_parent_folders("mikrotik/router-rb5009")]
-}
+include "dhcp" { path = find_in_parent_folders("dhcp.hcl") }
 
 terraform {
   source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/dhcp-server?ref=v0.1.2"
