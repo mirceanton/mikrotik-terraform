@@ -1,6 +1,4 @@
-include "root" {
-  path = find_in_parent_folders("root.hcl")
-}
+include "root" { path = find_in_parent_folders("root.hcl") }
 
 dependency "wireguard-server" { config_path = find_in_parent_folders("mikrotik/router-rb5009/services/wireguard/server") }
 dependency "wireguard-peers" { config_path = find_in_parent_folders("mikrotik/router-rb5009/services/wireguard/peers") }
