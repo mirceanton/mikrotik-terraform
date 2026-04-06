@@ -26,7 +26,7 @@ inputs = {
       addresses = [local.mirkphone_ip, local.mirkbook_ip]
     }
     "exposed-services" = {
-      comment   = "Services exposed to restricted VLANs"
+      comment   = "Services exposed to other VLANs"
       addresses = [local.kubernetes_gw_ip, local.nas_svc_ip]
     }
   }
@@ -43,11 +43,11 @@ inputs = {
         [for v in local.mikrotik_globals.vlans : v.name]
       )
     }
-    RESTRICTED = {
+    INTERNET_ONLY = {
       comment    = "VLANs with internet-only access"
       interfaces = [local.mikrotik_globals.vlans.Guest.name, local.mikrotik_globals.vlans.Untrusted.name]
     }
-    SERVICES-ACCESS = {
+    CLIENTS = {
       comment    = "VLANs allowed limited access to exposed services"
       interfaces = [local.mikrotik_globals.vlans.Untrusted.name, local.wireguard_interface]
     }
@@ -204,17 +204,17 @@ inputs = {
       order            = 1300
     }
 
-    "allow-restricted-to-internet" = {
+    "allow-INTERNET_ONLY-to-internet" = {
       chain              = "forward"
       action             = "accept"
-      in_interface_list  = "RESTRICTED"
+      in_interface_list  = "INTERNET_ONLY"
       out_interface_list = "WAN"
       order              = 1400
     }
-    "allow-service-clients-to-services" = {
+    "allow-CLIENTS-to-services" = {
       chain             = "forward"
       action            = "accept"
-      in_interface_list = "SERVICES-ACCESS"
+      in_interface_list = "CLIENTS"
       out_interface     = local.mikrotik_globals.vlans.Services.name
       dst_address_list  = "exposed-services"
       order             = 1401
