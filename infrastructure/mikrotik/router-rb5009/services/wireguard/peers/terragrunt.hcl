@@ -6,7 +6,7 @@ dependency "wireguard_server" {
 }
 
 terraform {
-  source = find_in_parent_folders("modules/mikrotik-wireguard-peers")
+  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/wireguard-peers?ref=v0.1.2"
 }
 
 inputs = {
