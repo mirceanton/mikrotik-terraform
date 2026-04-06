@@ -3,19 +3,27 @@ locals {
   cloudflare_ntp = "time.cloudflare.com"
 
   # ===============================================================================================
+  # Certificate Defaults
+  # ===============================================================================================
+  certificate_country      = "RO"
+  certificate_locality     = "BUC"
+  certificate_organization = "MIRCEANTON"
+  certificate_unit         = "HOME"
+
+  # ===============================================================================================
+  # Device Defaults
+  # ===============================================================================================
+  disable_ipv6          = true
+  mac_server_interfaces = "none"
+
+  # ===============================================================================================
   # Default Groups and Users
   # =============================================================================================== 
   default_groups = {
-    metrics = {
-      policies = ["api", "read"]
-      comment  = "Metrics collection group"
-    }
+    metrics = { policies = ["api", "read"], comment  = "Metrics collection group" }
   }
   default_users = {
-    metrics = {
-      group   = "metrics"
-      comment = "Prometheus metrics user"
-    }
+    metrics = { group   = "metrics", comment = "Prometheus metrics user" }
   }
 
   # ===============================================================================================
