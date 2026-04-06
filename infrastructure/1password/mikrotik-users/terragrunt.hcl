@@ -1,7 +1,4 @@
-include "root" {
-  path = find_in_parent_folders("root.hcl")
-}
-
+include "root" { path = find_in_parent_folders("root.hcl") }
 dependency "switch-crs326" { config_path = find_in_parent_folders("mikrotik/switch-crs326") }
 dependency "switch-hex" { config_path = find_in_parent_folders("mikrotik/switch-hex") }
 dependency "switch-crs317" { config_path = find_in_parent_folders("mikrotik/switch-crs317") }

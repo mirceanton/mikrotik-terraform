@@ -1,7 +1,4 @@
-include "root" {
-  path = find_in_parent_folders("root.hcl")
-}
-
+include "root" { path = find_in_parent_folders("root.hcl") }
 dependency "capsman" { config_path = find_in_parent_folders("mikrotik/router-rb5009/services/capsman") }
 
 terraform {
