@@ -6,14 +6,31 @@ dependencies {
 }
 
 locals {
-  mikrotik_globals = read_terragrunt_config(find_in_parent_folders("globals.hcl")).locals
+  mikrotik_globals    = read_terragrunt_config(find_in_parent_folders("globals.hcl")).locals
+  wireguard_interface = "wg1"
+  mirkphone_ip        = "172.16.69.11"
+  mirkbook_ip         = "172.16.69.14"
+
+  kubernetes_gw_ip = "10.0.10.250"
+  nas_svc_ip       = "10.0.10.245"
 }
 
 terraform {
-  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/firewall?ref=v0.1.3"
+  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/firewall?ref=v0.2.0"
 }
 
 inputs = {
+  address_lists = {
+    "wireguard-trusted" = {
+      comment   = "Personal WireGuard devices with trusted-level access"
+      addresses = [local.mirkphone_ip, local.mirkbook_ip]
+    }
+    "exposed-services" = {
+      comment   = "Services exposed to other VLANs"
+      addresses = [local.kubernetes_gw_ip, local.nas_svc_ip]
+    }
+  }
+
   interface_lists = {
     WAN = {
       comment    = "All Public-Facing Interfaces"
@@ -22,9 +39,17 @@ inputs = {
     LAN = {
       comment = "All Local Interfaces"
       interfaces = concat(
-        ["bridge"],
+        ["bridge", local.wireguard_interface],
         [for v in local.mikrotik_globals.vlans : v.name]
       )
+    }
+    INTERNET_ONLY = {
+      comment    = "VLANs with internet-only access"
+      interfaces = [local.mikrotik_globals.vlans.Guest.name, local.mikrotik_globals.vlans.Untrusted.name]
+    }
+    CLIENTS = {
+      comment    = "VLANs allowed limited access to exposed services"
+      interfaces = [local.mikrotik_globals.vlans.Untrusted.name, local.wireguard_interface]
     }
   }
 
@@ -34,14 +59,6 @@ inputs = {
       action             = "masquerade"
       out_interface_list = "WAN"
       order              = 100
-    }
-    "hairpin" = {
-      comment            = "Hairpin NAT - allows LAN clients to access services via public IP"
-      chain              = "srcnat"
-      action             = "masquerade"
-      in_interface_list  = "LAN"
-      out_interface_list = "LAN"
-      order              = 200
     }
   }
 
@@ -141,7 +158,7 @@ inputs = {
       in_interface_list = "LAN"
       order             = 214
     }
-    "accept-wireguard-port" = {
+    "accept-WAN-wireguard" = {
       chain             = "input"
       action            = "accept"
       protocol          = "udp"
@@ -157,7 +174,7 @@ inputs = {
     }
 
     # =========================================================================
-    # MANAGEMENT ZONE
+    # ZONE-BASED RULES
     # =========================================================================
     "accept-management-forward" = {
       chain        = "forward"
@@ -172,174 +189,38 @@ inputs = {
       order        = 1100
     }
 
-    # =========================================================================
-    # WIREGUARD ZONE
-    # =========================================================================
-    "accept-wireguard-dns-tcp" = {
-      chain        = "input"
-      action       = "accept"
-      protocol     = "tcp"
-      dst_port     = "53"
-      in_interface = "wg1"
-      order        = 1150
+    "accept-wireguard-trusted-input" = {
+      chain            = "input"
+      action           = "accept"
+      in_interface     = local.wireguard_interface
+      src_address_list = "wireguard-trusted"
+      order            = 1200
     }
-    "accept-wireguard-dns-udp" = {
-      chain        = "input"
-      action       = "accept"
-      protocol     = "udp"
-      dst_port     = "53"
-      in_interface = "wg1"
-      order        = 1151
-    }
-    "accept-wireguard-icmp" = {
-      chain        = "input"
-      action       = "accept"
-      protocol     = "icmp"
-      in_interface = "wg1"
-      order        = 1152
-    }
-    "drop-wireguard-input" = {
-      chain        = "input"
-      action       = "drop"
-      in_interface = "wg1"
-      order        = 1153
-    }
-    "accept-wireguard-to-kube-services" = {
-      chain         = "forward"
-      action        = "accept"
-      in_interface  = "wg1"
-      out_interface = local.mikrotik_globals.vlans.Services.name
-      dst_address   = "10.0.10.250" # Kubernetes GW Endpoint
-      order         = 1350
-    }
-    "accept-wireguard-to-nas-services" = {
-      chain         = "forward"
-      action        = "accept"
-      in_interface  = "wg1"
-      out_interface = local.mikrotik_globals.vlans.Services.name
-      dst_address   = "10.0.10.245" # NAS Endpoint
-      order         = 1351
-    }
-    "drop-wireguard-forward" = {
-      chain        = "forward"
-      action       = "drop"
-      in_interface = "wg1"
-      order        = 1399
+    "accept-wireguard-trusted-forward" = {
+      chain            = "forward"
+      action           = "accept"
+      in_interface     = local.wireguard_interface
+      src_address_list = "wireguard-trusted"
+      order            = 1300
     }
 
-    # =========================================================================
-    # TRUSTED ZONE
-    # =========================================================================
-    "accept-trusted-input" = {
-      chain        = "input"
-      action       = "accept"
-      in_interface = local.mikrotik_globals.vlans.Trusted.name
-      order        = 1200
-    }
-    "accept-trusted-forward" = {
-      chain        = "forward"
-      action       = "accept"
-      in_interface = local.mikrotik_globals.vlans.Trusted.name
-      order        = 1300
-    }
-
-    # =========================================================================
-    # GUEST ZONE
-    # =========================================================================
-    "allow-guest-to-internet" = {
+    "allow-INTERNET_ONLY-to-internet" = {
       chain              = "forward"
       action             = "accept"
-      in_interface       = local.mikrotik_globals.vlans.Guest.name
+      in_interface_list  = "INTERNET_ONLY"
       out_interface_list = "WAN"
-      order              = 1600
+      order              = 1400
     }
-    "drop-guest-forward" = {
-      chain        = "forward"
-      action       = "drop"
-      in_interface = local.mikrotik_globals.vlans.Guest.name
-      order        = 1699
-    }
-    "drop-guest-input" = {
-      chain        = "input"
-      action       = "drop"
-      in_interface = local.mikrotik_globals.vlans.Guest.name
-      order        = 1799
+    "allow-CLIENTS-to-services" = {
+      chain             = "forward"
+      action            = "accept"
+      in_interface_list = "CLIENTS"
+      out_interface     = local.mikrotik_globals.vlans.Services.name
+      dst_address_list  = "exposed-services"
+      order             = 1401
     }
 
-    # =========================================================================
-    # UNTRUSTED ZONE
-    # =========================================================================
-    "allow-untrusted-to-internet" = {
-      chain              = "forward"
-      action             = "accept"
-      in_interface       = local.mikrotik_globals.vlans.Untrusted.name
-      out_interface_list = "WAN"
-      order              = 1800
-    }
-    "allow-untrusted-to-services-http" = {
-      chain         = "forward"
-      action        = "accept"
-      in_interface  = local.mikrotik_globals.vlans.Untrusted.name
-      out_interface = local.mikrotik_globals.vlans.Services.name
-      protocol      = "tcp"
-      dst_port      = "80"
-      order         = 1801
-    }
-    "allow-untrusted-to-services-https" = {
-      chain         = "forward"
-      action        = "accept"
-      in_interface  = local.mikrotik_globals.vlans.Untrusted.name
-      out_interface = local.mikrotik_globals.vlans.Services.name
-      protocol      = "tcp"
-      dst_port      = "443"
-      order         = 1802
-    }
-    "drop-untrusted-forward" = {
-      chain        = "forward"
-      action       = "drop"
-      in_interface = local.mikrotik_globals.vlans.Untrusted.name
-      order        = 1899
-    }
-    "drop-untrusted-input" = {
-      chain        = "input"
-      action       = "drop"
-      in_interface = local.mikrotik_globals.vlans.Untrusted.name
-      order        = 1999
-    }
-
-    # =========================================================================
-    # SERVICES ZONE
-    # =========================================================================
-    "drop-services-forward" = {
-      chain        = "forward"
-      action       = "drop"
-      in_interface = local.mikrotik_globals.vlans.Services.name
-      order        = 2099
-    }
-    "drop-services-input" = {
-      chain        = "input"
-      action       = "drop"
-      in_interface = local.mikrotik_globals.vlans.Services.name
-      order        = 2199
-    }
-
-    # =========================================================================
-    # STORAGE ZONE
-    # =========================================================================
-    "drop-storage-forward" = {
-      chain        = "forward"
-      action       = "drop"
-      in_interface = local.mikrotik_globals.vlans.Storage.name
-      order        = 2299
-    }
-    "drop-storage-input" = {
-      chain        = "input"
-      action       = "drop"
-      in_interface = local.mikrotik_globals.vlans.Storage.name
-      order        = 2399
-    }
-
-    # =========================================================================
+    # ========================================================================
     # DEFAULT DENY
     # =========================================================================
     "drop-all-forward" = {
