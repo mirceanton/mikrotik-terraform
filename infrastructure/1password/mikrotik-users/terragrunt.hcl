@@ -5,7 +5,7 @@ dependency "switch-crs317" { config_path = find_in_parent_folders("mikrotik/swit
 dependency "router-rb5009" { config_path = find_in_parent_folders("mikrotik/router-rb5009") }
 
 terraform {
-  source = "git::https://github.com/mirceanton/terraform-modules-1password.git//modules/1password-item?ref=v0.1.0"
+  source = "git::https://github.com/mirceanton/terraform-modules-1password.git//modules/1password-item?ref=v0.1.1"
 }
 
 inputs = {

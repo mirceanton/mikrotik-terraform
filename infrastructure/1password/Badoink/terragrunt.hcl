@@ -2,7 +2,7 @@ include "root" { path = find_in_parent_folders("root.hcl") }
 dependency "capsman" { config_path = find_in_parent_folders("mikrotik/router-rb5009/services/capsman") }
 
 terraform {
-  source = "git::https://github.com/mirceanton/terraform-modules-1password.git//modules/1password-item?ref=v0.1.0"
+  source = "git::https://github.com/mirceanton/terraform-modules-1password.git//modules/1password-item?ref=v0.1.1"
 }
 
 inputs = {
