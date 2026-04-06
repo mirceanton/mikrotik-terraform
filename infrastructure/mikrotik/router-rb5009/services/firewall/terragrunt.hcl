@@ -8,8 +8,8 @@ dependencies {
 locals {
   mikrotik_globals    = read_terragrunt_config(find_in_parent_folders("globals.hcl")).locals
   wireguard_interface = "wg1"
-  mirkphone_ip        = "172.16.69.11/32"
-  mirkbook_ip         = "172.16.69.14/32"
+  mirkphone_ip        = "172.16.69.11"
+  mirkbook_ip         = "172.16.69.14"
 
   kubernetes_gw_ip = "10.0.10.250"
   nas_svc_ip       = "10.0.10.245"
