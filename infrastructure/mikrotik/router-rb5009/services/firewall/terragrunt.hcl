@@ -310,13 +310,6 @@ inputs = {
     # =========================================================================
     # SERVICES ZONE
     # =========================================================================
-    "allow-services-to-internet" = {
-      chain              = "forward"
-      action             = "accept"
-      in_interface       = local.mikrotik_globals.vlans.Services.name
-      out_interface_list = "WAN"
-      order              = 2000
-    }
     "drop-services-forward" = {
       chain        = "forward"
       action       = "drop"
