@@ -11,8 +11,8 @@ locals {
   mirkphone_ip        = "172.16.69.11/32"
   mirkbook_ip         = "172.16.69.14/32"
 
-  kubernetes_gw_ip    = "10.0.10.250"
-  nas_svc_ip          = "10.0.10.245"
+  kubernetes_gw_ip = "10.0.10.250"
+  nas_svc_ip       = "10.0.10.245"
 }
 
 terraform {
@@ -36,7 +36,7 @@ inputs = {
       comment    = "All Public-Facing Interfaces"
       interfaces = ["PPPoE-Digi"]
     }
-    LAN = 
+    LAN = {
       comment = "All Local Interfaces"
       interfaces = concat(
         ["bridge", local.wireguard_interface],
