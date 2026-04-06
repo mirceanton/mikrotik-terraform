@@ -3,7 +3,7 @@ include "provider" { path = find_in_parent_folders("provider.hcl") }
 include "dhcp" { path = find_in_parent_folders("dhcp.hcl") }
 
 terraform {
-  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/dhcp-server?ref=v0.1.3"
+  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/dhcp-server?ref=v0.2.0"
 }
 
 inputs = {
