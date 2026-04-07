@@ -45,7 +45,7 @@ inputs = {
     }
 
     INTERNET_ONLY = {
-      comment    = "VLANs with internet-only access"
+      comment = "VLANs with internet-only access"
       interfaces = [
         local.mikrotik_globals.vlans.Guest.name,
         local.mikrotik_globals.vlans.Untrusted.name,
@@ -53,10 +53,10 @@ inputs = {
       ]
     }
     CLIENTS = {
-      comment    = "VLANs allowed limited access to exposed services"
+      comment = "VLANs allowed limited access to exposed services"
       interfaces = [local.mikrotik_globals.vlans.Untrusted.name,
-      local.mikrotik_globals.vlans.Management.name,
-      local.wireguard_interface
+        local.mikrotik_globals.vlans.Management.name,
+        local.wireguard_interface
       ]
     }
   }
