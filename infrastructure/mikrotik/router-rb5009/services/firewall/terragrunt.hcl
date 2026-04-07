@@ -6,11 +6,13 @@ dependencies {
 }
 
 locals {
-  mikrotik_globals    = read_terragrunt_config(find_in_parent_folders("globals.hcl")).locals
-  wireguard_interface = "wg1"
-  mirkphone_ip        = "172.16.69.11"
-  mirkbook_ip         = "172.16.69.14"
+  mikrotik_globals = read_terragrunt_config(find_in_parent_folders("globals.hcl")).locals
 
+  wireguard_interface = "wg1"
+  pppoe_interface     = "PPPoE-Digi"
+
+  mirkphone_ip     = "172.16.69.11"
+  mirkbook_ip      = "172.16.69.14"
   kubernetes_gw_ip = "10.0.10.250"
   nas_svc_ip       = "10.0.10.245"
 }
@@ -34,7 +36,7 @@ inputs = {
   interface_lists = {
     WAN = {
       comment    = "All Public-Facing Interfaces"
-      interfaces = ["PPPoE-Digi"]
+      interfaces = [local.pppoe_interface]
     }
     LAN = {
       comment = "All Local Interfaces"
