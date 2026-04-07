@@ -47,11 +47,15 @@ jobs:
           OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
         run: |
           terragrunt run --all --no-color -- plan --detailed-exitcode 2>&1 | tee plan_output.txt
+          TG_EXIT="${PIPESTATUS[0]}"
 
-          if [ "${PIPESTATUS[0]}" -eq 2 ]; then
-            echo "drift_detected=true" | tee "$GITHUB_OUTPUT"
+          if [ "$TG_EXIT" -eq 0 ]; then
+            echo "drift_detected=false" >> "$GITHUB_OUTPUT"
+          elif [ "$TG_EXIT" -eq 2 ]; then
+            echo "drift_detected=true" >> "$GITHUB_OUTPUT"
           else
-            echo "drift_detected=false" | tee "$GITHUB_OUTPUT"
+            echo "Terragrunt plan failed with exit code $TG_EXIT" >&2
+            exit "$TG_EXIT"
           fi
 
       - name: Upload Plan Output
