@@ -15,6 +15,7 @@ awscli = "latest"
 # =================================================================================================
 task = "latest"
 gh = "latest"
+glow = "latest"
 actionlint = "latest"
 yamlfmt = "latest"
 

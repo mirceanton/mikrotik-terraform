@@ -1,0 +1,24 @@
+---
+version: "3"
+
+tasks:
+  plan:
+    desc: Run terragrunt plan and render a per-unit summary table
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+      - |
+        bash -c 'set -o pipefail;
+        terragrunt run --all --no-color -- plan --detailed-exitcode 2>&1 | tee /tmp/tg_plan_output.txt;
+        TG_EXIT="${PIPESTATUS[0]}"; [ "$TG_EXIT" -eq 0 ] || [ "$TG_EXIT" -eq 2 ] || exit "$TG_EXIT"'
+      - uv run {{.ROOT_DIR}}/.github/scripts/generate-comment.py /tmp/tg_plan_output.txt /tmp/tg_plan_comment.txt plan
+      - cat /tmp/tg_plan_comment.txt | glow -
+
+  apply:
+    desc: Run terragrunt apply and render a per-unit summary table
+    dir: "{{.USER_WORKING_DIR}}"
+    cmds:
+      - |
+        bash -c 'set -o pipefail;
+        terragrunt run --all --no-color -- apply -auto-approve 2>&1 | tee /tmp/tg_apply_output.txt'
+      - APPLY_STATUS=success uv run {{.ROOT_DIR}}/.github/scripts/generate-comment.py /tmp/tg_apply_output.txt /tmp/tg_apply_comment.txt apply
+      - cat /tmp/tg_apply_comment.txt | glow -
