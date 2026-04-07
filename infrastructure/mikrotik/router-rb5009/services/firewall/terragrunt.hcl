@@ -30,7 +30,7 @@ inputs = {
       addresses = [local.mirkphone_ip, local.mirkbook_ip]
     }
     "exposed-services" = {
-      comment   = "Services exposed to other VLANs"
+      comment = "Services exposed to other VLANs"
       addresses = [
         local.kubernetes_gw_ip,
         local.mqtt_svc_ip,
@@ -176,11 +176,11 @@ inputs = {
       order             = 214
     }
     "allow-wireguard-input" = {
-      chain             = "input"
-      action            = "accept"
-      protocol          = "udp"
-      dst_port          = "13231"
-      order             = 215
+      chain    = "input"
+      action   = "accept"
+      protocol = "udp"
+      dst_port = "13231"
+      order    = 215
     }
     "accept-router-established-related-untracked" = {
       chain            = "input"
