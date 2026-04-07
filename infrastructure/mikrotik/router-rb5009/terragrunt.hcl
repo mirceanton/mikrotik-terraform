@@ -9,7 +9,7 @@ locals {
 }
 
 terraform {
-  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/base?ref=v0.2.0"
+  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/base?ref=v0.2.1"
 }
 inputs = {
   hostname                 = upper(split("-", basename(get_terragrunt_dir()))[1])

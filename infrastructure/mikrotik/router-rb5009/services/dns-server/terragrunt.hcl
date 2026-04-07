@@ -6,7 +6,7 @@ dependencies {
 }
 
 terraform {
-  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/dns-server?ref=v0.2.0"
+  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/dns-server?ref=v0.2.1"
 }
 
 inputs = {
