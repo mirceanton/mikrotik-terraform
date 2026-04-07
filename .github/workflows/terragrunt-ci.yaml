@@ -88,7 +88,7 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
         run: |
-          uv run .github/scripts/generate-plan-comment.py plan_output.txt comment_body.txt
+          uv run .github/scripts/generate-comment.py plan_output.txt comment_body.txt plan
           gh pr comment "${{ github.event.pull_request.number }}" --body-file comment_body.txt
 
   issue-management:
@@ -122,7 +122,6 @@ jobs:
           GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
           RUN_NUMBER: "${{ github.run_number }}"
           RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-          WORKFLOW_URL: "${{ github.server_url }}/${{ github.repository }}/actions/workflows/terragrunt-cd.yaml"
         run: |
           ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
           if [ -n "$ISSUE_NUMBER" ]; then
@@ -133,7 +132,7 @@ jobs:
             ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
           fi
 
-          uv run .github/scripts/generate-plan-comment.py plan_output.txt issue_body.txt issue-comment.j2
+          uv run .github/scripts/generate-comment.py plan_output.txt issue_body.txt drift
           gh issue edit "$ISSUE_NUMBER" --body-file issue_body.txt
           gh issue pin "$ISSUE_NUMBER"
 

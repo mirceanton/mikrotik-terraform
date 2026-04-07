@@ -1,5 +1,15 @@
+{% if mode == "apply" %}
+## {{ "✅" if env.APPLY_STATUS == "success" else "❌" }} Terragrunt Apply Results
+
+> Workflow run [#{{ env.RUN_NUMBER }}]({{ env.RUN_URL }})
+
+{% elif mode == "drift" %}
+## ⚠️ Drift detected in workflow run [#{{ env.RUN_NUMBER }}]({{ env.RUN_URL }})
+
+{% else %}
 ## 🤖 Terragrunt Plan Results
 
+{% endif %}
 {% if not units %}
 ```
 {{ raw_output }}
@@ -18,10 +28,10 @@
 {{ unit.status_line }}
 
 <details>
-<summary>Plan output</summary>
+<summary>{{ "Apply" if mode == "apply" else "Plan" }} output</summary>
 
 ```hcl
-{{ unit.plan_output }}
+{{ unit.output }}
 ```
 
 </details>

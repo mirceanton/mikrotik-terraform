@@ -44,7 +44,57 @@ jobs:
           OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
 
       - name: Terragrunt Apply
-        run: terragrunt run --all -- apply -auto-approve
+        id: apply
+        continue-on-error: true
+        run: |
+          set -o pipefail
+          terragrunt run --all --no-color -- apply -auto-approve 2>&1 | tee apply_output.txt
         env:
           OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
           OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
+
+      - name: Upload Apply Output
+        if: always()
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        with:
+          name: apply-output
+          path: apply_output.txt
+          retention-days: 1
+
+      - name: Fail if Apply Failed
+        if: steps.apply.outcome == 'failure'
+        run: exit 1
+
+  comment-commit:
+    runs-on: ubuntu-latest
+    if: always()
+    needs: terragrunt-apply
+    steps:
+      - name: Checkout
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup mise
+        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+        with: { cache: false }
+
+      - name: Download Apply Output
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with: { name: apply-output }
+
+      - name: Generate Token
+        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
+        id: app-token
+        with:
+          app-id: "${{ secrets.BOT_APP_ID }}"
+          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
+
+      - name: Create Commit Comment
+        env:
+          GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
+          APPLY_STATUS: "${{ needs.terragrunt-apply.result }}"
+          RUN_NUMBER: "${{ github.run_number }}"
+          RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        run: |
+          uv run .github/scripts/generate-comment.py apply_output.txt comment_body.txt apply
+          gh api repos/${{ github.repository }}/commits/${{ github.sha }}/comments \
+            --method POST -f body="$(cat comment_body.txt)"
