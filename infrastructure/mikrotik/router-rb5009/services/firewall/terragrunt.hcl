@@ -175,12 +175,11 @@ inputs = {
       in_interface_list = "LAN"
       order             = 214
     }
-    "accept-WAN-wireguard" = {
+    "allow-wireguard-input" = {
       chain             = "input"
       action            = "accept"
       protocol          = "udp"
       dst_port          = "13231"
-      in_interface_list = "WAN"
       order             = 215
     }
     "accept-router-established-related-untracked" = {
