@@ -7,19 +7,15 @@ permissions:
 
 on:
   workflow_dispatch: {}
-  schedule: [{ cron: "0 0/2 * * *" }] # Every 2 hours
   pull_request:
     branches: ["main"]
     paths:
       - root.hcl
       - infrastructure/**
-      - modules/**
 
 jobs:
   terragrunt-plan:
     runs-on: infra-runners
-    outputs:
-      drift_detected: ${{ steps.plan.outputs.drift_detected }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -42,32 +38,31 @@ jobs:
 
       - name: Terragrunt Plan
         id: plan
+        continue-on-error: true
         env:
           OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
           OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
         run: |
+          set -o pipefail
           terragrunt run --all --no-color -- plan --detailed-exitcode 2>&1 | tee plan_output.txt
           TG_EXIT="${PIPESTATUS[0]}"
-
-          if [ "$TG_EXIT" -eq 0 ]; then
-            echo "drift_detected=false" >> "$GITHUB_OUTPUT"
-          elif [ "$TG_EXIT" -eq 2 ]; then
-            echo "drift_detected=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "Terragrunt plan failed with exit code $TG_EXIT" >&2
-            exit "$TG_EXIT"
-          fi
+          [ "$TG_EXIT" -eq 0 ] || [ "$TG_EXIT" -eq 2 ] || exit "$TG_EXIT"
 
       - name: Upload Plan Output
+        if: always()
         uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
         with:
           name: plan-output
           path: plan_output.txt
           retention-days: 1
 
+      - name: Fail if Plan Failed
+        if: steps.plan.outcome == 'failure'
+        run: exit 1
+
   comment-pr:
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    if: always() && github.event_name == 'pull_request'
     needs: terragrunt-plan
     steps:
       - name: Checkout
@@ -75,7 +70,6 @@ jobs:
 
       - name: Setup mise
         uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
-        with: { cache: false }
 
       - name: Download Plan Output
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
@@ -94,62 +88,3 @@ jobs:
         run: |
           uv run .github/scripts/generate-comment.py plan_output.txt comment_body.txt plan
           gh pr comment "${{ github.event.pull_request.number }}" --body-file comment_body.txt
-
-  issue-management:
-    runs-on: ubuntu-latest
-    needs: terragrunt-plan
-    if: github.event_name == 'schedule'
-    env:
-      ISSUE_TITLE: "⚠️ Terragrunt Drift Detected ⚠️"
-    steps:
-      - name: Checkout
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
-      - name: Setup mise
-        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
-        with: { cache: false }
-
-      - name: Download Plan Output
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with: { name: plan-output }
-
-      - name: Generate Token
-        uses: actions/create-github-app-token@f8d387b68d61c58ab83c6c016672934102569859 # v3.0.0
-        id: app-token
-        with:
-          app-id: "${{ secrets.BOT_APP_ID }}"
-          private-key: "${{ secrets.BOT_APP_PRIVATE_KEY }}"
-
-      - name: Open Issue if Drift Detected
-        if: needs.terragrunt-plan.outputs.drift_detected == 'true'
-        env:
-          GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
-          RUN_NUMBER: "${{ github.run_number }}"
-          RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
-        run: |
-          uv run .github/scripts/generate-comment.py plan_output.txt issue_body.txt drift
-
-          ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
-          if [ -n "$ISSUE_NUMBER" ]; then
-            gh issue reopen "$ISSUE_NUMBER"
-            gh issue edit "$ISSUE_NUMBER" --body-file issue_body.txt
-          else
-            gh issue create --title "$ISSUE_TITLE" --body-file issue_body.txt
-            ISSUE_NUMBER=$(gh issue list --state "open" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
-          fi
-          gh issue pin "$ISSUE_NUMBER"
-
-      - name: Close GitHub Issue if No Drift
-        if: needs.terragrunt-plan.outputs.drift_detected == 'false'
-        env:
-          GITHUB_TOKEN: "${{ steps.app-token.outputs.token }}"
-          COMMENT: |
-            ✅ No drift detected. Closing issue automatically.
-            Verified in [workflow run #${{ github.run_number }}]("${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}").
-        run: |
-          ISSUE_NUMBER=$(gh issue list --state "open" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
-          echo "ISSUE_NUMBER is '$ISSUE_NUMBER'"
-          if [ -n "$ISSUE_NUMBER" ]; then
-            gh issue close "$ISSUE_NUMBER" --comment "$COMMENT"
-            gh issue unpin "$ISSUE_NUMBER"
-          fi
