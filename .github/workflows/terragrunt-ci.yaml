@@ -127,17 +127,16 @@ jobs:
           RUN_NUMBER: "${{ github.run_number }}"
           RUN_URL: "${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
         run: |
+          uv run .github/scripts/generate-comment.py plan_output.txt issue_body.txt drift
+
           ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
           if [ -n "$ISSUE_NUMBER" ]; then
             gh issue reopen "$ISSUE_NUMBER"
+            gh issue edit "$ISSUE_NUMBER" --body-file issue_body.txt
           else
-            gh issue create --title "$ISSUE_TITLE" --body ""
-            sleep 3 # Wait for issue to be created
-            ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
+            gh issue create --title "$ISSUE_TITLE" --body-file issue_body.txt
+            ISSUE_NUMBER=$(gh issue list --state "open" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
           fi
-
-          uv run .github/scripts/generate-comment.py plan_output.txt issue_body.txt drift
-          gh issue edit "$ISSUE_NUMBER" --body-file issue_body.txt
           gh issue pin "$ISSUE_NUMBER"
 
       - name: Close GitHub Issue if No Drift
