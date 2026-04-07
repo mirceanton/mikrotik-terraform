@@ -43,13 +43,21 @@ inputs = {
         [for v in local.mikrotik_globals.vlans : v.name]
       )
     }
+
     INTERNET_ONLY = {
       comment    = "VLANs with internet-only access"
-      interfaces = [local.mikrotik_globals.vlans.Guest.name, local.mikrotik_globals.vlans.Untrusted.name]
+      interfaces = [
+        local.mikrotik_globals.vlans.Guest.name,
+        local.mikrotik_globals.vlans.Untrusted.name,
+        local.mikrotik_globals.vlans.Management.name
+      ]
     }
     CLIENTS = {
       comment    = "VLANs allowed limited access to exposed services"
-      interfaces = [local.mikrotik_globals.vlans.Untrusted.name, local.wireguard_interface]
+      interfaces = [local.mikrotik_globals.vlans.Untrusted.name,
+      local.mikrotik_globals.vlans.Management.name,
+      local.wireguard_interface
+      ]
     }
   }
 
@@ -176,12 +184,6 @@ inputs = {
     # =========================================================================
     # ZONE-BASED RULES
     # =========================================================================
-    "accept-management-forward" = {
-      chain        = "forward"
-      action       = "accept"
-      in_interface = local.mikrotik_globals.vlans.Management.name
-      order        = 1000
-    }
     "accept-management-input" = {
       chain        = "input"
       action       = "accept"
