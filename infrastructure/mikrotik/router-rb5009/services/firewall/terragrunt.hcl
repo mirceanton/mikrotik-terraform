@@ -14,6 +14,8 @@ locals {
   mirkphone_ip     = "172.16.69.11"
   mirkbook_ip      = "172.16.69.14"
   kubernetes_gw_ip = "10.0.10.250"
+  mqtt_svc_ip      = "10.0.10.252"
+  minecraft_svc_ip = "10.0.10.253"
   nas_svc_ip       = "10.0.10.245"
 }
 
@@ -29,7 +31,12 @@ inputs = {
     }
     "exposed-services" = {
       comment   = "Services exposed to other VLANs"
-      addresses = [local.kubernetes_gw_ip, local.nas_svc_ip]
+      addresses = [
+        local.kubernetes_gw_ip,
+        local.mqtt_svc_ip,
+        local.minecraft_svc_ip,
+        local.nas_svc_ip
+      ]
     }
   }
 
