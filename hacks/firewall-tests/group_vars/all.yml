@@ -1,0 +1,30 @@
+# IPs of probe VMs — fill these in after spinning up the VMs
+probes:
+  trusted:    "192.168.69.X"    # TODO
+  untrusted:  "192.168.42.X"    # TODO
+  guest:      "172.16.42.X"     # TODO
+  services:   "10.0.10.X"       # TODO
+  management: "10.0.0.X"        # TODO
+  storage:    "10.255.255.X"    # TODO
+
+# Exposed service IPs (matches firewall exposed-services address list).
+# These tests require the actual services to be running — if k8s or NAS is
+# down, the test fails even though the firewall rule is correct.
+exposed:
+  kubernetes_gw:
+    host: "10.0.10.250"
+    port: 443   # adjust to a port you know is open on your k8s cluster
+  nas_svc:
+    host: "10.0.10.245"
+    port: 443   # adjust to a known-open port on the NAS (e.g. 5000 for Synology DSM)
+
+# Reliable internet test target (Cloudflare DNS over HTTPS)
+internet:
+  host: "1.1.1.1"
+  port: 443
+
+# Port used for inter-probe tests (SSH on the probe VMs)
+probe_port: 22
+
+# How long nc waits before giving up — keep short since drop rules don't RST
+nc_timeout: 2

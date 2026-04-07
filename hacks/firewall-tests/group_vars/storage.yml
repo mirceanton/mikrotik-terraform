@@ -1,0 +1,9 @@
+allowed_tests: []
+
+blocked_tests:
+  - { name: "storage -> internet",          host: "{{ internet.host }}",     port: "{{ internet.port }}" }
+  - { name: "storage -> trusted probe",     host: "{{ probes.trusted }}",    port: "{{ probe_port }}" }
+  - { name: "storage -> untrusted probe",   host: "{{ probes.untrusted }}",  port: "{{ probe_port }}" }
+  - { name: "storage -> guest probe",       host: "{{ probes.guest }}",      port: "{{ probe_port }}" }
+  - { name: "storage -> services probe",    host: "{{ probes.services }}",   port: "{{ probe_port }}" }
+  - { name: "storage -> management probe",  host: "{{ probes.management }}", port: "{{ probe_port }}" }
