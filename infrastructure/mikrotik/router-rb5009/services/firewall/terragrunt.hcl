@@ -192,7 +192,7 @@ inputs = {
     # =========================================================================
     # ZONE-BASED RULES
     # =========================================================================
-    "accept-management-input" = {
+    "allow-MANAGEMENT-input" = {
       chain        = "input"
       action       = "accept"
       in_interface = local.mikrotik_globals.vlans.Management.name
@@ -206,7 +206,7 @@ inputs = {
       order              = 1110
     }
 
-    "accept-wireguard-trusted-input" = {
+    "allow-WG-TRUSTED-input" = {
       chain            = "input"
       action           = "accept"
       in_interface     = local.wireguard_interface
