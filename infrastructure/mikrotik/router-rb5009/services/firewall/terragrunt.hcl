@@ -198,6 +198,13 @@ inputs = {
       in_interface = local.mikrotik_globals.vlans.Management.name
       order        = 1100
     }
+    "allow-MANAGEMENT-to-LAN" = {
+      chain              = "forward"
+      action             = "accept"
+      in_interface       = local.mikrotik_globals.vlans.Management.name
+      out_interface_list = "LAN"
+      order              = 1110
+    }
 
     "accept-wireguard-trusted-input" = {
       chain            = "input"
@@ -206,12 +213,13 @@ inputs = {
       src_address_list = "wireguard-trusted"
       order            = 1200
     }
-    "accept-wireguard-trusted-forward" = {
-      chain            = "forward"
-      action           = "accept"
-      in_interface     = local.wireguard_interface
-      src_address_list = "wireguard-trusted"
-      order            = 1300
+    "allow-WG-TRUSTED-to-LAN" = {
+      chain              = "forward"
+      action             = "accept"
+      in_interface       = local.wireguard_interface
+      src_address_list   = "wireguard-trusted"
+      out_interface_list = "LAN"
+      order              = 1300
     }
 
     "allow-INTERNET_ONLY-to-internet" = {
