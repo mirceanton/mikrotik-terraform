@@ -1,6 +1,8 @@
 ---
 version: '3'
 
+dotenv: [".env"]
+
 includes:
   lint: .taskfiles/lint.yaml
   tg: .taskfiles/terragrunt.yaml
