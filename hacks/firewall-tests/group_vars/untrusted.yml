@@ -1,0 +1,11 @@
+allowed_tests:
+  - { name: "untrusted -> internet",              host: "{{ internet.host }}",                    port: "{{ internet.port }}" }
+  - { name: "untrusted -> exposed k8s gateway",   host: "{{ exposed.kubernetes_gw.host }}",       port: "{{ exposed.kubernetes_gw.port }}" }
+  - { name: "untrusted -> exposed NAS service",   host: "{{ exposed.nas_svc.host }}",             port: "{{ exposed.nas_svc.port }}" }
+
+blocked_tests:
+  - { name: "untrusted -> trusted probe",                   host: "{{ probes.trusted }}",     port: "{{ probe_port }}" }
+  - { name: "untrusted -> guest probe",                     host: "{{ probes.guest }}",       port: "{{ probe_port }}" }
+  - { name: "untrusted -> management probe",                host: "{{ probes.management }}",  port: "{{ probe_port }}" }
+  - { name: "untrusted -> storage probe",                   host: "{{ probes.storage }}",     port: "{{ probe_port }}" }
+  - { name: "untrusted -> services probe (not in exposed)", host: "{{ probes.services }}",    port: "{{ probe_port }}" }

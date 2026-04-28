@@ -1,0 +1,55 @@
+---
+- name: Install test dependencies
+  hosts: all
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Install netcat-openbsd
+      ansible.builtin.apt:
+        name: netcat-openbsd
+        state: present
+        update_cache: false
+      # Services and Storage VMs have no internet access, so apt may fail.
+      # Pre-install netcat-openbsd on those VMs when provisioning.
+      ignore_errors: "{{ 'services' in group_names or 'storage' in group_names }}"
+
+- name: Firewall connectivity tests
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Run allowed connectivity checks
+      ansible.builtin.command: "nc -z -w {{ nc_timeout }} {{ item.host }} {{ item.port }}"
+      loop: "{{ allowed_tests | default([]) }}"
+      loop_control:
+        label: "{{ item.name }}"
+      changed_when: false
+      ignore_errors: true
+      register: allowed_results
+
+    - name: Assert allowed connections succeeded
+      ansible.builtin.assert:
+        that: item.rc == 0
+        fail_msg:    "FAIL [should be reachable]: {{ item.item.name }}"
+        success_msg: "PASS [reachable]:           {{ item.item.name }}"
+      loop: "{{ allowed_results.results | default([]) }}"
+      loop_control:
+        label: "{{ item.item.name }}"
+
+    - name: Run blocked connectivity checks
+      ansible.builtin.command: "nc -z -w {{ nc_timeout }} {{ item.host }} {{ item.port }}"
+      loop: "{{ blocked_tests | default([]) }}"
+      loop_control:
+        label: "{{ item.name }}"
+      changed_when: false
+      ignore_errors: true
+      register: blocked_results
+
+    - name: Assert blocked connections failed
+      ansible.builtin.assert:
+        that: item.rc != 0
+        fail_msg:    "FAIL [should be blocked]: {{ item.item.name }}"
+        success_msg: "PASS [blocked]:           {{ item.item.name }}"
+      loop: "{{ blocked_results.results | default([]) }}"
+      loop_control:
+        label: "{{ item.item.name }}"

@@ -1,0 +1,41 @@
+all:
+  vars:
+    ansible_user: debian
+    ansible_python_interpreter: /usr/bin/python3
+
+  children:
+    trusted:
+      hosts:
+        probe-trusted:
+          ansible_host: 192.168.69.X  # TODO: set after spinning up VM
+
+    untrusted:
+      hosts:
+        probe-untrusted:
+          ansible_host: 192.168.42.X  # TODO
+
+    guest:
+      hosts:
+        probe-guest:
+          ansible_host: 172.16.42.X   # TODO
+
+    services:
+      hosts:
+        probe-services:
+          # NOTE: DHCP has no gateway for this VLAN — set a static default route
+          # to 10.0.10.1 when provisioning this VM, otherwise return traffic breaks.
+          # Also pre-install netcat-openbsd since this VM cannot reach the internet.
+          ansible_host: 10.0.10.X     # TODO
+
+    management:
+      hosts:
+        probe-management:
+          ansible_host: 10.0.0.X      # TODO
+
+    storage:
+      hosts:
+        probe-storage:
+          # NOTE: DHCP has no gateway for this VLAN — set a static default route
+          # to 10.255.255.1 when provisioning this VM, otherwise return traffic breaks.
+          # Also pre-install netcat-openbsd since this VM cannot reach the internet.
+          ansible_host: 10.255.255.X  # TODO
