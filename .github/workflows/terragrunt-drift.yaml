@@ -19,7 +19,10 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup mise
-        run: mise install
+        uses: nick-fields/retry@v4.0.0
+        with:
+          command: mise install
+          max_attempts: 3
 
       - name: Load Secrets
         uses: ./.github/actions/load-secrets
@@ -28,7 +31,9 @@ jobs:
           op-connect-token: ${{ secrets.OP_CONNECT_TOKEN }}
 
       - name: Terragrunt Init
-        run: terragrunt run --all -- init -upgrade
+        uses: nick-fields/retry@v4.0.0
+        with:
+          command: terragrunt run --all -- init -upgrade
         env:
           OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
           OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
@@ -38,19 +43,21 @@ jobs:
         env:
           OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
           OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
-        run: |
-          set -o pipefail
-          terragrunt run --all --no-color -- plan --detailed-exitcode 2>&1 | tee plan_output.txt || true
-          TG_EXIT="${PIPESTATUS[0]}"
+        uses: nick-fields/retry@v4.0.0
+        with:
+          command: |
+            set -o pipefail
+            terragrunt run --all --no-color -- plan --detailed-exitcode 2>&1 | tee plan_output.txt || true
+            TG_EXIT="${PIPESTATUS[0]}"
 
-          if [ "$TG_EXIT" -eq 0 ]; then
-            echo "drift_detected=false" >> "$GITHUB_OUTPUT"
-          elif [ "$TG_EXIT" -eq 2 ]; then
-            echo "drift_detected=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "Terragrunt plan failed with exit code $TG_EXIT" >&2
-            exit "$TG_EXIT"
-          fi
+            if [ "$TG_EXIT" -eq 0 ]; then
+              echo "drift_detected=false" >> "$GITHUB_OUTPUT"
+            elif [ "$TG_EXIT" -eq 2 ]; then
+              echo "drift_detected=true" >> "$GITHUB_OUTPUT"
+            else
+              echo "Terragrunt plan failed with exit code $TG_EXIT" >&2
+              exit "$TG_EXIT"
+            fi
 
       - name: Upload Plan Output
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -61,6 +68,7 @@ jobs:
 
   issue-management:
     runs-on: ubuntu-latest
+    container: ghcr.io/mirceanton/actions-runner:2.334
     needs: terragrunt-plan
     env:
       ISSUE_TITLE: "⚠️ Terragrunt Drift Detected ⚠️"
@@ -69,7 +77,10 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Setup mise
-        uses: jdx/mise-action@1648a7812b9aeae629881980618f079932869151 # v4.0.1
+        uses: nick-fields/retry@v4.0.0
+        with:
+          command: mise install
+          max_attempts: 3
 
       - name: Download Plan Output
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
