@@ -24,7 +24,7 @@ locals {
   }
   default_users = {
     metrics = { group = "metrics", comment = "Prometheus metrics user", inactivity_policy = "logout", inactivity_timeout = "00:05:00" }
-    mircea = { group = "full", comment = "me, lol", inactivity_policy = "logout", inactivity_timeout = "00:05:00" }
+    mircea  = { group = "full", comment = "me, lol", inactivity_policy = "logout", inactivity_timeout = "00:05:00" }
   }
 
   # ===============================================================================================

@@ -214,11 +214,11 @@ inputs = {
       order            = 1200
     }
     "allow-WG-TRUSTED-to-everything" = {
-      chain              = "forward"
-      action             = "accept"
-      in_interface       = local.wireguard_interface
-      src_address_list   = "wireguard-trusted"
-      order              = 1300
+      chain            = "forward"
+      action           = "accept"
+      in_interface     = local.wireguard_interface
+      src_address_list = "wireguard-trusted"
+      order            = 1300
     }
 
     "allow-INTERNET_ONLY-to-internet" = {
