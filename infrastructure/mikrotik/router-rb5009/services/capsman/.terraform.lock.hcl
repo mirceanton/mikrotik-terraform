@@ -2,25 +2,31 @@
 # Manual edits may be lost in future updates.
 
 provider "registry.opentofu.org/hashicorp/random" {
-  version = "3.8.1"
+  version     = "3.9.0"
+  constraints = ">= 3.0.0"
   hashes = [
-    "h1:EHn3jsqOKhWjbg0X+psk0Ww96yz3N7ASqEKKuFvDFwo=",
-    "h1:LsYuJLZcYl1RiH7Hd3w90Ra5+k5cNqfdRUQXItkTI8Y=",
-    "zh:25c458c7c676f15705e872202dad7dcd0982e4a48e7ea1800afa5fc64e77f4c8",
-    "zh:2edeaf6f1b20435b2f81855ad98a2e70956d473be9e52a5fdf57ccd0098ba476",
-    "zh:44becb9d5f75d55e36dfed0c5beabaf4c92e0a2bc61a3814d698271c646d48e7",
-    "zh:7699032612c3b16cc69928add8973de47b10ce81b1141f30644a0e8a895b5cd3",
-    "zh:86d07aa98d17703de9fbf402c89590dc1e01dbe5671dd6bc5e487eb8fe87eee0",
-    "zh:8c411c77b8390a49a8a1bc9f176529e6b32369dd33a723606c8533e5ca4d68c1",
-    "zh:a5ecc8255a612652a56b28149994985e2c4dc046e5d34d416d47fa7767f5c28f",
-    "zh:aea3fe1a5669b932eda9c5c72e5f327db8da707fe514aaca0d0ef60cb24892f9",
-    "zh:f56e26e6977f755d7ae56fa6320af96ecf4bb09580d47cb481efbf27f1c5afff",
+    "h1:U8KXqGCoNI9/guYbTvzgdtVk3fRthoG0UXwm1JoEpIs=",
+    "zh:03f1114cc20b8913523735ab76e0f0a2b16ce13c92923a53304bf85f07fc0dbc",
+    "zh:105b678ee72322a3067f105d7e05e940f6143238f377f6e87ff4ec909246ac2a",
+    "zh:55f3bbf13ea18cbace61a706566a80f25f33fe2b1780b6f3d7b582af2a05b6d2",
+    "zh:63adf996db48f082f7a6351eb485e219cd88795fc71e6ec60a837263ab0d2cb1",
+    "zh:7e99550738a4e3cc68b8a467714b0d69371025fe95e3326d5323d026d55653e9",
+    "zh:8342b54af3a18a37e075eeae61be57f4de2ba71b35d95c5075d402dd2c1f289d",
+    "zh:83ee18e32ac9dd5fc91298554b7c4cfa4c3a1db50f4c797945637cc93c0844ae",
+    "zh:993ecc0adbf6bd535a59fbc9b735d8c33950e6f6eb5e621d750da9b71d65d80a",
+    "zh:ad722bc59d4edbf1415e827fc007c0efe6e0e9462d5568bae20b34be1058a261",
+    "zh:ae9448e1f87b2f9a6c5197a0e9862162ec6b137cb3a3835e11522995d8939e7c",
+    "zh:bc9cdd3aac784f759125c6627f6f6416e8726a1c184eb9cf3e55b9edbc94c627",
+    "zh:c8e35b89572ba1c40a9b20022e033a3395fb8d42e7604d50c900f193ba10382e",
+    "zh:e2deaa8a9975ef81d9f62baed12c41286918b0a10908e0e031f13f69a3b730a1",
+    "zh:ee39707557210a0ab1098aa357d2cdfe502e5a312d0dbdffb09d08facc4d3fc5",
+    "zh:f81afe4eb63e8aa9e0ea71be6c990f0dc69cb360e7191c0742a991f4a5081b64",
   ]
 }
 
 provider "registry.opentofu.org/terraform-routeros/routeros" {
   version     = "1.99.1"
-  constraints = "1.99.1"
+  constraints = ">= 1.99.0"
   hashes = [
     "h1:DweIuEd2oFIBgsc8oAsPR/X4ioHmXBH0UsSMJGtp0uc=",
     "h1:slX5FrpPj7cboNLs4mb8UULrEqO18Q41SleUc2SaaXg=",
