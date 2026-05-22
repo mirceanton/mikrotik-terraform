@@ -23,8 +23,10 @@ inputs = {
   ntp_servers              = [local.mikrotik_globals.cloudflare_ntp]
   users = merge(local.mikrotik_globals.default_users, {
     external-dns = {
-      group   = "external-dns"
-      comment = "External DNS user"
+      group              = "external-dns"
+      comment            = "External DNS user"
+      inactivity_policy  = "logout"
+      inactivity_timeout = "00:02:00"
     }
   })
   groups = merge(local.mikrotik_globals.default_groups, {
