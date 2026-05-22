@@ -22,6 +22,7 @@ jobs:
         uses: nick-fields/retry@v4.0.0
         with:
           command: mise install
+          timeout_minutes: 3
           max_attempts: 3
 
       - name: Load Secrets
@@ -33,6 +34,8 @@ jobs:
       - name: Terragrunt Init
         uses: nick-fields/retry@v4.0.0
         with:
+          timeout_minutes: 5
+          max_attempts: 3
           command: terragrunt run --all -- init -upgrade
         env:
           OP_CONNECT_HOST: ${{ secrets.OP_CONNECT_HOST }}
@@ -45,6 +48,8 @@ jobs:
           OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
         uses: nick-fields/retry@v4.0.0
         with:
+          timeout_minutes: 10
+          max_attempts: 3
           command: |
             set -o pipefail
             terragrunt run --all --no-color -- plan --detailed-exitcode 2>&1 | tee plan_output.txt || true
