@@ -68,7 +68,7 @@ inputs = {
     "ether21"      = {}
     "ether22"      = { comment = "JetKVM", untagged = local.mikrotik_globals.vlans.Management.name }
     "ether23"      = { comment = "HEX Uplink", tagged = local.mikrotik_globals.all_vlans }
-    "ether24"      = { comment = "Mirkputer 1g", untagged = local.mikrotik_globals.vlans.Trusted.name }
+    "ether24"      = { comment = "Mirkputer 1g", untagged = local.mikrotik_globals.vlans.Guest.name }
     "sfp-sfpplus1" = { comment = "CRS317", tagged = local.mikrotik_globals.all_vlans }
     "sfp-sfpplus2" = {} #! TODO: LAGG to CRS317 at some point
   }
