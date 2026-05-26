@@ -71,9 +71,9 @@ inputs = {
     "ether24"      = {}
     "sfp-sfpplus1" = { comment = "CRS317", tagged = local.mikrotik_globals.all_vlans }
     "sfp-sfpplus2" = {
-      comment = "Mirkputer",
+      comment  = "Mirkputer",
       untagged = local.mikrotik_globals.vlans.Guest.name
-      tagged   = local.mikrotik_globals.vlans.Trusted.name
+      tagged   = [local.mikrotik_globals.vlans.Trusted.name]
     }
   }
 }
