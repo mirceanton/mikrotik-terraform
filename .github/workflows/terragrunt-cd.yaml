@@ -77,7 +77,7 @@ jobs:
 
   comment-commit:
     runs-on: ubuntu-latest
-    container: ghcr.io/mirceanton/actions-runner:2.334
+    container: ghcr.io/mirceanton/actions-runner:2.335
     if: always()
     needs: terragrunt-apply
     steps:

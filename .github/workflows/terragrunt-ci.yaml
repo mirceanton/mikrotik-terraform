@@ -73,7 +73,7 @@ jobs:
 
   comment-pr:
     runs-on: ubuntu-latest
-    container: ghcr.io/mirceanton/actions-runner:2.334
+    container: ghcr.io/mirceanton/actions-runner:2.335
     if: always() && github.event_name == 'pull_request'
     needs: terragrunt-plan
     steps:

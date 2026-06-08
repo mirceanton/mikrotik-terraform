@@ -73,7 +73,7 @@ jobs:
 
   issue-management:
     runs-on: ubuntu-latest
-    container: ghcr.io/mirceanton/actions-runner:2.334
+    container: ghcr.io/mirceanton/actions-runner:2.335
     needs: terragrunt-plan
     env:
       ISSUE_TITLE: "⚠️ Terragrunt Drift Detected ⚠️"
