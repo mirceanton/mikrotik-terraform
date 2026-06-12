@@ -47,7 +47,7 @@ inputs = {
     "sfp-sfpplus13" = {}
     "sfp-sfpplus14" = {} #! TODO: LAGGed to CRS326 at some point
     "sfp-sfpplus15" = { comment = "CRS326", tagged = local.mikrotik_globals.all_vlans }
-    "sfp-sfpplus16" = { comment = "Mirkputer 10G", untagged = local.mikrotik_globals.vlans.Storage.name, l2mtu = 9216, mtu = 9000 }
+    "sfp-sfpplus16" = {}
     "ether1"        = {}
   }
   bond_interfaces = {
