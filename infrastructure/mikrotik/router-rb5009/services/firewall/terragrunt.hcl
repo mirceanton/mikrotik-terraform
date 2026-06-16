@@ -11,12 +11,13 @@ locals {
   wireguard_interface = "wg1"
   pppoe_interface     = "PPPoE-Digi"
 
-  mirkphone_ip     = "172.16.69.11"
-  mirkbook_ip      = "172.16.69.14"
-  kubernetes_gw_ip = "10.0.10.250"
-  mqtt_svc_ip      = "10.0.10.252"
-  minecraft_svc_ip = "10.0.10.253"
-  nas_svc_ip       = "10.0.10.245"
+  mirkphone_ip              = "172.16.69.11"
+  mirkbook_ip               = "172.16.69.14"
+  kubernetes_gw_ip          = "10.0.10.250"
+  kubernetes_gw_external_ip = "10.0.10.249"
+  mqtt_svc_ip               = "10.0.10.252"
+  minecraft_svc_ip          = "10.0.10.253"
+  nas_svc_ip                = "10.0.10.245"
 }
 
 terraform {
@@ -77,6 +78,26 @@ inputs = {
       out_interface_list = "WAN"
       order              = 100
     }
+    "port-forward-80" = {
+      chain             = "dstnat"
+      action            = "dst-nat"
+      protocol          = "tcp"
+      dst_port          = "80" #? external port
+      in_interface_list = "WAN"
+      to_addresses      = local.kubernetes_gw_external_ip
+      to_ports          = "80"
+      order             = 101
+    }
+    "port-forward-443" = {
+      chain             = "dstnat"
+      action            = "dst-nat"
+      protocol          = "tcp"
+      dst_port          = "443" #? external port
+      in_interface_list = "WAN"
+      to_addresses      = local.kubernetes_gw_external_ip
+      to_ports          = "443"
+      order             = 102
+    }
   }
 
   filter_rules = {
@@ -119,6 +140,16 @@ inputs = {
       in_interface     = local.mikrotik_globals.vlans.Management.name
       out_interface    = local.mikrotik_globals.vlans.Services.name
       order            = 122
+    }
+    "allow-WAN-to-ingress" = {
+      chain             = "forward"
+      action            = "accept"
+      in_interface_list = "WAN"
+      out_interface     = local.mikrotik_globals.vlans.Services.name
+      dst_address       = local.kubernetes_gw_external_ip
+      protocol          = "tcp"
+      dst_port          = "80,443"
+      order             = 125
     }
     "drop-invalid-forward" = {
       chain            = "forward"
