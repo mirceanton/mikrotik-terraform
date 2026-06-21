@@ -35,7 +35,7 @@ inputs = {
                   [Peer]
                   PublicKey = ${dependency.wireguard-server.outputs.public_key}
                   Endpoint = vpn.mirceanton.com:${dependency.wireguard-server.outputs.listen_port}
-                  AllowedIPs = 10.0.10.8/32
+                  AllowedIPs = 10.0.10.0/24
                   EOT
               },
             ]
