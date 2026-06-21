@@ -1,6 +1,10 @@
 include "root" { path = find_in_parent_folders("root.hcl") }
 include "provider" { path = find_in_parent_folders("provider.hcl") }
 
+locals {
+  peers_config = read_terragrunt_config(find_in_parent_folders("mikrotik/router-rb5009/services/wireguard/peers.hcl"))
+}
+
 dependency "wireguard_server" {
   config_path = find_in_parent_folders("wireguard/server")
 }
@@ -13,14 +17,9 @@ inputs = {
   interface = dependency.wireguard_server.outputs.name
 
   peers = {
-    "ashome"     = { allowed_address = ["172.16.69.10/32", "192.168.10.0/24"], comment = "AS Home" }
-    "mirkphone"  = { allowed_address = ["172.16.69.11/32"], comment = "Mirkphone" }
-    "soarephone" = { allowed_address = ["172.16.69.12/32"], comment = "Cristi Soare Mobil" }
-    "vladputer"  = { allowed_address = ["172.16.69.13/32"], comment = "Vlad Computer" }
-    "mirkbook"   = { allowed_address = ["172.16.69.14/32"], comment = "Mirk MacBook" }
-    "bomkphone"  = { allowed_address = ["172.16.69.15/32"], comment = "BomkiPhone" }
-    "mogavision" = { allowed_address = ["172.16.69.16/32"], comment = "Televizor Moga" },
-    "anabook"    = { allowed_address = ["172.16.69.17/32"], comment = "Ana Book" }
-    "gradphone"  = { allowed_address = ["172.16.69.18/32"], comment = "Cristi Gradi Phone" }
+    for name, peer in local.peers_config.locals.peers : name => {
+      allowed_address = concat([peer.address], peer.extra_routes)
+      comment         = peer.comment
+    }
   }
 }
