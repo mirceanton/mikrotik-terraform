@@ -29,8 +29,11 @@ inputs = {
                 type  = "STRING"
                 value = <<-EOT
                   [Interface]
+                  # Name = mirceanton
+                  # PublicKey = ${keys.public_key}
                   PrivateKey = ${keys.private_key}
                   Address = ${local.peers_config.locals.peers[name].address}
+                  DNS = 10.0.10.1
 
                   [Peer]
                   PublicKey = ${dependency.wireguard-server.outputs.public_key}
