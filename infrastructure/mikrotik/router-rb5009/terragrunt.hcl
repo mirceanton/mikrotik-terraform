@@ -6,6 +6,11 @@ include "provider" {
 
 locals {
   mikrotik_globals = read_terragrunt_config(find_in_parent_folders("globals.hcl")).locals
+
+  # DMZ VLAN for the Talos single-node cluster hosting public-facing services.
+  # Defined router-locally (not in globals) so it is NOT trunked to any switch -
+  # the node connects directly to ether7 on this router.
+  dmz_vlan = { name = "DMZ", vlan_id = 1030 }
 }
 
 terraform {
@@ -38,7 +43,7 @@ inputs = {
 
   mac_server_interfaces = local.mikrotik_globals.mac_server_interfaces
 
-  vlans = local.mikrotik_globals.vlans
+  vlans = merge(local.mikrotik_globals.vlans, { DMZ = local.dmz_vlan })
   ethernet_interfaces = {
     "ether1" = { comment = "Digi Uplink", bridge_port = false }
     "ether2" = { comment = "Living Room", tagged = local.mikrotik_globals.all_vlans }
@@ -46,7 +51,7 @@ inputs = {
     "ether4" = {}
     "ether5" = {}
     "ether6" = {}
-    "ether7" = {}
+    "ether7" = { comment = "DMZ - Talos public node", untagged = local.dmz_vlan.name }
     "ether8" = {
       comment  = "Access Point",
       untagged = local.mikrotik_globals.vlans.Management.name

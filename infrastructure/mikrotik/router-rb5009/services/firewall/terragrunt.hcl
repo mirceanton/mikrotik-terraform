@@ -11,6 +11,11 @@ locals {
   wireguard_interface = "wg1"
   pppoe_interface     = "PPPoE-Digi"
 
+  # DMZ VLAN (Talos public-facing single-node cluster). Defined router-locally
+  # in router-rb5009/terragrunt.hcl, so referenced here by literal name.
+  dmz_vlan_name = "DMZ"
+  dmz_node_ip   = "10.0.30.10"
+
   mirkphone_ip     = "172.16.69.11"
   mirkbook_ip      = "172.16.69.14"
   kubernetes_gw_ip = "10.0.10.250"
@@ -48,7 +53,7 @@ inputs = {
     LAN = {
       comment = "All Local Interfaces"
       interfaces = concat(
-        ["bridge", local.wireguard_interface],
+        ["bridge", local.wireguard_interface, local.dmz_vlan_name],
         [for v in local.mikrotik_globals.vlans : v.name]
       )
     }
@@ -58,7 +63,8 @@ inputs = {
       interfaces = [
         local.mikrotik_globals.vlans.Guest.name,
         local.mikrotik_globals.vlans.Untrusted.name,
-        local.mikrotik_globals.vlans.Management.name
+        local.mikrotik_globals.vlans.Management.name,
+        local.dmz_vlan_name
       ]
     }
     CLIENTS = {
@@ -76,6 +82,17 @@ inputs = {
       action             = "masquerade"
       out_interface_list = "WAN"
       order              = 100
+    }
+    # Forward public HTTP/HTTPS to the Talos DMZ node. No to_ports => ports are
+    # preserved. Paired with the "allow-WAN-to-dmz-web" forward-accept rule below.
+    "port-forward-dmz-web" = {
+      chain             = "dstnat"
+      action            = "dst-nat"
+      in_interface_list = "WAN"
+      protocol          = "tcp"
+      dst_port          = "80,443"
+      to_addresses      = local.dmz_node_ip
+      order             = 200
     }
   }
 
@@ -235,6 +252,17 @@ inputs = {
       out_interface     = local.mikrotik_globals.vlans.Services.name
       dst_address_list  = "exposed-services"
       order             = 1401
+    }
+    # Permit the dst-nat'd public web traffic to reach the DMZ node. Required so
+    # new WAN->DMZ connections are not caught by "drop-all-forward" (order 9000).
+    "allow-WAN-to-dmz-web" = {
+      chain             = "forward"
+      action            = "accept"
+      in_interface_list = "WAN"
+      dst_address       = local.dmz_node_ip
+      protocol          = "tcp"
+      dst_port          = "80,443"
+      order             = 1410
     }
 
     # ========================================================================
