@@ -10,7 +10,7 @@ locals {
 }
 
 terraform {
-  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/capsman?ref=v0.3.0"
+  source = "git::https://github.com/mirceanton/terraform-modules-routeros.git//modules/capsman?ref=v0.4.0"
 }
 
 inputs = {
