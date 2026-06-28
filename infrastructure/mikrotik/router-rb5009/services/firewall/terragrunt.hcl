@@ -220,6 +220,13 @@ inputs = {
       src_address_list = "wireguard-trusted"
       order            = 1300
     }
+    "allow-LAN-through-WG" = {
+      chain             = "forward"
+      action            = "accept"
+      in_interface_list = "LAN"
+      out_interface     = "wg1"
+      order             = 1310
+    }
 
     "allow-INTERNET_ONLY-to-internet" = {
       chain              = "forward"
