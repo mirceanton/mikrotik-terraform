@@ -21,11 +21,16 @@ jobs:
       - name: Setup mise
         uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
 
-      - name: Load Secrets
-        uses: ./.github/actions/load-secrets
+      - name: Configure 1Password Connect
+        uses: 1password/load-secrets-action/configure@3a12b0ab99d9cd590a3e9b5a90ea017210ed9556 # v4.0.1
         with:
-          op-connect-host: ${{ secrets.OP_CONNECT_HOST }}
-          op-connect-token: ${{ secrets.OP_CONNECT_TOKEN }}
+          connect-host: ${{ secrets.OP_CONNECT_HOST }}
+          connect-token: ${{ secrets.OP_CONNECT_TOKEN }}
+
+      - name: Load Secrets
+        uses: 1password/load-secrets-action@3a12b0ab99d9cd590a3e9b5a90ea017210ed9556 # v4.0.1
+        with: {export-env: true}
+        env: { OP_ENV_FILE: ".env.1pass" }
 
       - name: Terragrunt Init
         uses: nick-fields/retry@ad984534de44a9489a53aefd81eb77f87c70dc60 # v4.0.0
