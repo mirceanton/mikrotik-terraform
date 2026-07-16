@@ -35,7 +35,7 @@ inputs = {
   ethernet_interfaces = {
     "ether1" = { comment = "Rack Downlink", tagged = local.mikrotik_globals.all_vlans }
     "ether2" = { comment = "Zigbee Dongle", untagged = local.mikrotik_globals.vlans.Management.name }
-    "ether3" = {}
+    "ether3" = { comment = "Living Room Pi", untagged = local.mikrotik_globals.vlans.Untrusted.name }
     "ether4" = { comment = "Router Uplink", tagged = local.mikrotik_globals.all_vlans }
     "ether5" = { comment = "Smart TV", untagged = local.mikrotik_globals.vlans.Untrusted.name }
   }
