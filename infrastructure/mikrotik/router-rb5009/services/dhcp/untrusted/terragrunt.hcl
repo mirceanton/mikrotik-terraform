@@ -17,7 +17,7 @@ inputs = {
 
   static_leases = {
     "192.168.42.69"  = { name = "mirkdesk-pi", mac = "E4:5F:01:03:61:34" }
-    "192.168.42.70"  = { name = "livingroom-pi", mac = "DC:A6:32:37:D3:DD" }
+    "192.168.42.70"  = { name = "livingroom-pi", mac = "DC:A6:32:37:D3:DC" }
     "192.168.42.180" = { name = "bomkprinter", mac = "58:05:D9:3C:0A:C1" }
     "192.168.42.181" = { name = "bambu-printer", mac = "9C:04:B6:2C:E8:F6" }
     "192.168.42.245" = { name = "nas", mac = "BC:24:11:6C:09:FB" }
