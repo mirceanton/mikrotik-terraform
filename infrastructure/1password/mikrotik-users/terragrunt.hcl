@@ -3,6 +3,7 @@ dependency "switch-crs326" { config_path = find_in_parent_folders("mikrotik/swit
 dependency "switch-hex" { config_path = find_in_parent_folders("mikrotik/switch-hex") }
 dependency "switch-crs317" { config_path = find_in_parent_folders("mikrotik/switch-crs317") }
 dependency "router-rb5009" { config_path = find_in_parent_folders("mikrotik/router-rb5009") }
+dependency "ap-capxl" { config_path = find_in_parent_folders("mikrotik/ap-capxl") }
 
 terraform {
   source = "git::https://github.com/mirceanton/terraform-modules-1password.git//modules/1password-item?ref=v0.1.1"
@@ -16,5 +17,6 @@ inputs = {
     { for user, pass in dependency.switch-hex.outputs.user_passwords : "HEX - ${user}" => { category = "login", username = user, password = pass } },
     { for user, pass in dependency.switch-crs317.outputs.user_passwords : "CRS317 - ${user}" => { category = "login", username = user, password = pass } },
     { for user, pass in dependency.router-rb5009.outputs.user_passwords : "RB5009 - ${user}" => { category = "login", username = user, password = pass } },
+    { for user, pass in dependency.ap-capxl.outputs.user_passwords : "CAPXL - ${user}" => { category = "login", username = user, password = pass } },
   )
 }
