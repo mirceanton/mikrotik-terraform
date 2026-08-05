@@ -24,6 +24,7 @@ inputs = {
   certificate_organization = local.mikrotik_globals.certificate_organization
   certificate_unit         = local.mikrotik_globals.certificate_unit
   disable_ipv6             = local.mikrotik_globals.disable_ipv6
+  bridge_vlan_filtering    = false #? unsure, but I can't get an IP on wifi clients otherwise
   timezone                 = local.mikrotik_globals.timezone
   ntp_servers              = [local.mikrotik_globals.cloudflare_ntp]
   users                    = local.mikrotik_globals.default_users
