@@ -22,5 +22,6 @@ inputs = {
     "mogavision" = { allowed_address = ["172.16.69.16/32"], comment = "Televizor Moga" },
     "anabook"    = { allowed_address = ["172.16.69.17/32"], comment = "Ana Book" }
     "gradphone"  = { allowed_address = ["172.16.69.18/32"], comment = "Cristi Gradi Phone" }
+    "anaphone"   = { allowed_address = ["172.16.69.19/32"], comment = "Ana Phone" }
   }
 }
