@@ -40,26 +40,26 @@ url = "https://github.com/rhysd/actionlint/releases/download/v1.7.12/actionlint_
 url_api = "https://api.github.com/repos/rhysd/actionlint/releases/assets/384924919"
 
 [[tools.awscli]]
-version = "2.35.11"
+version = "2.36.48"
 backend = "aqua:aws/aws-cli"
 
 [tools.awscli."platforms.linux-arm64"]
-url = "https://awscli.amazonaws.com/awscli-exe-linux-aarch64-2.35.11.zip"
+url = "https://awscli.amazonaws.com/awscli-exe-linux-aarch64-2.36.48.zip"
 
 [tools.awscli."platforms.linux-arm64-musl"]
-url = "https://awscli.amazonaws.com/awscli-exe-linux-aarch64-2.35.11.zip"
+url = "https://awscli.amazonaws.com/awscli-exe-linux-aarch64-2.36.48.zip"
 
 [tools.awscli."platforms.linux-x64"]
-url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.35.11.zip"
+url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.36.48.zip"
 
 [tools.awscli."platforms.linux-x64-musl"]
-url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.35.11.zip"
+url = "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.36.48.zip"
 
 [tools.awscli."platforms.macos-arm64"]
-url = "https://awscli.amazonaws.com/AWSCLIV2-2.35.11.pkg"
+url = "https://awscli.amazonaws.com/AWSCLIV2-2.36.48.pkg"
 
 [tools.awscli."platforms.macos-x64"]
-url = "https://awscli.amazonaws.com/AWSCLIV2-2.35.11.pkg"
+url = "https://awscli.amazonaws.com/AWSCLIV2-2.36.48.pkg"
 
 [[tools.gh]]
 version = "2.95.0"
