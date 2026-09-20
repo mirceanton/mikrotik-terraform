@@ -147,36 +147,36 @@ url_api = "https://api.github.com/repos/charmbracelet/glow/releases/assets/39267
 provenance = "cosign"
 
 [[tools.node]]
-version = "26.3.1"
+version = "26.9.0"
 backend = "core:node"
 
 [tools.node."platforms.linux-arm64"]
-checksum = "sha256:2f0829b201e9db20996ae15bce62138df1e3d317775b005778b05cf7b19714f1"
-url = "https://nodejs.org/dist/v26.3.1/node-v26.3.1-linux-arm64.tar.gz"
+checksum = "sha256:d5077591aa38b48d90bf9b3ac10da8d2f40dce289b20294913c58c19f153eb12"
+url = "https://nodejs.org/dist/v26.9.0/node-v26.9.0-linux-arm64.tar.gz"
 
 [tools.node."platforms.linux-arm64-musl"]
-checksum = "sha256:e9d31a59e9164ad4be47e3148fc54964a9c275394f367e127eed1a0b3009c706"
-url = "https://unofficial-builds.nodejs.org/download/release/v26.3.1/node-v26.3.1-linux-arm64-musl.tar.gz"
+checksum = "sha256:b52b747e86ef6d18068f02f43f508a608358c974dc5da8ef270bc823ba4710ca"
+url = "https://unofficial-builds.nodejs.org/download/release/v26.9.0/node-v26.9.0-linux-arm64-musl.tar.gz"
 
 [tools.node."platforms.linux-x64"]
-checksum = "sha256:e892cd615e637edebcf22f9653d80fba63167ad6754d20881fd52cc37be81441"
-url = "https://nodejs.org/dist/v26.3.1/node-v26.3.1-linux-x64.tar.gz"
+checksum = "sha256:03d9104fc4f19652e74480fed11c023d75981464b7292f21a601c3f95ce7d90d"
+url = "https://nodejs.org/dist/v26.9.0/node-v26.9.0-linux-x64.tar.gz"
 
 [tools.node."platforms.linux-x64-musl"]
-checksum = "sha256:4d1a7bebcc0ee2534edc2d5f93cad34435ed4b601766d26b706c043727d4cca5"
-url = "https://unofficial-builds.nodejs.org/download/release/v26.3.1/node-v26.3.1-linux-x64-musl.tar.gz"
+checksum = "sha256:669dd67ec374f7315dbac9e119641d0e4f371519e00c4b692f1f81e7a04b747c"
+url = "https://unofficial-builds.nodejs.org/download/release/v26.9.0/node-v26.9.0-linux-x64-musl.tar.gz"
 
 [tools.node."platforms.macos-arm64"]
-checksum = "sha256:3f624ab0d774553c0d28b968e141d8c676a35a2811fb0b7b356ba9cbdce15f74"
-url = "https://nodejs.org/dist/v26.3.1/node-v26.3.1-darwin-arm64.tar.gz"
+checksum = "sha256:6f3de7ed853ee283b4bf24b6e426618f1d357401ce5815db1866eb85eb4b05d9"
+url = "https://nodejs.org/dist/v26.9.0/node-v26.9.0-darwin-arm64.tar.gz"
 
 [tools.node."platforms.macos-x64"]
-checksum = "sha256:3ec9e5a28c641c088f3d04ad38721bfdedb2f8aa8c031979fa93df08b5a92e58"
-url = "https://nodejs.org/dist/v26.3.1/node-v26.3.1-darwin-x64.tar.gz"
+checksum = "sha256:06b2e742ed9025dc84adc830243b3f731956eac9c321bccd0ede384209af02a8"
+url = "https://nodejs.org/dist/v26.9.0/node-v26.9.0-darwin-x64.tar.gz"
 
 [tools.node."platforms.windows-x64"]
-checksum = "sha256:45001b289ebffe7b22260898f3750059183d8246042b88e8ffa4337e65e6763e"
-url = "https://nodejs.org/dist/v26.3.1/node-v26.3.1-win-x64.zip"
+checksum = "sha256:c8af870b5b3e9789a6cbdb30270e7c212e12d76a7afa7fc7f21b6b21cc22a71b"
+url = "https://nodejs.org/dist/v26.9.0/node-v26.9.0-win-x64.zip"
 
 [[tools.op]]
 version = "2.34.0"
