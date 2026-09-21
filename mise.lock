@@ -243,43 +243,43 @@ url = "https://github.com/opentofu/opentofu/releases/download/v1.12.6/tofu_1.12.
 url_api = "https://api.github.com/repos/opentofu/opentofu/releases/assets/520762708"
 
 [[tools.task]]
-version = "3.51.1"
+version = "3.53.1"
 backend = "aqua:go-task/task"
 
 [tools.task."platforms.linux-arm64"]
-checksum = "sha256:49c58bb00eff2449a5553f3b3e694fc424e0dc04d5c669d8831126daee1000f8"
-url = "https://github.com/go-task/task/releases/download/v3.51.1/task_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/go-task/task/releases/assets/422054392"
+checksum = "sha256:e3ad19101493a0112e1f22ae8ccc54bf03e533b1076a0ca1e6c782a09ad2e588"
+url = "https://github.com/go-task/task/releases/download/v3.53.1/task_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/go-task/task/releases/assets/519645523"
 
 [tools.task."platforms.linux-arm64-musl"]
-checksum = "sha256:49c58bb00eff2449a5553f3b3e694fc424e0dc04d5c669d8831126daee1000f8"
-url = "https://github.com/go-task/task/releases/download/v3.51.1/task_linux_arm64.tar.gz"
-url_api = "https://api.github.com/repos/go-task/task/releases/assets/422054392"
+checksum = "sha256:e3ad19101493a0112e1f22ae8ccc54bf03e533b1076a0ca1e6c782a09ad2e588"
+url = "https://github.com/go-task/task/releases/download/v3.53.1/task_linux_arm64.tar.gz"
+url_api = "https://api.github.com/repos/go-task/task/releases/assets/519645523"
 
 [tools.task."platforms.linux-x64"]
-checksum = "sha256:da7e92f0ff961ef2aae7cfecbad8d1fd2a08d7b09ba968673adf7ff389b243b5"
-url = "https://github.com/go-task/task/releases/download/v3.51.1/task_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/go-task/task/releases/assets/422054344"
+checksum = "sha256:a54a408f6861ff921f6e87774180db31bacd8c1e7c944ca696db9fea49a82fc7"
+url = "https://github.com/go-task/task/releases/download/v3.53.1/task_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/go-task/task/releases/assets/519645449"
 
 [tools.task."platforms.linux-x64-musl"]
-checksum = "sha256:da7e92f0ff961ef2aae7cfecbad8d1fd2a08d7b09ba968673adf7ff389b243b5"
-url = "https://github.com/go-task/task/releases/download/v3.51.1/task_linux_amd64.tar.gz"
-url_api = "https://api.github.com/repos/go-task/task/releases/assets/422054344"
+checksum = "sha256:a54a408f6861ff921f6e87774180db31bacd8c1e7c944ca696db9fea49a82fc7"
+url = "https://github.com/go-task/task/releases/download/v3.53.1/task_linux_amd64.tar.gz"
+url_api = "https://api.github.com/repos/go-task/task/releases/assets/519645449"
 
 [tools.task."platforms.macos-arm64"]
-checksum = "sha256:a0330f0df20dd1187e323f284a7f365c0ea1f2f271c1e154811e9fc4724bed13"
-url = "https://github.com/go-task/task/releases/download/v3.51.1/task_darwin_arm64.tar.gz"
-url_api = "https://api.github.com/repos/go-task/task/releases/assets/422054327"
+checksum = "sha256:85d2d96c2380b33d7855b07b3f7a20dc7ca0eda999a26efa0fb5f6f32b366cd7"
+url = "https://github.com/go-task/task/releases/download/v3.53.1/task_darwin_arm64.tar.gz"
+url_api = "https://api.github.com/repos/go-task/task/releases/assets/519645491"
 
 [tools.task."platforms.macos-x64"]
-checksum = "sha256:08b0a2107c56940e1fc7be15ebd5999f28a867925cfcd619393f8075fef67409"
-url = "https://github.com/go-task/task/releases/download/v3.51.1/task_darwin_amd64.tar.gz"
-url_api = "https://api.github.com/repos/go-task/task/releases/assets/422054326"
+checksum = "sha256:7f1a702d54a789cb818a636039a83df071f4179893133afafa4eba351a7e19ef"
+url = "https://github.com/go-task/task/releases/download/v3.53.1/task_darwin_amd64.tar.gz"
+url_api = "https://api.github.com/repos/go-task/task/releases/assets/519645492"
 
 [tools.task."platforms.windows-x64"]
-checksum = "sha256:422d79dff5afd5a55fb46ae1cfacc7350ec96d4ef27a63a3ec77a5c30a7b0f03"
-url = "https://github.com/go-task/task/releases/download/v3.51.1/task_windows_amd64.zip"
-url_api = "https://api.github.com/repos/go-task/task/releases/assets/422054329"
+checksum = "sha256:27c0cd248c12cba03d8958d954a3df981c900be885ec9ce5f6a3cdc4e9a19316"
+url = "https://github.com/go-task/task/releases/download/v3.53.1/task_windows_amd64.zip"
+url_api = "https://api.github.com/repos/go-task/task/releases/assets/519645548"
 
 [[tools.terragrunt]]
 version = "1.0.8"
