@@ -104,13 +104,15 @@ jobs:
         run: |
           uv run .github/scripts/generate-comment.py plan_output.txt issue_body.txt drift
 
-          ISSUE_NUMBER=$(gh issue list --state "all" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
+          # Match the exact title: `gh issue list --search` is fuzzy and can return an unrelated issue
+          # (it once matched the Renovate dashboard, which a later step then tried to close).
+          ISSUE_NUMBER=$(gh issue list --state "all" --limit 500 --json "number,title" --jq '[.[] | select(.title == env.ISSUE_TITLE)][0].number // empty')
           if [ -n "$ISSUE_NUMBER" ]; then
             gh issue reopen "$ISSUE_NUMBER"
             gh issue edit "$ISSUE_NUMBER" --body-file issue_body.txt
           else
-            gh issue create --title "$ISSUE_TITLE" --body-file issue_body.txt
-            ISSUE_NUMBER=$(gh issue list --state "open" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
+            ISSUE_URL=$(gh issue create --title "$ISSUE_TITLE" --body-file issue_body.txt)
+            ISSUE_NUMBER="${ISSUE_URL##*/}"
           fi
           gh issue pin "$ISSUE_NUMBER"
 
@@ -122,7 +124,7 @@ jobs:
             ✅ No drift detected. Closing issue automatically.
             Verified in [workflow run #${{ github.run_number }}]("${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}").
         run: |
-          ISSUE_NUMBER=$(gh issue list --state "open" --search "$ISSUE_TITLE" --json "number" --jq ".[0].number")
+          ISSUE_NUMBER=$(gh issue list --state "open" --limit 500 --json "number,title" --jq '[.[] | select(.title == env.ISSUE_TITLE)][0].number // empty')
           echo "ISSUE_NUMBER is '$ISSUE_NUMBER'"
           if [ -n "$ISSUE_NUMBER" ]; then
             gh issue close "$ISSUE_NUMBER" --comment "$COMMENT"
