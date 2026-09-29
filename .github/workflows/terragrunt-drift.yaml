@@ -7,7 +7,7 @@ permissions:
 
 on:
   workflow_dispatch: {}
-  schedule: [{ cron: "0 0/2 * * *" }] # Every 2 hours
+  schedule: [{ cron: "24 */8 * * *" }] # Every 8 hours, at minute 24 (GitHub drops or delays runs at the top of the hour)
 
 jobs:
   terragrunt-plan:
