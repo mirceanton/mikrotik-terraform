@@ -39,5 +39,6 @@ locals {
     Services   = { name = "Services", vlan_id = 1010 }
     Management = { name = "Management", vlan_id = 1000 }
     Storage    = { name = "Storage", vlan_id = 1255 }
+    DMZ        = { name = "DMZ", vlan_id = 666 }
   }
 }
