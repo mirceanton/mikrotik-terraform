@@ -55,8 +55,8 @@ inputs = {
       untagged = local.mikrotik_globals.vlans.Management.name
       tagged   = local.mikrotik_globals.all_but_management_vlans
     }
-    "ether11"      = { comment = "Zimaboard2-1", untagged = local.mikrotik_globals.vlans.Services.name }
-    "ether12"      = { comment = "Zimaboard2-2", untagged = local.mikrotik_globals.vlans.Services.name }
+    "ether11"      = { comment = "Zimaboard2-1", bridge_port = false }
+    "ether12"      = { comment = "Zimaboard2-2", bridge_port = false }
     "ether13"      = {}
     "ether14"      = {}
     "ether15"      = { comment = "ASUS NUC", untagged = local.mikrotik_globals.vlans.Services.name }
@@ -74,6 +74,19 @@ inputs = {
       comment  = "Mirkputer",
       untagged = local.mikrotik_globals.vlans.Guest.name
       tagged   = [local.mikrotik_globals.vlans.Trusted.name]
+    }
+  }
+
+  # LACP LAG for the ZimaBoard2 (NICs on ether11 + ether12).
+  # Bond slaves are not bridge members themselves - the bond is the bridge port
+  # and carries the Services VLAN untagged (PVID 1010), same as the NAS/PVE LAGs
+  # on the CRS317. `mode` is left at the module default (802.3ad).
+  bond_interfaces = {
+    "bond5" = {
+      comment              = "Zimaboard2"
+      slaves               = ["ether11", "ether12"]
+      transmit_hash_policy = "layer-3-and-4"
+      untagged             = local.mikrotik_globals.vlans.Services.name
     }
   }
 }
