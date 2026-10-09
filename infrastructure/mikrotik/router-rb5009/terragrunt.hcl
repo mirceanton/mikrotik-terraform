@@ -21,6 +21,7 @@ inputs = {
   disable_ipv6             = local.mikrotik_globals.disable_ipv6
   timezone                 = local.mikrotik_globals.timezone
   ntp_servers              = [local.mikrotik_globals.cloudflare_ntp]
+  ip_services              = local.mikrotik_globals.ip_services
   users = merge(local.mikrotik_globals.default_users, {
     external-dns = {
       group              = "external-dns"

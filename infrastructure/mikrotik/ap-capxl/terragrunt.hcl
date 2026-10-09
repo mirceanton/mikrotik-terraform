@@ -27,6 +27,7 @@ inputs = {
   bridge_vlan_filtering    = false #? unsure, but I can't get an IP on wifi clients otherwise
   timezone                 = local.mikrotik_globals.timezone
   ntp_servers              = [local.mikrotik_globals.cloudflare_ntp]
+  ip_services              = local.mikrotik_globals.ip_services
   users                    = local.mikrotik_globals.default_users
   groups                   = local.mikrotik_globals.default_groups
   mac_server_interfaces    = local.mikrotik_globals.mac_server_interfaces
