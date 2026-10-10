@@ -14,6 +14,7 @@ locals {
   mirkphone_ip     = "172.16.69.11"
   mirkbook_ip      = "172.16.69.14"
   kubernetes_gw_ip = "10.0.10.250"
+  zimaboard_gw_ip  = "10.0.20.250"
   mqtt_svc_ip      = "10.0.10.252"
   minecraft_svc_ip = "10.0.10.253"
   nas_svc_ip       = "10.0.10.245"
@@ -33,6 +34,7 @@ inputs = {
       comment = "Services exposed to other VLANs"
       addresses = [
         local.kubernetes_gw_ip,
+        local.zimaboard_gw_ip,
         local.mqtt_svc_ip,
         local.minecraft_svc_ip,
         local.nas_svc_ip
@@ -76,6 +78,18 @@ inputs = {
       action             = "masquerade"
       out_interface_list = "WAN"
       order              = 100
+    }
+    "port-forward-https" = {
+      chain              = "dstnat"
+      action             = "dst-nat"
+      protocol           = "tcp"
+      dst_port           = "443"
+      in_interface_list  = "WAN"
+      to_addresses       = local.zimaboard_gw_ip
+      to_ports           = "443"
+      log                = true
+      log_prefix         = "DNAT-HTTPS: "
+      order              = 200
     }
   }
 
@@ -242,6 +256,28 @@ inputs = {
       out_interface     = local.mikrotik_globals.vlans.Services.name
       dst_address_list  = "exposed-services"
       order             = 1401
+    }
+
+    # =========================================================================
+    # DMZ ZONE RULES
+    # =========================================================================
+    "allow-DMZ-to-internet" = {
+      chain              = "forward"
+      action             = "accept"
+      in_interface       = local.mikrotik_globals.vlans.DMZ.name
+      out_interface_list = "WAN"
+      order              = 1600
+    }
+    "allow-HTTPS-to-DMZ" = {
+      chain             = "forward"
+      action            = "accept"
+      protocol          = "tcp"
+      dst_port          = "443"
+      in_interface_list = "WAN"
+      out_interface     = local.mikrotik_globals.vlans.DMZ.name
+      log               = true
+      log_prefix        = "FW-DMZ-IN: "
+      order             = 1610
     }
 
     # ========================================================================
