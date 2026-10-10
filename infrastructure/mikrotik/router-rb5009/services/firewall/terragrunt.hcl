@@ -223,7 +223,7 @@ inputs = {
     "allow-Trusted-through-WG" = {
       chain             = "forward"
       action            = "accept"
-      in_interface.     = local.mikrotik_globals.vlans.Trusted.name
+      in_interface      = local.mikrotik_globals.vlans.Trusted.name
       out_interface     = "wg1"
       order             = 1310
     }
