@@ -15,5 +15,8 @@ inputs = {
   dns_servers = ["1.1.1.1", "1.0.0.1", "8.8.8.8"]
   domain      = "gst.h.mirceanton.com"
 
-  static_leases = {}
+  static_leases = {
+    "172.16.42.5" = { name = "Zimaboard2-1", mac = "00:E0:4C:69:DB:E0" }
+    "172.16.42.6" = { name = "Zimaboard2-2", mac = "00:E0:4C:69:DB:DF" }
+  }
 }

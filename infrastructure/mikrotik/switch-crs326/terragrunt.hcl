@@ -56,8 +56,8 @@ inputs = {
       untagged = local.mikrotik_globals.vlans.Management.name
       tagged   = local.mikrotik_globals.all_but_management_vlans
     }
-    "ether11"      = { comment = "Zimaboard2-1", untagged = local.mikrotik_globals.vlans.Services.name }
-    "ether12"      = { comment = "Zimaboard2-2", untagged = local.mikrotik_globals.vlans.Services.name }
+    "ether11"      = { comment = "Zimaboard2-1", untagged = local.mikrotik_globals.vlans.Guest.name }
+    "ether12"      = { comment = "Zimaboard2-2", untagged = local.mikrotik_globals.vlans.Guest.name }
     "ether13"      = {}
     "ether14"      = {}
     "ether15"      = { comment = "ASUS NUC", untagged = local.mikrotik_globals.vlans.Services.name }
