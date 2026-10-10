@@ -20,7 +20,7 @@ from jinja2 import Environment, FileSystemLoader
 # Matches: "HH:MM:SS.mmm STDOUT [unit/path] tofu: <content>"
 #          "HH:MM:SS.mmm STDERR [unit/path] tofu: <content>"
 #          "HH:MM:SS.mmm STDOUT [unit/path] <content>"  (no tofu prefix)
-LINE_RE = re.compile(r"^\S+ \S+ \[(?P<unit>[^\]]+)\] (?:tofu: )?(?P<content>.*)$")
+LINE_RE = re.compile(r"^\S+ (?:STDOUT|STDERR) \[(?P<unit>[^\]]+)\] (?:tofu: )?(?P<content>.*)$")
 
 PLAN_SUMMARY_RE = re.compile(
     r"Plan: (?P<add>\d+) to add, (?P<change>\d+) to change, (?P<destroy>\d+) to destroy"
@@ -28,6 +28,23 @@ PLAN_SUMMARY_RE = re.compile(
 APPLY_SUMMARY_RE = re.compile(
     r"Apply complete! Resources: (?P<add>\d+) added, (?P<change>\d+) changed, (?P<destroy>\d+) destroyed\."
 )
+
+
+# GitHub rejects comment/issue bodies over 65,536 characters; stay safely below that.
+MAX_BODY_CHARS = 60_000
+# Per-unit line budgets to try, in order, until the rendered body fits.
+LINE_BUDGETS = (None, 400, 200, 100, 50, 20, 10, 4)
+
+
+def clip(lines: list[str], max_lines: int | None) -> list[str]:
+    """Keep the head and tail of `lines` (plan diff and summary), dropping the middle."""
+    if max_lines is None or len(lines) <= max_lines:
+        return lines
+    head = max_lines // 2
+    tail = max_lines - head
+    omitted = len(lines) - max_lines
+    marker = f"... {omitted} lines omitted, see the workflow run for the full output ..."
+    return [*lines[:head], marker, *lines[len(lines) - tail :]]
 
 
 @dataclass
@@ -38,6 +55,7 @@ class UnitStats:
     add: int | str = "-"
     change: int | str = "-"
     destroy: int | str = "-"
+    max_lines: int | None = None
 
     @property
     def display_name(self) -> str:
@@ -63,7 +81,7 @@ class UnitStats:
 
     @property
     def output(self) -> str:
-        return "\n".join(self.lines)
+        return "\n".join(clip(self.lines, self.max_lines))
 
 
 def parse(input_file: Path, mode: str) -> list[UnitStats]:
@@ -71,18 +89,14 @@ def parse(input_file: Path, mode: str) -> list[UnitStats]:
     units: list[UnitStats] = []
 
     for raw_line in input_file.read_text().splitlines():
-        # Extract the ordered unit list from Terragrunt's header section.
-        if m := re.match(r"^- Unit (.+)$", raw_line):
-            stat = UnitStats(name=m.group(1), mode=mode)
-            units.append(stat)
-            unit_map[stat.name] = stat
-            continue
-
-        # Parse per-unit output lines.
+        # Discover units from the per-line prefix rather than Terragrunt's header listing,
+        # whose format changes between releases. Units are ordered by first appearance.
         if m := LINE_RE.match(raw_line):
             unit_name, content = m.group("unit"), m.group("content")
             if unit_name not in unit_map:
-                continue
+                stat = UnitStats(name=unit_name, mode=mode)
+                units.append(stat)
+                unit_map[unit_name] = stat
             stat = unit_map[unit_name]
             stat.lines.append(content)
 
@@ -109,12 +123,22 @@ def render(units: list[UnitStats], input_file: Path, mode: str) -> str:
         lstrip_blocks=True,
         keep_trailing_newline=True,
     )
-    return env.get_template("comment.j2").render(
-        units=units,
-        raw_output=input_file.read_text(),
-        mode=mode,
-        env=os.environ,
-    )
+    template = env.get_template("comment.j2")
+    raw_lines = input_file.read_text().splitlines()
+
+    body = ""
+    for max_lines in LINE_BUDGETS:
+        for unit in units:
+            unit.max_lines = max_lines
+        body = template.render(
+            units=units,
+            raw_output="\n".join(clip(raw_lines, max_lines)),
+            mode=mode,
+            env=os.environ,
+        )
+        if len(body) <= MAX_BODY_CHARS:
+            break
+    return body
 
 
 def main() -> None:
