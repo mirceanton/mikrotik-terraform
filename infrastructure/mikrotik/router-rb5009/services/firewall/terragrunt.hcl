@@ -220,10 +220,10 @@ inputs = {
       src_address_list = "wireguard-trusted"
       order            = 1300
     }
-    "allow-LAN-through-WG" = {
+    "allow-Trusted-through-WG" = {
       chain             = "forward"
       action            = "accept"
-      in_interface_list = "LAN"
+      in_interface.     = local.mikrotik_globals.vlans.Trusted.name
       out_interface     = "wg1"
       order             = 1310
     }
