@@ -56,18 +56,18 @@ inputs = {
       untagged = local.mikrotik_globals.vlans.Management.name
       tagged   = local.mikrotik_globals.all_but_management_vlans
     }
-    "ether11"      = { comment = "Zimaboard2-1", untagged = local.mikrotik_globals.vlans.Guest.name }
-    "ether12"      = { comment = "Zimaboard2-2", untagged = local.mikrotik_globals.vlans.Guest.name }
+    "ether11"      = {}
+    "ether12"      = {}
     "ether13"      = {}
     "ether14"      = {}
-    "ether15"      = { comment = "ASUS NUC", untagged = local.mikrotik_globals.vlans.Services.name }
+    "ether15"      = {}
     "ether16"      = {}
     "ether17"      = {}
     "ether18"      = {}
     "ether19"      = {}
     "ether20"      = {}
     "ether21"      = {}
-    "ether22"      = { comment = "JetKVM", untagged = local.mikrotik_globals.vlans.Management.name }
+    "ether22"      = {}
     "ether23"      = { comment = "HEX Uplink", tagged = local.mikrotik_globals.all_vlans }
     "ether24"      = {}
     "sfp-sfpplus1" = { comment = "CRS317", tagged = local.mikrotik_globals.all_vlans }
