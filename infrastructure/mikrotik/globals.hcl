@@ -64,6 +64,7 @@ locals {
     Untrusted  = { name = "Untrusted", vlan_id = 1942 }
     Guest      = { name = "Guest", vlan_id = 1742 }
     Services   = { name = "Services", vlan_id = 1010 }
+    Utils      = { name = "Utils", vlan_id = 1020 }
     Management = { name = "Management", vlan_id = 1000 }
     Storage    = { name = "Storage", vlan_id = 1255 }
   }
