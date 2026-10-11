@@ -16,6 +16,6 @@ inputs = {
   domain      = "dmz.h.mirceanton.com"
 
   static_leases = {
-    # TODO
+    "172.16.30.10" = { name = "letiny", mac = "90:2E:16:D1:E7:64" }
   }
 }

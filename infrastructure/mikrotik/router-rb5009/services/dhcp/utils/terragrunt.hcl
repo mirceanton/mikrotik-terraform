@@ -16,7 +16,7 @@ inputs = {
   domain      = "utils.h.mirceanton.com"
 
   static_leases = {
-    "10.0.20.50" = { name = "zimaboard", mac = "00:E0:4C:69:DB:DF" }
-    # "10.0.20.51" = { name = "Zimaboard2 p2", mac = "00:E0:4C:69:DB:E0" }
+    "10.0.20.10" = { name = "zimaboard", mac = "00:E0:4C:69:DB:DF" }
+    # "10.0.20.11" = { name = "zimaboard22", mac = "00:E0:4C:69:DB:E0" }
   }
 }
