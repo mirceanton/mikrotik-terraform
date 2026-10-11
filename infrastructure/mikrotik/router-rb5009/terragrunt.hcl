@@ -43,20 +43,16 @@ inputs = {
   ethernet_interfaces = {
     "sfp-sfpplus1" = {}
     "ether1"       = { comment = "Digi Uplink", bridge_port = false }
-    "ether2"       = { comment = "Living Room", tagged = local.mikrotik_globals.all_vlans }
-    "ether3"       = { comment = "Sploinkhole", untagged = local.mikrotik_globals.vlans.Trusted.name }
+    "ether2"       = {}
+    "ether3"       = {}
     "ether4"       = {}
     "ether5" = {
-      comment  = "Access Point2",
-      untagged = local.mikrotik_globals.vlans.Management.name
-      tagged   = [local.mikrotik_globals.vlans.Untrusted.name, local.mikrotik_globals.vlans.Guest.name]
-    }
-    "ether6" = { comment = "Living Room2", tagged = local.mikrotik_globals.all_vlans }
-    "ether7" = { comment = "Sploinkhole2", untagged = local.mikrotik_globals.vlans.Trusted.name }
-    "ether8" = {
       comment  = "Access Point",
       untagged = local.mikrotik_globals.vlans.Management.name
       tagged   = [local.mikrotik_globals.vlans.Untrusted.name, local.mikrotik_globals.vlans.Guest.name]
     }
+    "ether6" = { comment = "Living Room", tagged = local.mikrotik_globals.all_vlans }
+    "ether7" = { comment = "Sploinkhole", untagged = local.mikrotik_globals.vlans.Trusted.name }
+    "ether8" = {}
   }
 }
