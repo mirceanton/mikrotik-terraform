@@ -32,8 +32,8 @@ inputs = {
     "10.0.0.22" = { name = "pve02", mac = "74:56:3c:99:5b:ce" }
     "10.0.0.23" = { name = "pve03", mac = "74:56:3c:b2:e5:a8" }
 
-    "10.0.0.50" = { name = "Zimaboard", mac = "00:E0:4C:69:DB:E0" }
-    # "10.0.0.51" = { name = "Zimaboard2 p2", mac = "00:E0:4C:69:DB:DF" }
+    "10.0.0.50" = { name = "Zimaboard", mac = "00:E0:4C:69:DB:DF" }
+    # "10.0.0.51" = { name = "Zimaboard2 p2", mac = "00:E0:4C:69:DB:E0" }
 
     "10.0.0.60" = { name = "pn64", mac = "08:BF:B8:69:9D:C8" }
 
