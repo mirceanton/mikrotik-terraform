@@ -22,6 +22,9 @@ inputs = {
   timezone                 = local.mikrotik_globals.timezone
   ntp_servers              = [local.mikrotik_globals.cloudflare_ntp]
   ip_services              = local.mikrotik_globals.ip_services
+  mac_server_interfaces    = local.mikrotik_globals.mac_server_interfaces
+  vlans                    = local.mikrotik_globals.vlans
+
   users = merge(local.mikrotik_globals.default_users, {
     external-dns = {
       group              = "external-dns"
@@ -37,22 +40,23 @@ inputs = {
     }
   })
 
-  mac_server_interfaces = local.mikrotik_globals.mac_server_interfaces
-
-  vlans = local.mikrotik_globals.vlans
   ethernet_interfaces = {
-    "ether1" = { comment = "Digi Uplink", bridge_port = false }
-    "ether2" = { comment = "Living Room", tagged = local.mikrotik_globals.all_vlans }
-    "ether3" = { comment = "Sploinkhole", untagged = local.mikrotik_globals.vlans.Trusted.name }
-    "ether4" = {}
-    "ether5" = {}
-    "ether6" = {}
-    "ether7" = {}
+    "sfp-sfpplus1" = {}
+    "ether1"       = { comment = "Digi Uplink", bridge_port = false }
+    "ether2"       = { comment = "Living Room", tagged = local.mikrotik_globals.all_vlans }
+    "ether3"       = { comment = "Sploinkhole", untagged = local.mikrotik_globals.vlans.Trusted.name }
+    "ether4"       = {}
+    "ether5" = {
+      comment  = "Access Point2",
+      untagged = local.mikrotik_globals.vlans.Management.name
+      tagged   = [local.mikrotik_globals.vlans.Untrusted.name, local.mikrotik_globals.vlans.Guest.name]
+    }
+    "ether6" = { comment = "Living Room2", tagged = local.mikrotik_globals.all_vlans }
+    "ether7" = { comment = "Sploinkhole2", untagged = local.mikrotik_globals.vlans.Trusted.name }
     "ether8" = {
       comment  = "Access Point",
       untagged = local.mikrotik_globals.vlans.Management.name
       tagged   = [local.mikrotik_globals.vlans.Untrusted.name, local.mikrotik_globals.vlans.Guest.name]
     }
-    "sfp-sfpplus1" = {}
   }
 }
