@@ -10,9 +10,9 @@ terraform {
 }
 
 inputs = {
-  interface = "ether1"
+  interface = "ether8" #TODO: i dont like that this is a hardcoded reference...
   name      = "PPPoE-Digi"
   comment   = "Digi PPPoE Client"
-  username  = get_env("PPPOE_USERNAME") #TODO: Fetch from 1Password
-  password  = get_env("PPPOE_PASSWORD") #TODO: Fetch from 1Password
+  username  = get_env("PPPOE_USERNAME")
+  password  = get_env("PPPOE_PASSWORD")
 }

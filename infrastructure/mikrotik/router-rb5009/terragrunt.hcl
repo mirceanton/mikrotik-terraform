@@ -42,7 +42,7 @@ inputs = {
 
   ethernet_interfaces = {
     "sfp-sfpplus1" = {}
-    "ether1"       = { comment = "Digi Uplink", bridge_port = false }
+    "ether1"       = {}
     "ether2"       = {}
     "ether3"       = {}
     "ether4"       = {}
@@ -53,6 +53,6 @@ inputs = {
     }
     "ether6" = { comment = "Living Room", tagged = local.mikrotik_globals.all_vlans }
     "ether7" = { comment = "Sploinkhole", untagged = local.mikrotik_globals.vlans.Trusted.name }
-    "ether8" = { comment = "Digi Uplink2", bridge_port = false }
+    "ether8" = { comment = "Digi Uplink", bridge_port = false }
   }
 }
