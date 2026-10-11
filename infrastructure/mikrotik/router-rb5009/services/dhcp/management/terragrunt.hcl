@@ -32,8 +32,6 @@ inputs = {
     "10.0.0.22" = { name = "pve02", mac = "74:56:3c:99:5b:ce" }
     "10.0.0.23" = { name = "pve03", mac = "74:56:3c:b2:e5:a8" }
 
-    "10.0.0.60" = { name = "pn64", mac = "08:BF:B8:69:9D:C8" }
-
     # Other Devices
     "10.0.0.99"  = { name = "sonoff-dongle-max", mac = "94:54:C5:27:FC:DB" }
     "10.0.0.245" = { name = "nas", mac = "BC:24:11:C6:12:86" }

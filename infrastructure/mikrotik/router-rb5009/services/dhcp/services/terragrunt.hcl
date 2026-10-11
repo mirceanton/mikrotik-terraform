@@ -10,13 +10,14 @@ inputs = {
   interface   = "Services"
   address     = "10.0.10.1/24"
   network     = "10.0.10.0/24"
-  gateway     = null
+  gateway     = "10.0.10.1"
   dhcp_pool   = ["10.0.10.195-10.0.10.199"]
   dns_servers = ["10.0.10.1"]
   domain      = "svc.h.mirceanton.com"
 
   static_leases = {
     "10.0.10.15"  = { name = "home-ops", mac = "F4:52:14:87:14:90" }
+    "10.0.10.60"  = { name = "pn64", mac = "08:BF:B8:69:9D:C8" }
     "10.0.10.245" = { name = "nas", mac = "BC:24:11:DA:9A:E4", match_subdomain = true }
   }
 }

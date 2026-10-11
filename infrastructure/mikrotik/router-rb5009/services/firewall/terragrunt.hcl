@@ -59,6 +59,7 @@ inputs = {
         local.mikrotik_globals.vlans.Guest.name,
         local.mikrotik_globals.vlans.Untrusted.name,
         local.mikrotik_globals.vlans.Management.name,
+        local.mikrotik_globals.vlans.Services.name,
         local.mikrotik_globals.vlans.Utils.name,
         local.mikrotik_globals.vlans.DMZ.name
       ]
