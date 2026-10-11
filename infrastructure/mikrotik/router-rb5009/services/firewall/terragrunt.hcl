@@ -221,11 +221,11 @@ inputs = {
       order            = 1300
     }
     "allow-Trusted-through-WG" = {
-      chain             = "forward"
-      action            = "accept"
-      in_interface      = local.mikrotik_globals.vlans.Trusted.name
-      out_interface     = "wg1"
-      order             = 1310
+      chain         = "forward"
+      action        = "accept"
+      in_interface  = local.mikrotik_globals.vlans.Trusted.name
+      out_interface = "wg1"
+      order         = 1310
     }
 
     "allow-INTERNET_ONLY-to-internet" = {
