@@ -42,10 +42,10 @@ inputs = {
 
   ethernet_interfaces = {
     "sfp-sfpplus1" = {} // TODO: NAS
-    "ether1"       = { comment = "Lenovo Tiny", untagged = local.mikrotik_globals.vlans.DMZ.name }
-    "ether2"       = { comment = "ASUS NUC", untagged = local.mikrotik_globals.vlans.Services.name }
-    "ether3"       = { comment = "Zimaboard", untagged = local.mikrotik_globals.vlans.Utils.name }
-    "ether4"       = { comment = "JetKVM", untagged = local.mikrotik_globals.vlans.Management.name }
+    "ether1"       = { comment = "JetKVM", untagged = local.mikrotik_globals.vlans.Management.name }
+    "ether2"       = { comment = "Zimaboard", untagged = local.mikrotik_globals.vlans.Utils.name }
+    "ether3"       = { comment = "ASUS NUC", untagged = local.mikrotik_globals.vlans.Services.name }
+    "ether4"       = { comment = "Lenovo Tiny", untagged = local.mikrotik_globals.vlans.DMZ.name }
     "ether5" = {
       comment  = "Access Point",
       untagged = local.mikrotik_globals.vlans.Management.name
