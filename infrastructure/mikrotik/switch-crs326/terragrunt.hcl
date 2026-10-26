@@ -73,7 +73,7 @@ inputs = {
     "sfp-sfpplus1" = { comment = "CRS317", tagged = local.mikrotik_globals.all_vlans }
     "sfp-sfpplus2" = {
       comment  = "Mirkputer",
-      untagged = local.mikrotik_globals.vlans.Guest.name
+      untagged = local.mikrotik_globals.vlans.Untrusted.name
       tagged   = [local.mikrotik_globals.vlans.Trusted.name]
     }
   }
