@@ -302,7 +302,7 @@ url = "https://github.com/gruntwork-io/terragrunt/releases/download/v1.2.0/terra
 url_api = "https://api.github.com/repos/gruntwork-io/terragrunt/releases/assets/662438255"
 
 [[tools.uv]]
-version = "0.13.4"
+version = "0.13.5"
 backend = "aqua:astral-sh/uv"
 
 [tools.uv."platforms.linux-arm64"]
