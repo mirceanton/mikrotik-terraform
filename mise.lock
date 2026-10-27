@@ -68,7 +68,7 @@ checksum = "sha256:4cb957d1f79c7264ef5a0f3a509ce477bbfd23c91eee888493a9dfff445a8
 url = "https://awscli.amazonaws.com/AWSCLIV2-2.38.5.pkg"
 
 [[tools.gh]]
-version = "2.103.0"
+version = "2.103.2"
 backend = "aqua:cli/cli"
 
 [tools.gh."platforms.linux-arm64"]
