@@ -19,4 +19,6 @@ actionlint = "latest"
 yamlfmt = "latest"
 
 [settings]
+# Hold back freshly published tool releases (supply-chain protection).
+minimum_release_age = "3d"
 github_attestations = false
