@@ -24,4 +24,6 @@ inputs = {
     "gradphone"  = { allowed_address = ["172.16.69.18/32"], comment = "Cristi Gradi Phone" }
     "anaphone"   = { allowed_address = ["172.16.69.19/32"], comment = "Ana Phone" }
   }
+    "sorinvientv"   = { allowed_address = ["172.16.69.20/32"], comment = "Sorin TV Viena" }
+  }
 }
