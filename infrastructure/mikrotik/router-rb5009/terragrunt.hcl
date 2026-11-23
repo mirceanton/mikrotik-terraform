@@ -42,7 +42,7 @@ inputs = {
 
   ethernet_interfaces = {
     "sfp-sfpplus1" = {} // TODO: NAS
-    "ether1"       = {}
+    "ether1"       = { comment = "CRS310", tagged = local.mikrotik_globals.all_vlans }
     "ether2"       = {}
     "ether3"       = {}
     "ether4"       = {}
