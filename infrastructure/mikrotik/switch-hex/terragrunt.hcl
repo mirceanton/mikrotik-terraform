@@ -38,6 +38,10 @@ inputs = {
     "ether2" = { comment = "Zigbee Dongle", untagged = local.mikrotik_globals.vlans.Management.name }
     "ether3" = { comment = "Living Room Pi", untagged = local.mikrotik_globals.vlans.Untrusted.name }
     "ether4" = { comment = "CRS310 Uplink", tagged = local.mikrotik_globals.all_vlans }
-    "ether5" = { comment = "Smart TV", untagged = local.mikrotik_globals.vlans.Untrusted.name }
+    "ether5" = {
+      comment  = "cAP XL"
+      untagged = local.mikrotik_globals.vlans.Management.name
+      tagged   = [local.mikrotik_globals.vlans.Untrusted.name, local.mikrotik_globals.vlans.Guest.name]
+    }
   }
 }

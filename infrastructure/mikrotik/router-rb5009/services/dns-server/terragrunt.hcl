@@ -15,5 +15,6 @@ inputs = {
 
   static_dns = {
     "bomkprinter.home.mirceanton.com" = { cname = "bomkprinter.utrst.h.mirceanton.com", type = "CNAME", comment = "Bomk Printer" }
+    "nas.svc.h.mirceanton.com"        = { address = "10.255.255.245", type = "A", match_subdomain = true, comment = "TrueNAS apps (traefik)" }
   }
 }

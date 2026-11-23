@@ -16,7 +16,7 @@ locals {
   kubernetes_gw_ip = "10.0.10.250"
   mqtt_svc_ip      = "10.0.10.252"
   minecraft_svc_ip = "10.0.10.253"
-  nas_svc_ip       = "10.0.10.245"
+  nas_ip           = "10.255.255.245"
 }
 
 terraform {
@@ -35,7 +35,7 @@ inputs = {
         local.kubernetes_gw_ip,
         local.mqtt_svc_ip,
         local.minecraft_svc_ip,
-        local.nas_svc_ip
+        local.nas_ip
       ]
     }
   }
@@ -122,6 +122,14 @@ inputs = {
       in_interface     = local.mikrotik_globals.vlans.Management.name
       out_interface    = local.mikrotik_globals.vlans.Services.name
       order            = 122
+    }
+    "asymmetric-routing-fix-wg-to-mgmt" = {
+      chain            = "forward"
+      action           = "accept"
+      connection_state = "invalid"
+      in_interface     = local.wireguard_interface
+      out_interface    = local.mikrotik_globals.vlans.Management.name
+      order            = 123
     }
     "drop-invalid-forward" = {
       chain            = "forward"
@@ -245,6 +253,22 @@ inputs = {
       out_interface     = local.mikrotik_globals.vlans.Services.name
       dst_address_list  = "exposed-services"
       order             = 1401
+    }
+    "allow-CLIENTS-to-nas" = {
+      chain             = "forward"
+      action            = "accept"
+      in_interface_list = "CLIENTS"
+      out_interface     = local.mikrotik_globals.vlans.Storage.name
+      dst_address_list  = "exposed-services"
+      order             = 1402
+    }
+    "allow-NAS-to-internet" = {
+      chain              = "forward"
+      action             = "accept"
+      in_interface       = local.mikrotik_globals.vlans.Storage.name
+      src_address        = local.nas_ip
+      out_interface_list = "WAN"
+      order              = 1403
     }
 
     # ========================================================================

@@ -35,6 +35,6 @@ inputs = {
 
     # Other Devices
     "10.0.0.99"  = { name = "sonoff-dongle-max", mac = "94:54:C5:27:FC:DB" }
-    "10.0.0.245" = { name = "nas", mac = "BC:24:11:C6:12:86" }
+    "10.0.0.245" = { name = "nas", mac = "3C:EC:EF:20:BE:42" }
   }
 }

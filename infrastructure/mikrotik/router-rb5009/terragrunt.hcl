@@ -49,9 +49,9 @@ inputs = {
     "ether1" = {}
     "ether2" = { comment = "NAS BMC", untagged = local.mikrotik_globals.vlans.Management.name }
     "ether3" = { comment = "JetKVM", untagged = local.mikrotik_globals.vlans.Management.name }
-    "ether4" = { comment = "NAS Onboard R (Storage backup)", untagged = local.mikrotik_globals.vlans.Storage.name }
+    "ether4" = { comment = "NAS eno1 (mgmt)", untagged = local.mikrotik_globals.vlans.Management.name }
     "ether5" = {}
-    "ether6" = { comment = "NAS Onboard L", untagged = local.mikrotik_globals.vlans.Management.name }
+    "ether6" = { comment = "NAS eno2 (Storage backup)", untagged = local.mikrotik_globals.vlans.Storage.name }
     "ether7" = { comment = "Lenovo Tiny", untagged = local.mikrotik_globals.vlans.DMZ.name }
     "ether8" = { comment = "Digi Uplink", bridge_port = false }
   }

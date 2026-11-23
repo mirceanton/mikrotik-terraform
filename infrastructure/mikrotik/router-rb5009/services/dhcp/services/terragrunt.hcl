@@ -18,7 +18,6 @@ inputs = {
   static_leases = {
     "10.0.10.10" = { name = "pn64", mac = "08:BF:B8:69:9D:C8" }
 
-    "10.0.10.15"  = { name = "home-ops", mac = "F4:52:14:87:14:90" }
-    "10.0.10.245" = { name = "nas", mac = "BC:24:11:DA:9A:E4", match_subdomain = true }
+    "10.0.10.15" = { name = "home-ops", mac = "F4:52:14:87:14:90" }
   }
 }
