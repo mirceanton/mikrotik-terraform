@@ -17,6 +17,7 @@ locals {
   mqtt_svc_ip      = "10.0.10.252"
   minecraft_svc_ip = "10.0.10.253"
   nas_ip           = "10.255.255.245"
+  pn64_ip          = "10.0.10.10"
 }
 
 terraform {
@@ -278,6 +279,17 @@ inputs = {
       out_interface     = local.mikrotik_globals.vlans.Storage.name
       dst_address       = local.nas_ip
       order             = 1404
+    }
+    "allow-PN64-to-nas-https" = {
+      chain         = "forward"
+      action        = "accept"
+      protocol      = "tcp"
+      dst_port      = "443"
+      in_interface  = local.mikrotik_globals.vlans.Services.name
+      src_address   = local.pn64_ip
+      out_interface = local.mikrotik_globals.vlans.Storage.name
+      dst_address   = local.nas_ip
+      order         = 1405
     }
     "allow-NAS-to-internet" = {
       chain              = "forward"
