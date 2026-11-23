@@ -34,47 +34,35 @@ inputs = {
 
   vlans = local.mikrotik_globals.vlans
   ethernet_interfaces = {
-    "ether1" = { comment = "NAS BMC", untagged = local.mikrotik_globals.vlans.Management.name }
-    "ether2" = { comment = "NAS Onboard L", untagged = local.mikrotik_globals.vlans.Management.name }
-    "ether3" = { comment = "NAS Onboard R", untagged = local.mikrotik_globals.vlans.Services.name }
-    "ether4" = {}
-    "ether5" = {} # Reserved for future use. ?PVE01 BMC?
-    "ether6" = {
-      comment  = "PVE 01 Onboard"
-      untagged = local.mikrotik_globals.vlans.Management.name
-      tagged   = local.mikrotik_globals.all_but_management_vlans
+    "ether1"  = {}
+    "ether2"  = {}
+    "ether3"  = {}
+    "ether4"  = {}
+    "ether5"  = {}
+    "ether6"  = {}
+    "ether7"  = {}
+    "ether8"  = {}
+    "ether9"  = {}
+    "ether10" = {}
+    "ether11" = {}
+    "ether12" = {}
+    "ether13" = {}
+    "ether14" = {}
+    "ether15" = {}
+    "ether16" = {}
+    "ether17" = {}
+    "ether18" = {
+      comment  = "Mirkputer",
+      untagged = local.mikrotik_globals.vlans.Untrusted.name
+      tagged   = [local.mikrotik_globals.vlans.Trusted.name]
     }
-    "ether7" = {} # Reserved for future use. ?PVE02 BMC?
-    "ether8" = {
-      comment  = "PVE 02 Onboard"
-      untagged = local.mikrotik_globals.vlans.Management.name
-      tagged   = local.mikrotik_globals.all_but_management_vlans
-    }
-    "ether9" = {} # Reserved for future use. ?PVE03 BMC?
-    "ether10" = {
-      comment  = "PVE 03 Onboard"
-      untagged = local.mikrotik_globals.vlans.Management.name
-      tagged   = local.mikrotik_globals.all_but_management_vlans
-    }
-    "ether11"      = {}
-    "ether12"      = {}
-    "ether13"      = {}
-    "ether14"      = {}
-    "ether15"      = {}
-    "ether16"      = {}
-    "ether17"      = {}
-    "ether18"      = {}
     "ether19"      = {}
     "ether20"      = {}
     "ether21"      = {}
     "ether22"      = {}
     "ether23"      = { comment = "HEX Uplink", tagged = local.mikrotik_globals.all_vlans }
     "ether24"      = { comment = "CRS317", tagged = local.mikrotik_globals.all_vlans }
-    "sfp-sfpplus1" = { comment = "CRS317 (old SFP link)", tagged = local.mikrotik_globals.all_vlans }
-    "sfp-sfpplus2" = {
-      comment  = "Mirkputer",
-      untagged = local.mikrotik_globals.vlans.Untrusted.name
-      tagged   = [local.mikrotik_globals.vlans.Trusted.name]
-    }
+    "sfp-sfpplus1" = {}
+    "sfp-sfpplus2" = {}
   }
 }

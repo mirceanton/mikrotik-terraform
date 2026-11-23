@@ -33,12 +33,12 @@ inputs = {
 
   vlans = local.mikrotik_globals.vlans
   ethernet_interfaces = {
-    "sfp-sfpplus1"  = { comment = "NAS 10g 1", bridge_port = false, l2mtu = 9216, mtu = 9000 }
-    "sfp-sfpplus2"  = { comment = "NAS 10g 2", bridge_port = false, l2mtu = 9216, mtu = 9000 }
-    "sfp-sfpplus3"  = { comment = "PVE01 10g 1", bridge_port = false, l2mtu = 9216, mtu = 9000 }
-    "sfp-sfpplus4"  = { comment = "PVE01 10g 2", bridge_port = false, l2mtu = 9216, mtu = 9000 }
-    "sfp-sfpplus5"  = { comment = "PVE02 10g 1", bridge_port = false, l2mtu = 9216, mtu = 9000 }
-    "sfp-sfpplus6"  = { comment = "PVE02 10g 2", bridge_port = false, l2mtu = 9216, mtu = 9000 }
+    "sfp-sfpplus1"  = {}
+    "sfp-sfpplus2"  = {}
+    "sfp-sfpplus3"  = {}
+    "sfp-sfpplus4"  = {}
+    "sfp-sfpplus5"  = {}
+    "sfp-sfpplus6"  = {}
     "sfp-sfpplus7"  = { comment = "PVE03 10g 1", bridge_port = false, l2mtu = 9216, mtu = 9000 }
     "sfp-sfpplus8"  = { comment = "PVE03 10g 2", bridge_port = false, l2mtu = 9216, mtu = 9000 }
     "sfp-sfpplus9"  = {}
@@ -46,8 +46,8 @@ inputs = {
     "sfp-sfpplus11" = {}
     "sfp-sfpplus12" = {}
     "sfp-sfpplus13" = {}
-    "sfp-sfpplus14" = {} #! TODO: LAGGed to CRS326 at some point
-    "sfp-sfpplus15" = { comment = "CRS326 (old SFP link)", tagged = local.mikrotik_globals.all_vlans }
+    "sfp-sfpplus14" = {}
+    "sfp-sfpplus15" = {}
     "sfp-sfpplus16" = {}
     "ether1"        = { comment = "CRS326", tagged = local.mikrotik_globals.all_vlans }
   }
