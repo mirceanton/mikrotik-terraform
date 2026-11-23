@@ -24,11 +24,20 @@ inputs = {
   certificate_organization = local.mikrotik_globals.certificate_organization
   certificate_unit         = local.mikrotik_globals.certificate_unit
   disable_ipv6             = local.mikrotik_globals.disable_ipv6
-  bridge_vlan_filtering    = false #? unsure, but I can't get an IP on wifi clients otherwise
   timezone                 = local.mikrotik_globals.timezone
   ntp_servers              = [local.mikrotik_globals.cloudflare_ntp]
   ip_services              = local.mikrotik_globals.ip_services
   users                    = local.mikrotik_globals.default_users
   groups                   = local.mikrotik_globals.default_groups
   mac_server_interfaces    = local.mikrotik_globals.mac_server_interfaces
+
+  vlans = local.mikrotik_globals.vlans
+  ethernet_interfaces = {
+    "ether1" = {
+      comment  = "HEX Uplink"
+      untagged = local.mikrotik_globals.vlans.Management.name
+      tagged   = [local.mikrotik_globals.vlans.Untrusted.name, local.mikrotik_globals.vlans.Guest.name]
+    }
+    "ether2" = { comment = "Smart TV", untagged = local.mikrotik_globals.vlans.Untrusted.name }
+  }
 }
