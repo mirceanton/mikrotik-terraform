@@ -42,17 +42,13 @@ inputs = {
 
   ethernet_interfaces = {
     "sfp-sfpplus1" = {} // TODO: NAS
-    "ether1"       = { comment = "JetKVM", untagged = local.mikrotik_globals.vlans.Management.name }
-    "ether2"       = { comment = "Zimaboard", untagged = local.mikrotik_globals.vlans.Utils.name }
-    "ether3"       = { comment = "ASUS NUC", untagged = local.mikrotik_globals.vlans.Services.name }
-    "ether4"       = { comment = "Lenovo Tiny", untagged = local.mikrotik_globals.vlans.DMZ.name }
-    "ether5" = {
-      comment  = "Access Point",
-      untagged = local.mikrotik_globals.vlans.Management.name
-      tagged   = [local.mikrotik_globals.vlans.Untrusted.name, local.mikrotik_globals.vlans.Guest.name]
-    }
-    "ether6" = { comment = "Living Room", tagged = local.mikrotik_globals.all_vlans }
-    "ether7" = { comment = "Sploinkhole", untagged = local.mikrotik_globals.vlans.Trusted.name }
-    "ether8" = { comment = "Digi Uplink", bridge_port = false }
+    "ether1"       = {}
+    "ether2"       = {}
+    "ether3"       = {}
+    "ether4"       = {}
+    "ether5"       = {}
+    "ether6"       = { comment = "Living Room", tagged = local.mikrotik_globals.all_vlans }
+    "ether7"       = { comment = "Sploinkhole", untagged = local.mikrotik_globals.vlans.Trusted.name }
+    "ether8"       = { comment = "Digi Uplink", bridge_port = false }
   }
 }
