@@ -47,9 +47,9 @@ inputs = {
     "sfp-sfpplus12" = {}
     "sfp-sfpplus13" = {}
     "sfp-sfpplus14" = {} #! TODO: LAGGed to CRS326 at some point
-    "sfp-sfpplus15" = { comment = "CRS326", tagged = local.mikrotik_globals.all_vlans }
+    "sfp-sfpplus15" = { comment = "CRS326 (old SFP link)", tagged = local.mikrotik_globals.all_vlans }
     "sfp-sfpplus16" = {}
-    "ether1"        = {}
+    "ether1"        = { comment = "CRS326", tagged = local.mikrotik_globals.all_vlans }
   }
   bond_interfaces = {
     "bond1" = {

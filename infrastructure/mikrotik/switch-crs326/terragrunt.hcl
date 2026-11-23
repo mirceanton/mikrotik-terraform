@@ -69,8 +69,8 @@ inputs = {
     "ether21"      = {}
     "ether22"      = {}
     "ether23"      = { comment = "HEX Uplink", tagged = local.mikrotik_globals.all_vlans }
-    "ether24"      = {}
-    "sfp-sfpplus1" = { comment = "CRS317", tagged = local.mikrotik_globals.all_vlans }
+    "ether24"      = { comment = "CRS317", tagged = local.mikrotik_globals.all_vlans }
+    "sfp-sfpplus1" = { comment = "CRS317 (old SFP link)", tagged = local.mikrotik_globals.all_vlans }
     "sfp-sfpplus2" = {
       comment  = "Mirkputer",
       untagged = local.mikrotik_globals.vlans.Untrusted.name
