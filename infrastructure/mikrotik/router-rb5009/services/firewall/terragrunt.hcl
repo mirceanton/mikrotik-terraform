@@ -64,6 +64,13 @@ inputs = {
         local.mikrotik_globals.vlans.DMZ.name
       ]
     }
+    NFS_CLIENTS = {
+      comment = "VLANs allowed NFS access to the NAS"
+      interfaces = [
+        local.mikrotik_globals.vlans.Services.name,
+        local.mikrotik_globals.vlans.Utils.name
+      ]
+    }
     CLIENTS = {
       comment = "VLANs allowed limited access to exposed services"
       interfaces = [local.mikrotik_globals.vlans.Untrusted.name,
@@ -261,6 +268,16 @@ inputs = {
       out_interface     = local.mikrotik_globals.vlans.Storage.name
       dst_address_list  = "exposed-services"
       order             = 1402
+    }
+    "allow-NFS_CLIENTS-to-nas-nfs" = {
+      chain             = "forward"
+      action            = "accept"
+      protocol          = "tcp"
+      dst_port          = "2049"
+      in_interface_list = "NFS_CLIENTS"
+      out_interface     = local.mikrotik_globals.vlans.Storage.name
+      dst_address       = local.nas_ip
+      order             = 1404
     }
     "allow-NAS-to-internet" = {
       chain              = "forward"
