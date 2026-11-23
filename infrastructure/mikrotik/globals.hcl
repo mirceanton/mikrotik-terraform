@@ -63,13 +63,12 @@ locals {
     Trusted   = { name = "Trusted", vlan_id = 1969 }
     Untrusted = { name = "Untrusted", vlan_id = 1942 }
 
-    DMZ   = { name = "DMZ", vlan_id = 1730 }
+    DMZ   = { name = "DMZ", vlan_id = 1730 } # Public Cluster
     Guest = { name = "Guest", vlan_id = 1742 }
 
     Management = { name = "Management", vlan_id = 1000 }
-    Services   = { name = "Services", vlan_id = 1010 }
-    Utils      = { name = "Utils", vlan_id = 1020 }
-
-    Storage = { name = "Storage", vlan_id = 1255 }
+    Services   = { name = "Services", vlan_id = 1010 } # HomeOps Cluster
+    Utils      = { name = "Utils", vlan_id = 1020 }    # Utils Cluster
+    Storage    = { name = "Storage", vlan_id = 1255 }  # NAS
   }
 }

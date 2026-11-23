@@ -41,14 +41,18 @@ inputs = {
   })
 
   ethernet_interfaces = {
-    "sfp-sfpplus1" = {} // TODO: NAS
-    "ether1"       = { comment = "CRS310", tagged = local.mikrotik_globals.all_vlans }
-    "ether2"       = {}
-    "ether3"       = {}
-    "ether4"       = {}
-    "ether5"       = {}
-    "ether6"       = { comment = "Living Room", tagged = local.mikrotik_globals.all_vlans }
-    "ether7"       = { comment = "Sploinkhole", untagged = local.mikrotik_globals.vlans.Trusted.name }
-    "ether8"       = { comment = "Digi Uplink", bridge_port = false }
+    "sfp-sfpplus1" = {
+      comment  = "CRS310",
+      untagged = local.mikrotik_globals.vlans.Management.name
+      tagged   = local.mikrotik_globals.all_but_management_vlans
+    }
+    "ether1" = {}
+    "ether2" = { comment = "NAS BMC", untagged = local.mikrotik_globals.vlans.Management.name }
+    "ether3" = { comment = "JetKVM", untagged = local.mikrotik_globals.vlans.Management.name }
+    "ether4" = { comment = "NAS Onboard R (Storage backup)", untagged = local.mikrotik_globals.vlans.Storage.name }
+    "ether5" = {}
+    "ether6" = { comment = "NAS Onboard L", untagged = local.mikrotik_globals.vlans.Management.name }
+    "ether7" = { comment = "Lenovo Tiny", untagged = local.mikrotik_globals.vlans.DMZ.name }
+    "ether8" = { comment = "Digi Uplink", bridge_port = false }
   }
 }

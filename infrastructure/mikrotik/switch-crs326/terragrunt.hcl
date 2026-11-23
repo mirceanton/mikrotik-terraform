@@ -34,12 +34,16 @@ inputs = {
 
   vlans = local.mikrotik_globals.vlans
   ethernet_interfaces = {
-    "ether1"  = {}
-    "ether2"  = {}
-    "ether3"  = {}
-    "ether4"  = {}
-    "ether5"  = {}
-    "ether6"  = {}
+    "ether1" = {}
+    "ether2" = {}
+    "ether3" = {}
+    "ether4" = {}
+    "ether5" = {}
+    "ether6" = {
+      comment  = "HomeOps (OLD) Onboard"
+      untagged = local.mikrotik_globals.vlans.Management.name
+      tagged   = local.mikrotik_globals.all_but_management_vlans
+    }
     "ether7"  = {}
     "ether8"  = {}
     "ether9"  = {}

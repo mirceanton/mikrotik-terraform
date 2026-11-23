@@ -39,8 +39,8 @@ inputs = {
     "sfp-sfpplus4"  = {}
     "sfp-sfpplus5"  = {}
     "sfp-sfpplus6"  = {}
-    "sfp-sfpplus7"  = { comment = "PVE03 10g 1", bridge_port = false, l2mtu = 9216, mtu = 9000 }
-    "sfp-sfpplus8"  = { comment = "PVE03 10g 2", bridge_port = false, l2mtu = 9216, mtu = 9000 }
+    "sfp-sfpplus7"  = { comment = "HomeOps (OLD) 10g 1", bridge_port = false, l2mtu = 9216, mtu = 9000 }
+    "sfp-sfpplus8"  = { comment = "HomeOps (OLD) 10g 2", bridge_port = false, l2mtu = 9216, mtu = 9000 }
     "sfp-sfpplus9"  = {}
     "sfp-sfpplus10" = {}
     "sfp-sfpplus11" = {}
@@ -52,25 +52,8 @@ inputs = {
     "ether1"        = { comment = "CRS326", tagged = local.mikrotik_globals.all_vlans }
   }
   bond_interfaces = {
-    "bond1" = {
-      comment = "NAS", mtu = 9000
-      slaves  = ["sfp-sfpplus1", "sfp-sfpplus2"]
-      tagged  = local.mikrotik_globals.all_but_management_vlans
-    }
-    "bond2" = {
-      comment              = "PVE01", mtu = 9000
-      slaves               = ["sfp-sfpplus3", "sfp-sfpplus4"]
-      transmit_hash_policy = "layer-3-and-4"
-      tagged               = local.mikrotik_globals.all_but_management_vlans
-    }
-    "bond3" = {
-      comment              = "PVE02", mtu = 9000
-      slaves               = ["sfp-sfpplus5", "sfp-sfpplus6"]
-      transmit_hash_policy = "layer-3-and-4"
-      tagged               = local.mikrotik_globals.all_but_management_vlans
-    }
     "bond4" = {
-      comment              = "PVE03", mtu = 9000
+      comment              = "HomeOps (OLD)", mtu = 9000
       slaves               = ["sfp-sfpplus7", "sfp-sfpplus8"]
       transmit_hash_policy = "layer-3-and-4"
       tagged               = local.mikrotik_globals.all_but_management_vlans
