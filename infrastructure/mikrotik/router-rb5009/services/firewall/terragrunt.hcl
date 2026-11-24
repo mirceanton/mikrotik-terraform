@@ -20,6 +20,8 @@ locals {
   pn64_ip          = "10.0.10.10"
 
   zigbee_coordinator_ip = "10.0.0.99"
+  bambu_printer_ip      = "192.168.42.181"
+  smart_tv_ip           = "192.168.42.250"
 }
 
 terraform {
@@ -40,6 +42,10 @@ inputs = {
         local.minecraft_svc_ip,
         local.nas_ip
       ]
+    }
+    "home-assistant-devices" = {
+      comment   = "Untrusted-VLAN devices Home Assistant (home cluster) talks to directly"
+      addresses = [local.bambu_printer_ip, local.smart_tv_ip]
     }
   }
 
@@ -325,6 +331,17 @@ inputs = {
       out_interface = local.mikrotik_globals.vlans.Management.name
       dst_address   = local.zigbee_coordinator_ip
       order         = 1407
+    }
+    "allow-PN64-to-home-assistant-devices" = {
+      comment          = "Home Assistant integrations (bambu_lab MQTT/FTPS/camera, androidtv_remote)"
+      chain            = "forward"
+      action           = "accept"
+      protocol         = "tcp"
+      in_interface     = local.mikrotik_globals.vlans.Services.name
+      src_address      = local.pn64_ip
+      out_interface    = local.mikrotik_globals.vlans.Untrusted.name
+      dst_address_list = "home-assistant-devices"
+      order            = 1408
     }
     "allow-NAS-to-internet" = {
       chain              = "forward"
