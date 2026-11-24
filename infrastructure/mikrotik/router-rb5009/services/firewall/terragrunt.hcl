@@ -48,6 +48,10 @@ inputs = {
       comment   = "Untrusted-VLAN devices Home Assistant (home cluster) talks to directly"
       addresses = [local.bambu_printer_ip, local.smart_tv_ip]
     }
+    "mikrotik-devices" = {
+      comment   = "MikroTik switches/APs managed by Terragrunt CD (REST API)"
+      addresses = ["10.0.0.2", "10.0.0.3", "10.0.0.4", "10.0.0.5", "10.0.0.6"]
+    }
     "node-exporter-targets" = {
       comment   = "Hosts outside the cluster whose node-exporter (9100) the home cluster scrapes"
       addresses = ["192.168.42.69", "192.168.42.70"]
@@ -383,6 +387,18 @@ inputs = {
       src_address      = local.pn64_ip
       dst_address_list = "node-exporter-targets"
       order            = 1411
+    }
+    "allow-PN64-to-mikrotik-api" = {
+      comment          = "self-hosted GitHub runners (Terragrunt CD) -> MikroTik REST API"
+      chain            = "forward"
+      action           = "accept"
+      protocol         = "tcp"
+      dst_port         = "443"
+      in_interface     = local.mikrotik_globals.vlans.Services.name
+      src_address      = local.pn64_ip
+      out_interface    = local.mikrotik_globals.vlans.Management.name
+      dst_address_list = "mikrotik-devices"
+      order            = 1413
     }
     "allow-PN64-icmp-to-LAN" = {
       comment            = "blackbox ping probes from the home cluster"
