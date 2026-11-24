@@ -224,6 +224,16 @@ inputs = {
       out_interface_list = "LAN"
       order              = 1110
     }
+    "allow-PN64-to-router-api" = {
+      comment      = "external-dns (mikrotik webhook) on the home cluster"
+      chain        = "input"
+      action       = "accept"
+      protocol     = "tcp"
+      dst_port     = "443"
+      in_interface = local.mikrotik_globals.vlans.Services.name
+      src_address  = local.pn64_ip
+      order        = 1120
+    }
 
     "allow-WG-TRUSTED-input" = {
       chain            = "input"
