@@ -22,6 +22,7 @@ locals {
   zigbee_coordinator_ip = "10.0.0.99"
   bambu_printer_ip      = "192.168.42.181"
   smart_tv_ip           = "192.168.42.250"
+  nas_bmc_ip            = "10.0.0.10"
 }
 
 terraform {
@@ -46,6 +47,10 @@ inputs = {
     "home-assistant-devices" = {
       comment   = "Untrusted-VLAN devices Home Assistant (home cluster) talks to directly"
       addresses = [local.bambu_printer_ip, local.smart_tv_ip]
+    }
+    "node-exporter-targets" = {
+      comment   = "Hosts outside the cluster whose node-exporter (9100) the home cluster scrapes"
+      addresses = ["192.168.42.69", "192.168.42.70"]
     }
   }
 
@@ -342,6 +347,52 @@ inputs = {
       out_interface    = local.mikrotik_globals.vlans.Untrusted.name
       dst_address_list = "home-assistant-devices"
       order            = 1408
+    }
+    # --- Monitoring from the home cluster (Prometheus / blackbox / ipmi-exporter) ---
+    "allow-PN64-to-nas-metrics" = {
+      comment       = "node-exporter 9100, cadvisor 8080, smartctl-exporter 9633 on the NAS"
+      chain         = "forward"
+      action        = "accept"
+      protocol      = "tcp"
+      dst_port      = "8080,9100,9633"
+      in_interface  = local.mikrotik_globals.vlans.Services.name
+      src_address   = local.pn64_ip
+      out_interface = local.mikrotik_globals.vlans.Storage.name
+      dst_address   = local.nas_ip
+      order         = 1409
+    }
+    "allow-PN64-to-nas-bmc-ipmi" = {
+      comment       = "ipmi-exporter -> NAS BMC (RMCP+)"
+      chain         = "forward"
+      action        = "accept"
+      protocol      = "udp"
+      dst_port      = "623"
+      in_interface  = local.mikrotik_globals.vlans.Services.name
+      src_address   = local.pn64_ip
+      out_interface = local.mikrotik_globals.vlans.Management.name
+      dst_address   = local.nas_bmc_ip
+      order         = 1410
+    }
+    "allow-PN64-to-node-exporters" = {
+      comment          = "node-exporter on hosts outside the cluster"
+      chain            = "forward"
+      action           = "accept"
+      protocol         = "tcp"
+      dst_port         = "9100"
+      in_interface     = local.mikrotik_globals.vlans.Services.name
+      src_address      = local.pn64_ip
+      dst_address_list = "node-exporter-targets"
+      order            = 1411
+    }
+    "allow-PN64-icmp-to-LAN" = {
+      comment            = "blackbox ping probes from the home cluster"
+      chain              = "forward"
+      action             = "accept"
+      protocol           = "icmp"
+      in_interface       = local.mikrotik_globals.vlans.Services.name
+      src_address        = local.pn64_ip
+      out_interface_list = "LAN"
+      order              = 1412
     }
     "allow-NAS-to-internet" = {
       chain              = "forward"
