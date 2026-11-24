@@ -18,6 +18,8 @@ locals {
   minecraft_svc_ip = "10.0.10.253"
   nas_ip           = "10.255.255.245"
   pn64_ip          = "10.0.10.10"
+
+  zigbee_coordinator_ip = "10.0.0.99"
 }
 
 terraform {
@@ -300,6 +302,29 @@ inputs = {
       out_interface = local.mikrotik_globals.vlans.Storage.name
       dst_address   = local.nas_ip
       order         = 1405
+    }
+    "allow-PN64-to-zigbee-coordinator" = {
+      comment       = "zigbee2mqtt on the home cluster -> SLZB/Sonoff coordinator"
+      chain         = "forward"
+      action        = "accept"
+      protocol      = "tcp"
+      dst_port      = "6638"
+      in_interface  = local.mikrotik_globals.vlans.Services.name
+      src_address   = local.pn64_ip
+      out_interface = local.mikrotik_globals.vlans.Management.name
+      dst_address   = local.zigbee_coordinator_ip
+      order         = 1406
+    }
+    "allow-PN64-to-zigbee-coordinator-icmp" = {
+      comment       = "blackbox ping probe that gates zigbee2mqtt via KEDA"
+      chain         = "forward"
+      action        = "accept"
+      protocol      = "icmp"
+      in_interface  = local.mikrotik_globals.vlans.Services.name
+      src_address   = local.pn64_ip
+      out_interface = local.mikrotik_globals.vlans.Management.name
+      dst_address   = local.zigbee_coordinator_ip
+      order         = 1407
     }
     "allow-NAS-to-internet" = {
       chain              = "forward"
