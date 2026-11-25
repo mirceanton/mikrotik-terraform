@@ -30,8 +30,6 @@ This project provides automated deployment and management for the following devi
 
 - **RB5009 router** -> main router + firewall + CAPSMAN server
 - **cAP AX Access Point** -> provisioned via CAPSMAN
-- **CRS317 switch** -> High-performance 10G switch for server connectivity
-- **CRS326 switch** -> Main Rack Switch
 - **Hex switch** -> Living Room Switch (no AP functionality used here)
 
 I was initially planning to also add some more details about my network, like VLAN setup and wireless networks and whatnot, but then I realised I can't really be bothered to also update those whenever I change something, so if you're curious, feel free to look at the code!
@@ -56,8 +54,6 @@ I was initially planning to also add some more details about my network, like VL
 │       ├── globals.hcl     # Shared global variables (VLANs, DNS, users, etc.)
 │       ├── router-rb5009/  # RB5009 router base configuration
 │       │   └── services/   # Router services (DHCP, DNS, firewall, WireGuard, etc.)
-│       ├── switch-crs317/  # CRS317 switch configuration
-│       ├── switch-crs326/  # CRS326 switch configuration
 │       └── switch-hex/     # Hex switch configuration
 ├── root.hcl               # Root Terragrunt configuration (remote state)
 └── README.md              # This file, lol
