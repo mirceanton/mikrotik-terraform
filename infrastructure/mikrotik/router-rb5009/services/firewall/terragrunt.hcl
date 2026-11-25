@@ -23,6 +23,7 @@ locals {
   bambu_printer_ip      = "192.168.42.181"
   smart_tv_ip           = "192.168.42.250"
   nas_bmc_ip            = "10.0.0.10"
+  jetkvm_ip             = "10.0.0.9"
 }
 
 terraform {
@@ -274,6 +275,15 @@ inputs = {
       order         = 1310
     }
 
+    # Has to stay above allow-INTERNET_ONLY-to-internet, which covers the Management VLAN
+    "drop-jetkvm-to-internet" = {
+      comment            = "JetKVM must not have internet access"
+      chain              = "forward"
+      action             = "drop"
+      src_address        = local.jetkvm_ip
+      out_interface_list = "WAN"
+      order              = 1399
+    }
     "allow-INTERNET_ONLY-to-internet" = {
       chain              = "forward"
       action             = "accept"
