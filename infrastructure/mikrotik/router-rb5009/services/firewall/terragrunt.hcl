@@ -23,6 +23,7 @@ locals {
   bambu_printer_ip      = "192.168.42.181"
   smart_tv_ip           = "192.168.42.250"
   nas_bmc_ip            = "10.0.0.10"
+  comet_x_ip            = "10.0.0.8"
 }
 
 terraform {
@@ -31,6 +32,10 @@ terraform {
 
 inputs = {
   address_lists = {
+    "no-internet" = {
+      comment   = "Hosts that must not have internet access"
+      addresses = [local.comet_x_ip]
+    }
     "wireguard-trusted" = {
       comment   = "Personal WireGuard devices with trusted-level access"
       addresses = [local.mirkphone_ip, local.mirkbook_ip]
@@ -274,6 +279,15 @@ inputs = {
       order         = 1310
     }
 
+    # Has to stay above allow-INTERNET_ONLY-to-internet, which covers the Management VLAN
+    "drop-no-internet-to-internet" = {
+      comment            = "KVMs must not have internet access"
+      chain              = "forward"
+      action             = "drop"
+      src_address_list   = "no-internet"
+      out_interface_list = "WAN"
+      order              = 1399
+    }
     "allow-INTERNET_ONLY-to-internet" = {
       chain              = "forward"
       action             = "accept"
