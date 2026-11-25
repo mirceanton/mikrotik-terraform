@@ -48,7 +48,7 @@ inputs = {
     }
     "ether1" = {}
     "ether2" = { comment = "NAS BMC", untagged = local.mikrotik_globals.vlans.Management.name }
-    "ether3" = { comment = "JetKVM", untagged = local.mikrotik_globals.vlans.Management.name }
+    "ether3" = { comment = "Comet X", untagged = local.mikrotik_globals.vlans.Management.name }
     "ether4" = { comment = "NAS eno1 (mgmt)", untagged = local.mikrotik_globals.vlans.Management.name }
     "ether5" = {}
     "ether6" = { comment = "NAS eno2 (Storage backup)", untagged = local.mikrotik_globals.vlans.Storage.name }

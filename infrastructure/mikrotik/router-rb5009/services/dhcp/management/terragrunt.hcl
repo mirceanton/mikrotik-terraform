@@ -25,7 +25,6 @@ inputs = {
 
     # BMCs and KVMs
     "10.0.0.8"  = { name = "comet-x", mac = "94:83:C4:F4:74:EC" }
-    "10.0.0.9"  = { name = "jetkvm", mac = "44:B7:D0:E6:2F:29" }
     "10.0.0.10" = { name = "bmc-nas", mac = "3C:EC:EF:39:1B:70" }
 
     "10.0.0.15" = { name = "home-ops", mac = "74:56:3c:9e:bf:1a" }

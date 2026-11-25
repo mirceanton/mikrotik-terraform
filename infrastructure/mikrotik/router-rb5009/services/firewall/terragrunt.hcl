@@ -23,7 +23,6 @@ locals {
   bambu_printer_ip      = "192.168.42.181"
   smart_tv_ip           = "192.168.42.250"
   nas_bmc_ip            = "10.0.0.10"
-  jetkvm_ip             = "10.0.0.9"
   comet_x_ip            = "10.0.0.8"
 }
 
@@ -35,7 +34,7 @@ inputs = {
   address_lists = {
     "no-internet" = {
       comment   = "Hosts that must not have internet access"
-      addresses = [local.jetkvm_ip, local.comet_x_ip]
+      addresses = [local.comet_x_ip]
     }
     "wireguard-trusted" = {
       comment   = "Personal WireGuard devices with trusted-level access"
