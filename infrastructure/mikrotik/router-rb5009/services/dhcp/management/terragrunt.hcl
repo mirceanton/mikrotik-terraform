@@ -17,8 +17,6 @@ inputs = {
 
   static_leases = {
     # Network Infrastructure
-    "10.0.0.2" = { name = "crs317", mac = "D4:01:C3:02:5D:52" }
-    "10.0.0.3" = { name = "crs326", mac = "D4:01:C3:F8:46:EE" }
     "10.0.0.4" = { name = "hex", mac = "F4:1E:57:31:05:41" }
     "10.0.0.5" = { name = "cap-ax", mac = "D4:01:C3:01:26:EB" }
     "10.0.0.6" = { name = "crs310", mac = "38:32:7A:57:63:EC" }

@@ -55,7 +55,7 @@ inputs = {
     }
     "mikrotik-devices" = {
       comment   = "MikroTik switches/APs managed by Terragrunt CD (REST API)"
-      addresses = ["10.0.0.2", "10.0.0.3", "10.0.0.4", "10.0.0.5", "10.0.0.6"]
+      addresses = ["10.0.0.4", "10.0.0.5", "10.0.0.6"]
     }
     "node-exporter-targets" = {
       comment   = "Hosts outside the cluster whose node-exporter (9100) the home cluster scrapes"
