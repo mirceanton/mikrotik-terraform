@@ -46,6 +46,6 @@ inputs = {
       untagged = local.mikrotik_globals.vlans.Management.name
       tagged   = local.mikrotik_globals.all_but_management_vlans
     }
-    "sfp-sfpplus2" = {}
+    "sfp-sfpplus2" = { comment = "NAS 10g", untagged = local.mikrotik_globals.vlans.Storage.name }
   }
 }
