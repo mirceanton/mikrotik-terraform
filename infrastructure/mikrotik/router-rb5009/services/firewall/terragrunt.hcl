@@ -18,6 +18,7 @@ locals {
   minecraft_svc_ip = "10.0.10.253"
   nas_ip           = "10.255.255.245"
   pn64_ip          = "10.0.10.10"
+  zimaboard_ip     = "10.0.20.10"
 
   zigbee_coordinator_ip = "10.0.0.99"
   bambu_printer_ip      = "192.168.42.181"
@@ -255,6 +256,17 @@ inputs = {
       in_interface = local.mikrotik_globals.vlans.Services.name
       src_address  = local.pn64_ip
       order        = 1120
+    }
+
+    "allow-zimaboard-to-router-api" = {
+      comment      = "external-dns (mikrotik webhook) on the utils cluster"
+      chain        = "input"
+      action       = "accept"
+      protocol     = "tcp"
+      dst_port     = "443"
+      in_interface = local.mikrotik_globals.vlans.Utils.name
+      src_address  = local.zimaboard_ip
+      order        = 1121
     }
 
     "allow-WG-TRUSTED-input" = {
