@@ -45,6 +45,7 @@ I was initially planning to also add some more details about my network, like VL
 ├── infrastructure/         # Terragrunt configurations
 │   ├── 1password/          # 1Password secret injection
 │   │   ├── Badoink/        # WiFi passphrases for the Badoink vault
+│   │   ├── kubernetes-utils/ # Router login for the utils cluster's external-dns
 │   │   ├── mikrotik-users/ # RouterOS user credentials
 │   │   └── mikrotik-wireguard-keys/ # WireGuard key pairs
 │   ├── cloudflare/         # Cloudflare DNS records

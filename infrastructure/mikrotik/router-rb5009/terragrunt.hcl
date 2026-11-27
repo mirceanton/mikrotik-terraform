@@ -32,6 +32,13 @@ inputs = {
       inactivity_policy  = "logout"
       inactivity_timeout = "00:02:00"
     }
+    external-dns-utils = {
+      group              = "external-dns"
+      comment            = "External DNS user for the utils cluster"
+      address            = "10.0.20.10/32"
+      inactivity_policy  = "logout"
+      inactivity_timeout = "00:02:00"
+    }
   })
   groups = merge(local.mikrotik_globals.default_groups, {
     external-dns = {
