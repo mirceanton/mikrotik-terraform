@@ -34,10 +34,10 @@ inputs = {
   vlans = local.mikrotik_globals.vlans
   ethernet_interfaces = {
     "ether1" = {
-      comment  = "HEX Uplink"
+      comment  = "RB5009 Uplink"
       untagged = local.mikrotik_globals.vlans.Management.name
       tagged   = [local.mikrotik_globals.vlans.Untrusted.name, local.mikrotik_globals.vlans.Guest.name]
     }
-    "ether2" = { comment = "Smart TV", untagged = local.mikrotik_globals.vlans.Untrusted.name }
+    "ether2" = {}
   }
 }
